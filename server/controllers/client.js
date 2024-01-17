@@ -6,7 +6,9 @@ import Transaction from "../models/Transaction.js";
 export const getProducts = async (req, res) => {
     try {
         const products = await Product.find();
-
+        console.log("hello");
+        console.log(products);
+        console.log("hello");
         const productsWithStats = await Promise.all(
             products.map(async (product) => {
                 const stat = await ProductStat.find({

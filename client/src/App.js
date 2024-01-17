@@ -12,6 +12,7 @@ import Transactions from "scenes/transactions";
 import Overview from "scenes/overview";
 import Daily from "scenes/daily";
 import Monthly from "scenes/monthly";
+import Playground from "scenes/playground";
 
 function App() {
     const mode = useSelector((state) => state.global.mode);
@@ -30,6 +31,10 @@ function App() {
                             <Route path="/dashboard" element={<Dashboard />} />
                             <Route path="/products" element={<Products />} />
                             <Route path="/customers" element={<Customers />} />
+                            <Route
+                                path="/playground"
+                                element={<Playground />}
+                            />
                             <Route
                                 path="/transactions"
                                 element={<Transactions />}
