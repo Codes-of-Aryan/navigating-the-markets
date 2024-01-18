@@ -16,8 +16,7 @@ import {
 import Banner from "views/admin/marketplace/components/Banner";
 import TableTopCreators from "views/admin/marketplace/components/TableTopCreators";
 import HistoryItem from "views/admin/marketplace/components/HistoryItem";
-import NFT from "components/card/NFT";
-import AppleTradingViewWidget from "components/overview/apple";
+import AppleCard from "components/card/AppleCard";
 import Card from "components/card/Card.js";
 
 // Assets
@@ -27,6 +26,7 @@ import Nft3 from "assets/img/nfts/Nft3.png";
 import Nft4 from "assets/img/nfts/Nft4.png";
 import Nft5 from "assets/img/nfts/Nft5.png";
 import Nft6 from "assets/img/nfts/Nft6.png";
+import Apple from "assets/img/logos/apple.jpg";
 import Avatar1 from "assets/img/avatars/avatar1.png";
 import Avatar2 from "assets/img/avatars/avatar2.png";
 import Avatar3 from "assets/img/avatars/avatar3.png";
@@ -74,55 +74,10 @@ export default function Marketplace() {
                             </Text>
                         </Flex>
                         <SimpleGrid columns={{ base: 1, md: 3 }} gap="20px">
-                            <NFT
-                                name="Abstract Colors"
-                                author="By Esthera Jackson"
-                                bidders={[
-                                    Avatar1,
-                                    Avatar2,
-                                    Avatar3,
-                                    Avatar4,
-                                    Avatar1,
-                                    Avatar1,
-                                    Avatar1,
-                                    Avatar1,
-                                ]}
-                                image={Nft1}
-                                currentbid="0.91 ETH"
-                                download="#"
-                            />
-                            <NFT
-                                name="ETH AI Brain"
-                                author="By Nick Wilson"
-                                bidders={[
-                                    Avatar1,
-                                    Avatar2,
-                                    Avatar3,
-                                    Avatar4,
-                                    Avatar1,
-                                    Avatar1,
-                                    Avatar1,
-                                    Avatar1,
-                                ]}
-                                image={Nft2}
-                                currentbid="0.91 ETH"
-                                download="#"
-                            />
-                            <NFT
-                                name="Mesh Gradients "
-                                author="By Will Smith"
-                                bidders={[
-                                    Avatar1,
-                                    Avatar2,
-                                    Avatar3,
-                                    Avatar4,
-                                    Avatar1,
-                                    Avatar1,
-                                    Avatar1,
-                                    Avatar1,
-                                ]}
-                                image={Nft3}
-                                currentbid="0.91 ETH"
+                            <AppleCard
+                                name="APPLE"
+                                incorporatedName="Apple Computer, Inc."
+                                image={Apple}
                                 download="#"
                             />
                         </SimpleGrid>

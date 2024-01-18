@@ -1,11 +1,10 @@
-// TradingViewWidget.jsx
+import { Box, Flex } from "@chakra-ui/react";
 import React, { useEffect, useRef, memo } from "react";
 
 function AppleTradingViewWidget() {
     const container = useRef();
-
+    const script = document.createElement("script");
     useEffect(() => {
-        const script = document.createElement("script");
         script.src =
             "https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js";
         script.type = "text/javascript";
@@ -19,7 +18,7 @@ function AppleTradingViewWidget() {
             ]
           ],
           "chartOnly": false,
-          "width": 1000,
+          "width": 700,
           "height": 500,
           "locale": "en",
           "colorTheme": "light",
@@ -37,9 +36,6 @@ function AppleTradingViewWidget() {
           "valuesTracking": "1",
           "changeMode": "price-and-percent",
           "chartType": "area",
-          "maLineColor": "#2962FF",
-          "maLineWidth": 1,
-          "maLength": 9,
           "lineWidth": 2,
           "lineType": 0,
           "dateRanges": [
@@ -52,23 +48,21 @@ function AppleTradingViewWidget() {
           ]
         }`;
         container.current.appendChild(script);
-    }, []);
+    }, [script, container]);
 
     return (
-        <div className="tradingview-widget-container" ref={container}>
-            <div className="tradingview-widget-container__widget"></div>
-            <div className="tradingview-widget-copyright">
-                <a
-                    href="https://www.tradingview.com/"
-                    rel="noopener nofollow"
-                    target="_blank"
-                >
-                    <span className="blue-text">
-                        Track all markets on TradingView
-                    </span>
-                </a>
-            </div>
-        </div>
+        <Box py="15px">
+            <Flex
+                my="auto"
+                h="100%"
+                align={{ base: "center", xl: "start" }}
+                justify={{ base: "center", xl: "center" }}
+            >
+                <div className="tradingview-widget-container" ref={container}>
+                    <div className="tradingview-widget-container__widget"></div>
+                </div>
+            </Flex>
+        </Box>
     );
 }
 

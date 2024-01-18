@@ -13,8 +13,8 @@ import {
 import MainDashboard from "views/admin/default";
 import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
+import apple from "views/admin/apple";
 import DataTables from "views/admin/dataTables";
-import RTL from "views/admin/rtl";
 
 // Auth Imports
 import SignInCentered from "views/auth/signIn";
@@ -66,6 +66,15 @@ const routes = [
         ),
         path: "/data-tables",
         component: DataTables,
+    },
+    {
+        name: "Apple Computer, Inc.",
+        layout: "/admin",
+        icon: (
+            <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />
+        ),
+        path: "/apple",
+        component: apple,
     },
     {
         name: "Profile",
