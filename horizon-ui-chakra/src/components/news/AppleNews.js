@@ -14,7 +14,7 @@ function AppleNews() {
           "symbol": "NASDAQ:AAPL",
           "isTransparent": false,
           "displayMode": "regular",
-          "width": 300,
+          "width": 350,
           "height": 500,
           "colorTheme": "light",
           "locale": "en"

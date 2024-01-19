@@ -1,6 +1,4 @@
-// Chakra Imports
 import {
-    Avatar,
     Button,
     Flex,
     Icon,
@@ -8,20 +6,17 @@ import {
     Link,
     Menu,
     MenuButton,
-    MenuItem,
     MenuList,
-    Text,
     useColorModeValue,
 } from "@chakra-ui/react";
-// Custom Components
-import { ItemContent } from "components/menu/ItemContent";
+
 import { SidebarResponsive } from "components/sidebar/Sidebar";
 import PropTypes from "prop-types";
 import React from "react";
-// Assets
+
 import navImage from "assets/img/layout/Navbar.png";
-import { MdNotificationsNone, MdInfoOutline } from "react-icons/md";
-import { FaEthereum } from "react-icons/fa";
+import { MdInfoOutline } from "react-icons/md";
+
 import routes from "routes.js";
 import { ThemeEditor } from "./ThemeEditor";
 export default function HeaderLinks(props) {
@@ -29,23 +24,12 @@ export default function HeaderLinks(props) {
     // Chakra Color Mode
     const navbarIcon = useColorModeValue("gray.400", "white");
     let menuBg = useColorModeValue("white", "navy.800");
-    const textColor = useColorModeValue("secondaryGray.900", "white");
-    const textColorBrand = useColorModeValue("brand.700", "brand.400");
-    const ethColor = useColorModeValue("gray.700", "white");
-    const borderColor = useColorModeValue(
-        "#E6ECFA",
-        "rgba(135, 140, 189, 0.3)"
-    );
-    const ethBg = useColorModeValue("secondaryGray.300", "navy.900");
-    const ethBox = useColorModeValue("white", "navy.800");
+
     const shadow = useColorModeValue(
         "14px 17px 40px 4px rgba(112, 144, 176, 0.18)",
         "14px 17px 40px 4px rgba(112, 144, 176, 0.06)"
     );
-    const borderButton = useColorModeValue(
-        "secondaryGray.500",
-        "whiteAlpha.200"
-    );
+
     return (
         <Flex
             w={{ sm: "100%", md: "auto" }}
@@ -82,43 +66,25 @@ export default function HeaderLinks(props) {
                     minW={{ base: "unset" }}
                     maxW={{ base: "360px", md: "unset" }}
                 >
-                    <Image src={navImage} borderRadius="16px" mb="28px" />
+                    <Image
+                        src={navImage}
+                        width="450px"
+                        height="250px"
+                        borderRadius="16px"
+                        mb="28px"
+                    />
                     <Flex flexDirection="column">
                         <Link
                             w="100%"
-                            href="https://horizon-ui.com/pro?ref=horizon-chakra-free"
+                            href="https://wp2023.cs.hku.hk/fyp23070/"
                         >
+                            <p>
+                                We are a student led project aimed to
+                                decentralize investing!
+                            </p>
+                            <br />
                             <Button w="100%" h="44px" mb="10px" variant="brand">
-                                Buy Horizon UI PRO
-                            </Button>
-                        </Link>
-                        <Link
-                            w="100%"
-                            href="https://horizon-ui.com/documentation/docs/introduction?ref=horizon-chakra-free"
-                        >
-                            <Button
-                                w="100%"
-                                h="44px"
-                                mb="10px"
-                                border="1px solid"
-                                bg="transparent"
-                                borderColor={borderButton}
-                            >
-                                See Documentation
-                            </Button>
-                        </Link>
-                        <Link
-                            w="100%"
-                            href="https://github.com/horizon-ui/horizon-ui-chakra"
-                        >
-                            <Button
-                                w="100%"
-                                h="44px"
-                                variant="no-hover"
-                                color={textColor}
-                                bg="transparent"
-                            >
-                                Try Horizon Free
+                                Learn More
                             </Button>
                         </Link>
                     </Flex>

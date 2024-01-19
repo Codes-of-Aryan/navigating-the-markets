@@ -1,52 +1,14 @@
 import React from "react";
 
 import { Icon } from "@chakra-ui/react";
-import {
-    MdBarChart,
-    MdPerson,
-    MdHome,
-    MdLock,
-    MdOutlineShoppingCart,
-} from "react-icons/md";
-
-// Admin Imports
-import MainDashboard from "views/admin/default";
-import NFTMarketplace from "views/admin/marketplace";
-import Profile from "views/admin/profile";
-import apple from "views/admin/apple";
-import DataTables from "views/admin/dataTables";
-
-// Auth Imports
-import SignInCentered from "views/auth/signIn";
+import { MdBarChart, MdPerson, MdOutlineShoppingCart } from "react-icons/md";
+import Widget from "views/admin/widgetPage";
 
 const routes = [
-    // {
-    //   name: "Main Dashboard",
-    //   layout: "/admin",
-    //   path: "/default",
-    //   icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
-    //   component: MainDashboard,
-    // },
-    // {
-    //   name: "NFT Marketplace",
-    //   layout: "/admin",
-    //   path: "/nft-marketplace",
-    //   icon: (
-    //     <Icon
-    //       as={MdOutlineShoppingCart}
-    //       width='20px'
-    //       height='20px'
-    //       color='inherit'
-    //     />
-    //   ),
-    //   component: NFTMarketplace,
-    //   secondary: true,
-    // },
     {
         name: "Widgets",
         layout: "/admin",
         path: "/default",
-        // path: "/nft-marketplace",
         icon: (
             <Icon
                 as={MdOutlineShoppingCart}
@@ -55,48 +17,25 @@ const routes = [
                 color="inherit"
             />
         ),
-        component: NFTMarketplace,
+        component: Widget,
         secondary: true,
     },
     {
-        name: "Data Tables",
+        name: "Algorithmic Trading",
         layout: "/admin",
         icon: (
             <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />
         ),
-        path: "/data-tables",
-        component: DataTables,
+        path: "/algotrading",
+        // component: apple,
     },
     {
-        name: "Apple Computer, Inc.",
+        name: "FinGPT",
         layout: "/admin",
-        icon: (
-            <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />
-        ),
-        path: "/apple",
-        component: apple,
-    },
-    {
-        name: "Profile",
-        layout: "/admin",
-        path: "/profile",
+        path: "/fingpt",
         icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-        component: Profile,
+        // component: FinGPT,
     },
-    // {
-    //   name: "Sign In",
-    //   layout: "/auth",
-    //   path: "/sign-in",
-    //   icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
-    //   component: SignInCentered,
-    // },
-    // {
-    //   name: "RTL Admin",
-    //   layout: "/rtl",
-    //   path: "/rtl-default",
-    //   icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
-    //   component: RTL,
-    // },
 ];
 
 export default routes;
