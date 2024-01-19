@@ -20,18 +20,18 @@ import Card from "components/card/Card.js";
 import React from "react";
 import "../../../assets/css/LSTMStyles/style.css";
 import $ from 'jquery';
-import '../../../../src/assets/js/materialize.min.js'
-import '../../../../src/assets/js/jquery-3.3.1.min.js'
-import '../../../../src/assets/js/tf.js'
-import '../../../../src/assets/d3.v3.min.js'
-import '../../../../src/assets/d3.v3.min.js'
-import '../../../../src/assets/numeric-1.2.6.min.js'
-import '../../../../src/assets/numeric-1.2.6.min.js'
-import '../../../../src/assets/numjs.min.js'
-import '../../../../src/assets/utils.js'
-import '../../../../src/assets/echarts.min.js'
-import '../../../../src/assets/echarts-gl.min.js'
-import '../../../../src/assets/papaparse.min.js'
+import '../../../assets/js/materialize.min.js'
+import '../../../assets/js/jquery-3.3.1.min.js'
+import '../../../assets/js/tf.js'
+import '../../../assets/d3.v3.min.js'
+import '../../../assets/d3.v3.min.js'
+import '../../../assets/numeric-1.2.6.min.js'
+import '../../../assets/numeric-1.2.6.min.js'
+import '../../../assets/numjs.min.js'
+import '../../../assets/utils.js'
+import '../../../assets/echarts.min.js'
+import '../../../assets/echarts-gl.min.js'
+import '../../../assets/papaparse.min.js'
 import '../../../assets/data/google'
 import "../../../assets/css/LSTMStyles/materialize.min.css"
 

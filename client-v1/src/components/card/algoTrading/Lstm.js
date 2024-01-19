@@ -72,9 +72,9 @@ export default function LstmCard(props) {
                         }}
                         mt="25px"
                     >
-                        <a href="../../modal/algoTrading/stock-forecasting-js/index.html">
+                        <a href="http://localhost:8000">
                             <Button>
-                                Click me!
+                                visualize
                             </Button>
                         </a>
                     </Flex>
