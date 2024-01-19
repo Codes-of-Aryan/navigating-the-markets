@@ -1,7 +1,7 @@
-import { Box, Flex, Image, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, useColorModeValue, Link, Button } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import React from "react";
-import LstmModal from "components/modal/algoTrading/LSTMMod";
+// import LstmModal from "components/modal/algoTrading/LSTMMod";
 // import LstmModal from "components/modal/algoTrading/LstmModal";
 
 export default function LstmCard(props) {
@@ -72,7 +72,11 @@ export default function LstmCard(props) {
                         }}
                         mt="25px"
                     >
-                        <LstmModal fullForm={fullModelName} />
+                        <a href="../../modal/algoTrading/stock-forecasting-js/index.html">
+                            <Button>
+                                Click me!
+                            </Button>
+                        </a>
                     </Flex>
                 </Flex>
             </Flex>
