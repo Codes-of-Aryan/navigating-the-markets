@@ -6,13 +6,13 @@ module.exports = `
             rel="stylesheet"
         />
         <link
-            href="css/materialize.min.css"
+            href="../stock-forecasting-js/css/materialize.min.css"
             type="text/css"
             rel="stylesheet"
             media="screen,projection"
         />
         <link
-            href="css/style.css"
+            href="../stock-forecasting-js/../stock-forecasting-js/css/style.css"
             type="text/css"
             rel="stylesheet"
             media="screen,projection"
@@ -309,17 +309,17 @@ module.exports = `
         </ul>
     </div>
     <div class="row center" id="color-investment"></div>
-    <script src="js/tf.js"></script>
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/materialize.min.js"></script>
-    <script src="js/d3.v3.min.js"></script>
-    <script src="js/numeric-1.2.6.min.js"></script>
-    <script src="js/numjs.min.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/echarts.min.js"></script>
-    <script src="js/echarts-gl.min.js"></script>
-    <script src="js/papaparse.min.js"></script>
-    <script src="data/google.js"></script>
+    <script src="../stock-forecasting-js/js/tf.js"></script>
+    <script src="../stock-forecasting-js/js/jquery-3.3.1.min.js"></script>
+    <script src="../stock-forecasting-js/js/materialize.min.js"></script>
+    <script src="../stock-forecasting-js/js/d3.v3.min.js"></script>
+    <script src="../stock-forecasting-js/js/numeric-1.2.6.min.js"></script>
+    <script src="../stock-forecasting-js/js/numjs.min.js"></script>
+    <script src="../stock-forecasting-js/js/utils.js"></script>
+    <script src="../stock-forecasting-js/js/echarts.min.js"></script>
+    <script src="../stock-forecasting-js/js/echarts-gl.min.js"></script>
+    <script src="../stock-forecasting-js/js/papaparse.min.js"></script>
+    <script src="../stock-forecasting-js/data/google.js"></script>
     <script src="init.js"></script>
 </html>
 `;

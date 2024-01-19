@@ -1,7 +1,8 @@
 import { Box, Flex, Image, Text, useColorModeValue } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import React from "react";
-import LstmModal from "components/modal/algoTrading/LstmModal";
+import LstmModal from "components/modal/algoTrading/LSTMMod";
+// import LstmModal from "components/modal/algoTrading/LstmModal";
 
 export default function LstmCard(props) {
     const { image, fullModelName, modelName } = props;

@@ -10,6 +10,7 @@ import {
 import Lstm from "assets/img/algoTrading/lstm.png";
 
 import LstmCard from "components/card/algoTrading/Lstm";
+// import LstmCard from "components/card/algoTrading/Lstm";
 
 export default function WidgetPage() {
     // Chakra Color Mode
