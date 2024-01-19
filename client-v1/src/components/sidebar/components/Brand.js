@@ -11,7 +11,7 @@ export function SidebarBrand() {
     return (
         <Flex align="center" direction="column">
             <Text color={logoColor} fontSize="2xl" ms="24px" fontWeight="700">
-                Navigating the Markets
+                Navigating The Markets
             </Text>
             <br></br>
             <HSeparator mb="20px" />
