@@ -3,6 +3,7 @@ import React from "react";
 import { Icon } from "@chakra-ui/react";
 import { MdBarChart, MdPerson, MdOutlineShoppingCart } from "react-icons/md";
 import Widget from "views/admin/widgetPage";
+import AlgorithmicTrading from "views/admin/algorithmicTradingPage";
 
 const routes = [
     {
@@ -27,7 +28,7 @@ const routes = [
             <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />
         ),
         path: "/algotrading",
-        // component: apple,
+        component: AlgorithmicTrading,
     },
     {
         name: "FinGPT",
