@@ -1,6 +1,8 @@
 <html>
 
 <head>
+  <title>FYP</title>
+  <link rel="icon" href="./screenshot/favicon.ico" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +28,12 @@
       padding-top: 20px;
     }
 
+    .vl {
+      border-left: 3.5px solid rgb(62, 43, 241);
+      border-radius: 5px;
+      height: 35px;
+    }
+
     .sidenav a {
       padding: 6px 8px 6px 16px;
       text-decoration: none;
@@ -36,6 +44,11 @@
 
     .sidenav a:hover {
       color: #000;
+    }
+
+    .sidenav a.active {
+      color: rgb(29, 37, 72);
+      /* Change the color to your desired color */
     }
 
     .main {
@@ -52,6 +65,11 @@
 
       .sidenav a {
         font-size: 18px;
+      }
+
+      .sidenav a.active {
+        color: rgb(29, 37, 72);
+        /* Change the color to your desired color */
       }
     }
   </style>
@@ -71,7 +89,7 @@
     font-family: 'DM Sans', sans-serif;">
       <div style="display: flex;">
         <a href="http://localhost:3000/#/admin/default"
-          style="color: #8F9BBA; font-weight: 400; font-size: 20px; padding-bottom: 6%;">
+          style="color: #8F9BBA; font-weight: 400; font-size: 20px; padding-bottom: 7%;">
           <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" focusable="false"
             class="chakra-icon css-18176s2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <path fill="none" d="M0 0h24v24H0V0z"></path>
@@ -81,13 +99,13 @@
           </svg>
         </a>
         <a href="http://localhost:3000/#/admin/default"
-          style="color: #8F9BBA; font-weight: 400; font-size: 15px; padding-bottom: 6%; padding-left: 4%;">
+          style="color: #8F9BBA; font-weight: 400; font-size: 15px; padding-bottom: 7%; padding-left: 4%;">
           Widgets
         </a>
       </div>
       <div style="display: flex;">
         <a href="http://localhost:3000/#/admin/algotrading"
-          style="color: #8F9BBA; font-weight: 400; font-size: 20px; padding-bottom: 6%;">
+          style="color: rgb(62, 43, 241); font-weight: 400; font-size: 20px; padding-bottom: 6%;">
           <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" focusable="false"
             class="chakra-icon css-18176s2" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <path fill="none" d="M0 0h24v24H0z"></path>
@@ -96,9 +114,10 @@
 
         </a>
         <a href="http://localhost:3000/#/admin/fingpt"
-          style="color: #8F9BBA; font-weight: 400; font-size: 15px; padding-bottom: 6%; padding-left: 4%;">
+          style="color: rgb(29, 37, 72); font-weight: 700; font-size: 15px; padding-bottom: 6%; padding-left: 4%; padding-right: 13%;">
           Algorithmic
           Trading</a>
+        <div class="vl"></div>
       </div>
       <div style="display: flex;">
         <a href="http://localhost:3000/#/admin/fingpt"
