@@ -58,9 +58,9 @@ def gru_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_uni
         model_loss_graph_points = []
         for i in range(10):
             GRU2 = Sequential()
-            GRU2.add(GRU(Lstm_gru_units, input_shape=(30, 1),return_sequences=True))
+            GRU2.add(GRU(Lstm_gru_units, input_shape=(window_size, 1),return_sequences=True))
             GRU2.add(Dropout(drop_rate))
-            GRU2.add(GRU(Lstm_gru_units, input_shape=(30, 1)),)
+            GRU2.add(GRU(Lstm_gru_units, input_shape=(window_size, 1)),)
             GRU2.add(Dropout(drop_rate))
             GRU2.add(Dense(units = 1, activation = 'linear'))
 

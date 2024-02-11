@@ -18,6 +18,8 @@ from tensorflow.keras.layers import *
 from tensorflow.keras.callbacks import EarlyStopping
 
 def gru_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units, epochs):
+    # window size always 30
+    # window_size = 30
     data_close=stk_data.filter(['Close'])
     sub_data=stk_data.iloc[:,0:4]
 
@@ -34,10 +36,7 @@ def gru_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_uni
             y.append(data[i-1,-1])
         return np.array(x), np.array(y)
 
-
-
     x1, y1=data_split(normal_data, step_size=window_size)
-
 
     split_index=int(np.ceil(len(x1)*(train_rate)))
     x_train,x_test=x1[:split_index],x1[split_index:]
@@ -58,12 +57,11 @@ def gru_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_uni
         model_loss_graph_points = []
         for i in range(10):
             GRU1 = Sequential()
-            GRU1.add(GRU(Lstm_gru_units, input_shape=(30, 1)))
+            GRU1.add(GRU(Lstm_gru_units, input_shape=(window_size, 1)))
             GRU1.add(Dropout(drop_rate))
             GRU1.add(Dense(units = 1, activation = 'linear'))
             GRU1.compile(loss='mse', optimizer='adam')
             history=GRU1.fit(x_train,y_train,epochs=epochs,batch_size=Batch_size, verbose=0)
-            
             y_test_pred=GRU1.predict(x_test)
             y_train_pred=GRU1.predict(x_train)
 
