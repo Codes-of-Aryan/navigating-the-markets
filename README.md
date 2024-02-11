@@ -48,3 +48,5 @@ Once you have done this step, then in future, run the following command in root 
 ```bash
 chmod +x run.sh
 ```
+
+python3 -m flask --app server.py run
