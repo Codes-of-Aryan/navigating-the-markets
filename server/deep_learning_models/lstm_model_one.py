@@ -17,24 +17,7 @@ from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import *
 from tensorflow.keras.callbacks import EarlyStopping
 
-# Inputs
-# stk_data = pd.read_csv('./dataset/GOOG-year.csv', index_col='Date')
-
-# window_size=30  #The number of days to 
-# train_rate=0.8
-
-# drop_rate=0.15
-# Batch_size=8
-# Lstm_gru_units=80
-
-# av_rmse=0
-# av_rmse1=0
-# av_mape=0
-
-
-#Data Preprocessing
-#Target and Features
-def lstm_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units):
+def lstm_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units, epochs):
     print("model")
     data_close=stk_data.filter(['Close'])
     sub_data=stk_data.iloc[:,0:4]
@@ -81,7 +64,7 @@ def lstm_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_un
             lstm1.add(Dense(1))
             lstm1.compile(loss='mse',optimizer='adam')
 
-            history=lstm1.fit(x_train,y_train,epochs=50,batch_size=Batch_size, verbose=0)
+            history=lstm1.fit(x_train,y_train,epochs=epochs,batch_size=Batch_size, verbose=0)
             y_test_pred=lstm1.predict(x_test)
             y_train_pred=lstm1.predict(x_train)
 
@@ -95,9 +78,7 @@ def lstm_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_un
             av_rmse1=av_rmse1+rmse1
             av_mape=av_mape+mape
             lstm1.reset_states()
-            # print(history.history['loss'])
             model_loss_graph_points.append(history.history['loss'])
-            # print('Normalized Rmse=',rmse, 'RMSE=',rmse1,'MAPE=',mape)
 
         print('Mean Norm RMSE=',av_rmse/10,'Mean RMSE=',av_rmse1/10,'Mean MAPE=',av_mape/10)
 

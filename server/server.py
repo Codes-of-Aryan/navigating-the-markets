@@ -42,12 +42,13 @@ def lstm_model_one():
     drop_rate=data['drop_rate']
     Batch_size=data['Batch_size']
     Lstm_gru_units=data['Lstm_gru_units']
+    epochs = data['epochs']
 
     print("running")
 
     # threading.Thread(target=lstm_one, args=(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units)).start()
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = l1.lstm_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units)
-    print(model_loss)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = l1.lstm_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units,epochs)
+
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -89,10 +90,12 @@ def lstm_model_two():
     drop_rate=data['drop_rate']
     Batch_size=data['Batch_size']
     Lstm_gru_units=data['Lstm_gru_units']
+    epochs = data['epochs']
 
     print("running")
 
-    df1, df2 = l2.lstm_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = l2.lstm_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units, epochs)
+    
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -108,6 +111,10 @@ def lstm_model_two():
     data_dict['date_valid'] = date_valid
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
+    data_dict['model_loss'] = model_loss
+    data_dict['mean_norm_rmse'] = mean_norm_rmse
+    data_dict['mean_rmse'] = mean_rmse
+    data_dict['mean_mape'] = mean_mape
 
     return jsonify(data_dict)
 
@@ -130,10 +137,11 @@ def lstm_model_three():
     drop_rate=data['drop_rate']
     Batch_size=data['Batch_size']
     Lstm_gru_units=data['Lstm_gru_units']
+    epochs = data['epochs']
 
     print("running")
 
-    df1, df2 = l3.lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = l3.lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units,epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -149,6 +157,10 @@ def lstm_model_three():
     data_dict['date_valid'] = date_valid
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
+    data_dict['model_loss'] = model_loss
+    data_dict['mean_norm_rmse'] = mean_norm_rmse
+    data_dict['mean_rmse'] = mean_rmse
+    data_dict['mean_mape'] = mean_mape
 
     return jsonify(data_dict)
 
@@ -171,10 +183,11 @@ def gru_model_one():
     drop_rate=data['drop_rate']
     Batch_size=data['Batch_size']
     Lstm_gru_units=data['Lstm_gru_units']
+    epochs = data['epochs']
 
     print("running")
 
-    df1, df2 = g1.gru_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = g1.gru_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units, epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -190,6 +203,10 @@ def gru_model_one():
     data_dict['date_valid'] = date_valid
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
+    data_dict['model_loss'] = model_loss
+    data_dict['mean_norm_rmse'] = mean_norm_rmse
+    data_dict['mean_rmse'] = mean_rmse
+    data_dict['mean_mape'] = mean_mape
 
     return jsonify(data_dict)
 
@@ -212,10 +229,11 @@ def gru_model_two():
     drop_rate=data['drop_rate']
     Batch_size=data['Batch_size']
     Lstm_gru_units=data['Lstm_gru_units']
+    epochs = data['epochs']
 
     print("running")
 
-    df1, df2 = g2.gru_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = g2.gru_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units, epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -231,6 +249,10 @@ def gru_model_two():
     data_dict['date_valid'] = date_valid
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
+    data_dict['model_loss'] = model_loss
+    data_dict['mean_norm_rmse'] = mean_norm_rmse
+    data_dict['mean_rmse'] = mean_rmse
+    data_dict['mean_mape'] = mean_mape
 
     return jsonify(data_dict)
 
@@ -253,10 +275,11 @@ def gru_model_three():
     drop_rate=data['drop_rate']
     Batch_size=data['Batch_size']
     Lstm_gru_units=data['Lstm_gru_units']
+    epochs = data['epochs']
 
     print("running")
 
-    df1, df2 = g3.gru_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = g3.gru_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units, epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -272,6 +295,10 @@ def gru_model_three():
     data_dict['date_valid'] = date_valid
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
+    data_dict['model_loss'] = model_loss
+    data_dict['mean_norm_rmse'] = mean_norm_rmse
+    data_dict['mean_rmse'] = mean_rmse
+    data_dict['mean_mape'] = mean_mape
 
     return jsonify(data_dict)
 

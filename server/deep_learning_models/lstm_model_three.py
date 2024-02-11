@@ -17,7 +17,7 @@ from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import *
 from tensorflow.keras.callbacks import EarlyStopping
 
-def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units):
+def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units, epochs):
     data_close=stk_data.filter(['Close'])
     sub_data=stk_data.iloc[:,0:4]
 
@@ -55,8 +55,8 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_
 
     #LSTM Model Three
     def LSTM_model_three(av_rmse,av_rmse1,av_mape):
+        model_loss_graph_points = []
         for i in range(10):
-            # print('Repeat=',i)
             lstm3=Sequential()
             lstm3.add(LSTM(Lstm_gru_units,input_shape=(x_train.shape[1],x_train.shape[2]),activation='tanh',return_sequences=True))
             lstm3.add(Dropout(drop_rate))
@@ -65,11 +65,7 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_
             lstm3.add(LSTM(units = Lstm_gru_units, activation='tanh', return_sequences = False))
             lstm3.add(Dropout(drop_rate))
             lstm3.add(Dense(1))
-            lstm3.compile(loss='mse',optimizer='adam')   
-
-
-        
-        
+            lstm3.compile(loss='mse',optimizer='adam')
             
             history=lstm3.fit(x_train,y_train,epochs=50,batch_size=Batch_size, verbose=0)
             y_test_pred=lstm3.predict(x_test)
@@ -85,6 +81,7 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_
             av_rmse1=av_rmse1+rmse1
             av_mape=av_mape+mape
             lstm3.reset_states()
+            model_loss_graph_points.append(history.history['loss'])
 
         print('Mean Norm RMSE=',av_rmse/10,'Mean RMSE=',av_rmse1/10,'Mean MAPE=',av_mape/10)
 
@@ -94,7 +91,7 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_
         train['Prediction'] =y_train_pred_nn
         valid['Prediction'] =y_test_pred_nn
 
-        return train[['Close','Prediction']], valid[['Close','Prediction']]
+        return train[['Close','Prediction']], valid[['Close','Prediction']], model_loss_graph_points[0], av_rmse/10, av_rmse1/10, av_mape/10
 
-    df1, df2 = LSTM_model_three(av_rmse,av_rmse1,av_mape)
-    return df1, df2
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = LSTM_model_three(av_rmse,av_rmse1,av_mape)
+    return df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape

@@ -18,7 +18,7 @@ from tensorflow.keras.layers import *
 from tensorflow.keras.callbacks import EarlyStopping
 
 
-def gru_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units):
+def gru_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units, epochs):
     data_close=stk_data.filter(['Close'])
     sub_data=stk_data.iloc[:,0:4]
 
@@ -56,6 +56,7 @@ def gru_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_u
 
     #GRU Model Three
     def GRU_model_three(av_rmse,av_rmse1,av_mape):
+        model_loss_graph_points = []
         for i in range(10):
             print('Repeat=',i)
             GRU3 = Sequential()
@@ -68,7 +69,7 @@ def gru_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_u
             GRU3.add(Dense(units = 1, activation = 'linear'))
             GRU3.compile(loss='mse', optimizer='adam')
 
-            history=GRU3.fit(x_train,y_train,epochs=50,batch_size=Batch_size, verbose=0)
+            history=GRU3.fit(x_train,y_train,epochs=epochs,batch_size=Batch_size, verbose=0)
 
             y_test_pred=GRU3.predict(x_test)
             y_train_pred=GRU3.predict(x_train)
@@ -83,6 +84,7 @@ def gru_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_u
             av_rmse1=av_rmse1+rmse1
             av_mape=av_mape+mape
             GRU3.reset_states()
+            model_loss_graph_points.append(history.history['loss'])
 
         print('Mean Norm RMSE=',av_rmse/10,'Mean RMSE=',av_rmse1/10,'Mean MAPE=',av_mape/10)
 
@@ -92,8 +94,8 @@ def gru_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_u
         train['Prediction'] =y_train_pred_nn
         valid['Prediction'] =y_test_pred_nn
 
-        return train[['Close','Prediction']], valid[['Close','Prediction']]
+        return train[['Close','Prediction']], valid[['Close','Prediction']], model_loss_graph_points[0], av_rmse/10, av_rmse1/10, av_mape/10
 
 
-    df1,df2 = GRU_model_three(av_rmse,av_rmse1,av_mape)
-    return df1, df2
+    df1,df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = GRU_model_three(av_rmse,av_rmse1,av_mape)
+    return df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape

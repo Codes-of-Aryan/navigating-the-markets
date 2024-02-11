@@ -17,7 +17,7 @@ from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import *
 from tensorflow.keras.callbacks import EarlyStopping
 
-def lstm_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units):
+def lstm_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units, epochs):
     data_close=stk_data.filter(['Close'])
     sub_data=stk_data.iloc[:,0:4]
 
@@ -55,6 +55,7 @@ def lstm_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_un
 
     #LSTM Model Two
     def LSTM_model_two(av_rmse,av_rmse1,av_mape):
+        model_loss_graph_points = []
         for i in range(10):
             lstm2=Sequential()
             lstm2.add(LSTM(Lstm_gru_units,input_shape=(x_train.shape[1],x_train.shape[2]),activation='tanh',return_sequences=True))
@@ -65,7 +66,7 @@ def lstm_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_un
             lstm2.compile(loss='mse',optimizer='adam')
         
         
-            history=lstm2.fit(x_train,y_train,epochs=50,batch_size=Batch_size, verbose=0)
+            history=lstm2.fit(x_train,y_train,epochs=epochs,batch_size=Batch_size, verbose=0)
             y_test_pred=lstm2.predict(x_test)
             y_train_pred=lstm2.predict(x_train)
 
@@ -79,6 +80,7 @@ def lstm_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_un
             av_rmse1=av_rmse1+rmse1
             av_mape=av_mape+mape
             lstm2.reset_states()
+            model_loss_graph_points.append(history.history['loss'])
 
         print('Mean Norm RMSE=',av_rmse/10,'Mean RMSE=',av_rmse1/10,'Mean MAPE=',av_mape/10)
 
@@ -88,7 +90,7 @@ def lstm_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_un
         train['Prediction'] =y_train_pred_nn
         valid['Prediction'] =y_test_pred_nn
 
-        return train[['Close','Prediction']], valid[['Close','Prediction']]
+        return train[['Close','Prediction']], valid[['Close','Prediction']],model_loss_graph_points[0], av_rmse/10, av_rmse1/10, av_mape/10
 
-    df1, df2 = LSTM_model_two(av_rmse,av_rmse1,av_mape)
-    return df1, df2
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape  = LSTM_model_two(av_rmse,av_rmse1,av_mape)
+    return df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape 
