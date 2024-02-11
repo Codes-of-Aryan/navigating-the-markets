@@ -1,0 +1,114 @@
+import pandas as pd
+import matplotlib.dates as mdp
+import matplotlib.pyplot as plt
+import datetime as dt
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_percentage_error
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import TimeSeriesSplit
+import torch
+import torch.nn as nn
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.layers import Dropout
+from tensorflow.keras.layers import *
+from tensorflow.keras.callbacks import EarlyStopping
+
+# Inputs
+# stk_data = pd.read_csv('./dataset/GOOG-year.csv', index_col='Date')
+
+# window_size=30  #The number of days to 
+# train_rate=0.8
+
+# drop_rate=0.15
+# Batch_size=8
+# Lstm_gru_units=80
+
+# av_rmse=0
+# av_rmse1=0
+# av_mape=0
+
+
+#Data Preprocessing
+#Target and Features
+def lstm_one(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units):
+    print("model")
+    data_close=stk_data.filter(['Close'])
+    sub_data=stk_data.iloc[:,0:4]
+
+    #feature Scaling
+    s_data=data_close.values
+    date_index=stk_data.index
+    sca=MinMaxScaler(feature_range=(0,1))
+    normal_data=sca.fit_transform(s_data)
+
+    def data_split(data, step_size):
+        x,y,z=[],[],[]
+        for i in range(step_size,len(data)):
+            x.append(data[i-step_size:i,-1])
+            y.append(data[i-1,-1])
+        return np.array(x), np.array(y)
+
+
+
+    x1, y1=data_split(normal_data, step_size=window_size)
+
+
+    split_index=int(np.ceil(len(x1)*(train_rate)))
+    x_train,x_test=x1[:split_index],x1[split_index:]
+    y_train,y_test=y1[:split_index],y1[split_index:]
+
+    x_test=np.reshape(x_test,(x_test.shape[0],x_test.shape[1],1))
+    x_train=np.reshape(x_train,(x_train.shape[0],x_train.shape[1],1))
+
+    y_train=np.reshape(y_train,(y_train.shape[0],1))
+    y_test=np.reshape(y_test,(y_test.shape[0],1))
+    
+    av_rmse=0
+    av_rmse1=0
+    av_mape=0
+
+    #LSTM Model One
+    def LSTM_model_one(av_rmse,av_rmse1,av_mape):
+        model_loss_graph_points = []
+        for i in range(10):
+            lstm1=Sequential()
+            lstm1.add(LSTM(Lstm_gru_units,input_shape=(x_train.shape[1],x_train.shape[2]),activation='tanh',return_sequences=False))
+            lstm1.add(Dropout(drop_rate))
+            lstm1.add(Dense(1))
+            lstm1.compile(loss='mse',optimizer='adam')
+
+            history=lstm1.fit(x_train,y_train,epochs=50,batch_size=Batch_size, verbose=0)
+            y_test_pred=lstm1.predict(x_test)
+            y_train_pred=lstm1.predict(x_train)
+
+            rmse=mean_squared_error(y_test,y_test_pred,squared=False)
+            av_rmse=av_rmse+rmse
+            y_test_pred_nn=sca.inverse_transform(y_test_pred)
+            y_train_pred_nn=sca.inverse_transform(y_train_pred)
+            y_test_nn=sca.inverse_transform(y_test)
+            rmse1=mean_squared_error(y_test_nn,y_test_pred_nn,squared=False)
+            mape=mean_absolute_percentage_error(y_test,y_test_pred)
+            av_rmse1=av_rmse1+rmse1
+            av_mape=av_mape+mape
+            lstm1.reset_states()
+            # print(history.history['loss'])
+            model_loss_graph_points.append(history.history['loss'])
+            # print('Normalized Rmse=',rmse, 'RMSE=',rmse1,'MAPE=',mape)
+
+        print('Mean Norm RMSE=',av_rmse/10,'Mean RMSE=',av_rmse1/10,'Mean MAPE=',av_mape/10)
+
+        train=data_close[window_size:split_index+window_size]
+        valid=data_close[split_index+window_size:]
+
+        train['Prediction'] =y_train_pred_nn
+        valid['Prediction'] =y_test_pred_nn
+
+        return train[['Close','Prediction']], valid[['Close','Prediction']], model_loss_graph_points[0], av_rmse/10, av_rmse1/10, av_mape/10
+    
+
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = LSTM_model_one(av_rmse,av_rmse1,av_mape)
+    return df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape
