@@ -1,3 +1,27 @@
+"""
+Description:
+    This code defines a function named artificial_neural_network_model that implements an artificial
+    neural network (ANN) model for stock price prediction. The function takes stock data, window size,
+    training rate, dropout rate, batch size, and number of epochs as input. The function begins by preprocessing
+    the stock data. It filters the 'Close' column and applies MinMaxScaler to normalize the data. The
+    data is then split into training and testing sets based on the specified training rate. The input
+    sequences and corresponding target values are created based on the specified window size. The data
+    is reshaped to fit the ANN model's input requirements.
+    
+    The model consists of three dense layers with dropout layers for regularization. The model is compiled
+    with the mean squared error (MSE) loss and the Adam optimizer. The function trains the ANN model using the
+    training data and evaluates it on the testing data. It calculates metrics such as root mean squared error
+    (RMSE) and mean absolute percentage error (MAPE) for the predictions. These metrics are accumulated over multiple
+    runs, and the average values are calculated. The function also visualizes the loss graph during training
+    by storing the loss values. It returns the training and validation data with the predicted values, the loss
+    graph of the first model run, and the mean values of the RMSE and MAPE metrics.
+    
+    Overall, the artificial_neural_network_model function provides a framework for training and evaluating an
+    ANN model for stock price prediction. It returns useful information for analysis and further processing,
+    including the predicted values, loss graph, and mean values of evaluation metrics.
+
+"""
+
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error

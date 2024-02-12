@@ -1,3 +1,19 @@
+"""
+Description:
+    This code defines a function named gru_one that performs stock price prediction using the GRU (Gated Recurrent Unit)
+    neural network. The function takes stock data, window size, training rate, dropout rate, batch size, GRU units, and
+    number of epochs as input.The function begins by preprocessing the stock data. It filters the 'Close' column, normalizes
+    the values using MinMaxScaler, and splits the data into training and testing sets. The input sequences and corresponding
+    target values are created based on the specified window size. The data is reshaped to fit the GRU model's 
+    input requirements.
+    
+    The model consists of a single GRU layer, followed by a dropout layer for regularization, and a dense layer
+    for the model output. The model is compiled with the mean squared error (MSE) loss and the Adam optimizer.
+    The GRU layer in this case does not have return_sequences=True, so it only returns the final hidden state output.
+    This architecture is commonly used when only the final prediction for the sequence is needed, without considering
+    the temporal dependencies within the sequence.
+"""
+
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error

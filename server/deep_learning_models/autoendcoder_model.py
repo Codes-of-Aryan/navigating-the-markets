@@ -1,3 +1,27 @@
+"""
+Description:
+    This code defines a function named autoencoder_model that implements an autoencoder model for stock price
+    prediction. The function takes stock data, window size, training rate, batch size, and number of epochs as input.
+    The function starts by preprocessing the stock data. It filters the 'Close' column and applies MinMaxScaler
+    to normalize the data. The data is then split into training and testing sets based on the specified training
+    rate. The input sequences and corresponding target values are created based on the specified window size. The
+    data is reshaped to fit the autoencoder model's input requirements.
+
+    The model consists of an input layer, an encoding layer with a specified number of dimensions, a decoding layer,
+    and an output layer. The model uses activation functions such as tanh and relu. The autoencoder is compiled with
+    the mean squared error (MSE) loss and the Adam optimizer. The function trains the autoencoder model using the
+    training data and evaluates it on the testing data. It calculates metrics such as root mean squared error (RMSE)
+    and mean absolute percentage error (MAPE) for the predictions. These metrics are accumulated over multiple runs,
+    and the average values are calculated. The function also visualizes the loss graph during training by storing the
+    loss values. It returns the training and validation data with the predicted values, the loss graph of the first
+    model run, and the mean values of the RMSE and MAPE metrics.
+
+    Overall, the autoencoder_model function provides a framework for training and evaluating an autoencoder model for
+    stock price prediction. It returns useful information for analysis and further processing, including the predicted
+    values, loss graph, and mean values of evaluation metrics.
+
+"""
+
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
