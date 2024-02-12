@@ -1,3 +1,21 @@
+"""
+Description:
+    This code implements a function named lstm_one that uses LSTM neural networks to forecast stock prices.
+    The function takes stock data, window size, training rate, dropout rate, batch size, LSTM units, and training
+    epochs as input. It first pre-processes the data by filtering the 'Close' column and normalizing the values using
+    MinMaxScaler. It then splits the data into input-output pairs and further divides it into training and testing 
+    sets. The LSTM model is created and trained using the training data, and predictions are made on the test data.
+    The function calculates and accumulates metrics such as root mean squared error (RMSE) and mean absolute percentage
+    error (MAPE) during training. Finally, it returns the training and validation data with the predicted values, 
+    the loss graph of the first model, and the mean values of the metrics. 
+    
+    The main difference between this and other lstm codes is its  architecture, which includes only single LSTM layers
+    followed by dropout and dense layer.The LSTM layer in this case does not return sequences (return_sequences=False),
+    so it only returns the final hidden state output. This architecture is commonly used when only the final prediction
+    for the sequence is needed, without considering the temporal dependencies within the sequence.
+    
+"""
+
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error

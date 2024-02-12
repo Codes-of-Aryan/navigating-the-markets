@@ -1,3 +1,27 @@
+"""
+Description:
+    This code defines a function named lstm_three that also utilizes LSTM networks for stock price forecasting.
+    The function takes the same set of input parameters as the LSTM One code. It pre-processes the data by 
+    filtering the 'Close' column, normalizing the values, and splitting them into input-output pairs. The data
+    is then divided into training and testing sets, and reshaped to fit the LSTM model's input requirements. 
+    The function creates an LSTM model with multiple layers and dropout regularization. The model is trained 
+    using the training data, and predictions are made on the test data. Metrics such as RMSE and MAPE are calculated,
+    and the average values are accumulated. The function also visualizes the loss graph during training. 
+    Finally, it returns the training and validation data with the predicted values, the loss graph of the first 
+    model, and the mean values of the metrics. 
+    
+    The main difference between this and other lstm codes is its  architecture, which includes three LSTM layers 
+    followed by dropout for regularization and dense layer for model output. The first LSTM layer has the return_sequences=True
+    argument, which means it returns the hidden state output for each time step in the input sequence. This allows 
+    the subsequent LSTM layers to receive the full sequence of hidden states. The second LSTM layer also has 
+    return_sequences=True, meaning it receives the sequence of hidden states from the previous LSTM layer and returns
+    its own sequence of hidden states. The third LSTM layer, however, has return_sequences=False, indicating that it only 
+    returns the final hidden state output. This architecture, with multiple LSTM layers that both receive and return sequences,
+    is often used when capturing long-term dependencies and intricate patterns in sequential data. The additional layer
+    allows for more complex modeling of temporal relationships within the input sequence.
+    
+"""
+
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
