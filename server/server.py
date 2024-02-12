@@ -11,11 +11,15 @@ import deep_learning_models.gru_model_three as g3
 import deep_learning_models.basic_ann_model as ann
 import deep_learning_models.autoendcoder_model as autoenc
 import deep_learning_models.rnn_model as rnn
+
 import pandas as pd
 import time
 import threading
 
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:3000"])
 
 ALLOWED_EXTENSIONS = set(['csv'])
 
