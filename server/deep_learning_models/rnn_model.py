@@ -2,11 +2,10 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_percentage_error
-
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, LSTM, Dropout
+from tensorflow.keras.layers import SimpleRNN, Dense
 
-def lstm_three(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_units, epochs):
+def recurrent_neural_network_model(stk_data,window_size,train_rate, batch_size, epochs):
     data_close=stk_data.filter(['Close'])
 
     s_data=data_close.values
@@ -19,7 +18,7 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_
             x.append(data[i-step_size:i,-1])
             y.append(data[i-1,-1])
         return np.array(x), np.array(y)
-
+    
     x1, y1=data_split(normal_data, step_size=window_size)
 
     split_index=int(np.ceil(len(x1)*(train_rate)))
@@ -36,23 +35,19 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_
     av_rmse1=0
     av_mape=0
 
-    #LSTM Model Three
-    def lstm_model_three(av_rmse,av_rmse1,av_mape):
+    #RNN Model One
+    def rnn_model(av_rmse,av_rmse1,av_mape):
         model_loss_graph_points = []
         for i in range(10):
-            lstm3=Sequential()
-            lstm3.add(LSTM(lstm_gru_units,input_shape=(x_train.shape[1],x_train.shape[2]),activation='tanh',return_sequences=True))
-            lstm3.add(Dropout(drop_rate))
-            lstm3.add(LSTM(units = lstm_gru_units, activation='tanh', return_sequences = True))
-            lstm3.add(Dropout(drop_rate))
-            lstm3.add(LSTM(units = lstm_gru_units, activation='tanh', return_sequences = False))
-            lstm3.add(Dropout(drop_rate))
-            lstm3.add(Dense(1))
-            lstm3.compile(loss='mse',optimizer='adam')
-            
-            history=lstm3.fit(x_train,y_train,epochs=epochs,batch_size=batch_size, verbose=0)
-            y_test_pred=lstm3.predict(x_test)
-            y_train_pred=lstm3.predict(x_train)
+            model = Sequential()
+            model.add(SimpleRNN(units=4, input_shape=(x_train.shape[1],x_train.shape[2])))
+            model.add(Dense(1))
+            model.compile(loss='mean_squared_error', optimizer='adam')
+            history = model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
+
+            # predicting the price            
+            y_test_pred=model.predict(x_test)
+            y_train_pred=model.predict(x_train)
 
             rmse=mean_squared_error(y_test,y_test_pred,squared=False)
             av_rmse=av_rmse+rmse
@@ -63,7 +58,7 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_
             mape=mean_absolute_percentage_error(y_test,y_test_pred)
             av_rmse1=av_rmse1+rmse1
             av_mape=av_mape+mape
-            lstm3.reset_states()
+            model.reset_states()
             model_loss_graph_points.append(history.history['loss'])
 
         print('Mean Norm RMSE=',av_rmse/10,'Mean RMSE=',av_rmse1/10,'Mean MAPE=',av_mape/10)
@@ -75,6 +70,7 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_
         valid['Prediction'] =y_test_pred_nn
 
         return train[['Close','Prediction']], valid[['Close','Prediction']], model_loss_graph_points[0], av_rmse/10, av_rmse1/10, av_mape/10
+    
 
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = lstm_model_three(av_rmse,av_rmse1,av_mape)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = rnn_model(av_rmse,av_rmse1,av_mape)
     return df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape

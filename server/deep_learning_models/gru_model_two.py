@@ -1,29 +1,15 @@
-import pandas as pd
-import matplotlib.dates as mdp
-import matplotlib.pyplot as plt
-import datetime as dt
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_percentage_error
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import TimeSeriesSplit
-import torch
-import torch.nn as nn
+
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import LSTM
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import *
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.layers import Dense, GRU, Dropout
 
-def gru_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units, epochs):
+def gru_two(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_units, epochs):
     data_close=stk_data.filter(['Close'])
-    sub_data=stk_data.iloc[:,0:4]
 
-    
     s_data=data_close.values
-    date_index=stk_data.index
     sca=MinMaxScaler(feature_range=(0,1))
     normal_data=sca.fit_transform(s_data)
 
@@ -54,19 +40,19 @@ def gru_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_uni
     av_mape=0
 
     #GRU Model Two
-    def GRU_model_two(av_rmse,av_rmse1,av_mape):
+    def gru_model_two(av_rmse,av_rmse1,av_mape):
         model_loss_graph_points = []
         for i in range(10):
             GRU2 = Sequential()
-            GRU2.add(GRU(Lstm_gru_units, input_shape=(window_size, 1),return_sequences=True))
+            GRU2.add(GRU(lstm_gru_units, input_shape=(window_size, 1),return_sequences=True))
             GRU2.add(Dropout(drop_rate))
-            GRU2.add(GRU(Lstm_gru_units, input_shape=(window_size, 1)),)
+            GRU2.add(GRU(lstm_gru_units, input_shape=(window_size, 1)),)
             GRU2.add(Dropout(drop_rate))
             GRU2.add(Dense(units = 1, activation = 'linear'))
 
             GRU2.compile(loss='mse', optimizer='adam')
 
-            history=GRU2.fit(x_train,y_train,epochs=epochs,batch_size=Batch_size, verbose=0)
+            history=GRU2.fit(x_train,y_train,epochs=epochs,batch_size=batch_size, verbose=0)
 
             y_test_pred=GRU2.predict(x_test)
             y_train_pred=GRU2.predict(x_train) 
@@ -94,5 +80,5 @@ def gru_two(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_uni
         return train[['Close','Prediction']], valid[['Close','Prediction']], model_loss_graph_points[0], av_rmse/10, av_rmse1/10, av_mape/10
 
 
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = GRU_model_two(av_rmse,av_rmse1,av_mape)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = gru_model_two(av_rmse,av_rmse1,av_mape)
     return df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape
