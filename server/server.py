@@ -32,7 +32,7 @@ def hello_world():
 
 @app.route("/lstm_model_one", methods=['POST'])
 def lstm_model_one():
-
+    print("Recieved Request")
     # assuming that getting data in format from frontend form-data
     stk_data = request.files['file']
     if stk_data and allowed_file(stk_data.filename):
@@ -42,6 +42,7 @@ def lstm_model_one():
         return "<p>upload correct file</p>"
     
     data = json.loads(request.form['data'])
+    print(data)
 
     window_size=data['window_size']
     train_rate=data['train_rate']
