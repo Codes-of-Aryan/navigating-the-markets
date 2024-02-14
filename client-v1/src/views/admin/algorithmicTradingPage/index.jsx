@@ -7,7 +7,16 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 
-import Lstm from "assets/img/algoTrading/lstm.png";
+import RNNImg from "assets/img/algoTrading/lstm.png";
+import LstmSingleLayer from "assets/img/algoTrading/lstm_single_layer.png";
+import GruSingleLayer from "assets/img/algoTrading/gru_single_layer.png";
+import LstmTwoLayer from "assets/img/algoTrading/lstm_two_layer.png";
+import GruTwoLayer from "assets/img/algoTrading/gru_two_layer.png";
+import LstmThreeLayer from "assets/img/algoTrading/lstm_three_layer.png";
+import GruThreeLayer from "assets/img/algoTrading/gru_three_layer.png";
+import Autoencoder from "assets/img/algoTrading/autoencoder.png";
+import AnnImg from "assets/img/algoTrading/ANN.jpg";
+import Special from "assets/img/algoTrading/Special.webp";
 
 import LstmCard from "components/card/algoTrading/Lstm";
 import LSTMModalOne from "components/card/algoTrading/LstmOne";
@@ -56,61 +65,61 @@ export default function WidgetPage() {
               <LstmCard
                 modelName="LSTM"
                 fullModelName="Long Short-Term Memory - Special Feature"
-                image={Lstm}
+                image={Special}
               />
 
               <LSTMModalOne
                 modelName="LSTM Model One"
                 fullModelName="Long Short-Term Memory - Single Layer Architecture"
-                image={Lstm}
+                image={LstmSingleLayer}
               />
 
               <LSTMModalTwo
                 modelName="LSTM Model Two"
                 fullModelName="Long Short-Term Memory - Two Layers Architecture"
-                image={Lstm}
+                image={LstmTwoLayer}
               />
 
               <LSTMModalThree
                 modelName="LSTM Model Three"
                 fullModelName="Long Short-Term Memory - Three Layers Architecture"
-                image={Lstm}
+                image={LstmThreeLayer}
               />
 
               <GRUModalOne
                 modelName="GRU Model One"
                 fullModelName="Gated Recurrent Units - Single Layer Architecture"
-                image={Lstm}
+                image={GruSingleLayer}
               />
 
               <GRUModalTwo
                 modelName="GRU Model Two"
                 fullModelName="Gated Recurrent Units - Two Layers Architecture"
-                image={Lstm}
+                image={GruTwoLayer}
               />
 
               <GRUModalThree
                 modelName="GRU Model Three"
                 fullModelName="Gated Recurrent Units - Three Layers Architecture"
-                image={Lstm}
+                image={GruThreeLayer}
               />
 
               <RnnModal
                 modelName="RNN"
                 fullModelName="Recurrent Neural Network"
-                image={Lstm}
+                image={RNNImg}
               />
 
               <AutoEncoder
                 modelName="Autoencoder"
                 fullModelName="Autoencoder Model"
-                image={Lstm}
+                image={Autoencoder}
               />
 
               <Ann
                 modelName="ANN"
                 fullModelName="Artificial Neural Network Model"
-                image={Lstm}
+                image={AnnImg}
               />
             </SimpleGrid>
           </Flex>
