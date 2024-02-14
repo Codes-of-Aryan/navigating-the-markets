@@ -8,7 +8,7 @@ export default function LstmCard(props) {
     const { image, fullModelName, modelName } = props;
     const textColor = useColorModeValue("navy.700", "white");
     return (
-        <Card p="20px">
+        <Card p="20px" bg="#87CEEB" style={{ boxShadow: '1px 2px 9px #000000', }}>
             <Flex direction={{ base: "column" }} justify="center">
                 <Box mb={{ base: "20px", "2xl": "20px" }} position="relative">
                     <Image
@@ -49,7 +49,7 @@ export default function LstmCard(props) {
                                 {modelName}
                             </Text>
                             <Text
-                                color="secondaryGray.600"
+                                color="black"
                                 fontSize={{
                                     base: "sm",
                                 }}
