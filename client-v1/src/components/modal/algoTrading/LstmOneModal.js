@@ -15,9 +15,21 @@ import {
     InputGroup,
     InputLeftAddon,
     Input,
+    Text,
+    Stat,
+    StatGroup,
+    StatLabel,
+    StatNumber,
+    Center,
+    Spinner,
 } from "@chakra-ui/react";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { SettingsIcon, ArrowUpIcon, RepeatIcon } from "@chakra-ui/icons";
+import StockChart from "./common/StockChart";
+import LossGraph from "./common/LossGraph";
+import WaitingBox from "./common/WaitingBox";
+import WaitingBox2 from "./common/WaitingBox2";
+import InitialGraph from "./common/StartingGraph"
 
 export default function LstmOneModal(props) {
     const { fullForm } = props;
@@ -35,7 +47,20 @@ export default function LstmOneModal(props) {
 
     const [csv, setCsv] = useState(null);
 
-    const [loading, setLoading] = useState(false);
+    const [trainDate, setTrainDate] = useState([]);
+    const [validDate, setValidDate] = useState([]);
+    const [trainOriginalPrice, setTrainOriginalPrice] = useState([])
+    const [validOriginalPrice, setValidOriginalPrice] = useState([])
+    const [validPredictionPrice, setValidPredictionPrice] = useState([])
+    const [trainPredictionPrice, setTrainPredictionPrice] = useState([])
+    const [modelLoss, setModelLoss] = useState([])
+    const [meanMape, setMeanMape] = useState([])
+    const [meanNormRmse, setMeanNormRmse] = useState([])
+    const [meanRmse, setMeanRmse] = useState([])
+
+
+    const [loading, setLoading] = useState(true);
+    const [isTraining, setIsTraining] = useState(false);
 
     const hiddenFileInput = useRef(null);
 
@@ -104,6 +129,7 @@ export default function LstmOneModal(props) {
             alert("Please enter valid numbers/decimals for all fields.");
             return;
         }
+        setIsTraining(true)
 
         const fd = new FormData();
         fd.append("file", csv);
@@ -120,11 +146,22 @@ export default function LstmOneModal(props) {
         );
 
         console.log("Sending Request");
-        //, headers: {'Content-Type': 'multipart/form-data'}
         fetch("http://localhost:5000/lstm_model_one", { method: "POST", body: fd })
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                setTrainDate(data['date_train']);
+                setTrainOriginalPrice(data['train_original_price']);
+                setValidDate(data['date_valid']);
+                setValidOriginalPrice(data['valid_original_price']);
+                setTrainPredictionPrice(data['train_prediction_price']);
+                setValidPredictionPrice(data['valid_prediction_price']);
+                setMeanMape(data['mean_mape']);
+                setMeanNormRmse(data['mean_norm_rmse']);
+                setMeanRmse(data['mean_rmse']);
+                setModelLoss(data['model_loss']);
+                setLoading(false);
+                setIsTraining(false);
             })
             .catch((error) => {
                 console.log(error);
@@ -177,6 +214,7 @@ export default function LstmOneModal(props) {
                                     ref={hiddenFileInput}
                                 // accept=".csv"
                                 />
+                                {isTraining ? (<Spinner style={{ marginRight: 50 }} />) : ""}
                                 <Button
                                     leftIcon={<ArrowUpIcon />}
                                     colorScheme="blue"
@@ -200,7 +238,7 @@ export default function LstmOneModal(props) {
                             h="200px"
                             bgGradient="linear(to-l, #ededed, #c9e9f6)"
                             display={open ? "visible" : "none"}
-                            style={{ borderBottomLeftRadius: 10 }}
+                            style={{ borderBottomLeftRadius: 10, marginBottom: 50 }}
                         >
                             <Stack direction="column">
                                 <InputGroup
@@ -298,6 +336,59 @@ export default function LstmOneModal(props) {
                                 </InputGroup>
                             </Stack>
                         </Box>
+                        <Box w="100%" style={{ marginTop: 70, marginBottom: 100, }}>
+                            {loading ? (
+                                <InitialGraph />
+                            ) : (
+                                <StockChart trainOriginalPrice={trainOriginalPrice} trainStockDate={trainDate} validOriginalPrice={validOriginalPrice} validStockDate={validDate} trainPredictionPrice={trainPredictionPrice} validPredictionPrice={validPredictionPrice} />
+                            )}
+                        </Box>
+                        {loading ? (
+                            <WaitingBox2 />
+                        ) :
+                            <Center w="80%" style={{ marginBottom: 100, marginLeft: 150 }}>
+                                <StatGroup>
+                                    <Stat style={{ marginRight: 100, }}>
+                                        <StatLabel>Mean Norm RMSE over 10 iterations</StatLabel>
+                                        <StatNumber>{meanNormRmse}</StatNumber>
+                                    </Stat>
+
+                                    <Stat style={{ marginRight: 100, }}>
+                                        <StatLabel>Mean RMSE over 10 iterations</StatLabel>
+                                        <StatNumber>{meanRmse}</StatNumber>
+                                    </Stat>
+
+                                    <Stat>
+                                        <StatLabel>Mean Mape over 10 iterations</StatLabel>
+                                        <StatNumber>{meanMape}</StatNumber>
+                                    </Stat>
+                                </StatGroup>
+                            </Center>
+                        }
+                        <Flex >
+                            <Box w='50%' color="black" style={{ marginRight: 100 }}>
+                                <Text color="black">This code defines a function named gru_one that performs stock price prediction using the GRU (Gated Recurrent Unit)
+                                    neural network. The function takes stock data, window size, training rate, dropout rate, batch size, GRU units, and
+                                    number of epochs as input.The function begins by preprocessing the stock data. It filters the 'Close' column, normalizes
+                                    the values using MinMaxScaler, and splits the data into training and testing sets. The input sequences and corresponding
+                                    target values are created based on the specified window size. The data is reshaped to fit the GRU model's
+                                    input requirements.
+
+                                    The model consists of a two GRU layers, followed by a dropout layer for regularization, and a dense layer
+                                    for the model output. The first GRU layer is set to return sequences (return_sequences=True), meaning that
+                                    it returns the hidden state output for each time step in the input sequence. The second GRU layer does not
+                                    have return_sequences=True, so it only returns the final hidden state output. This architecture is often used
+                                    when stacking GRU layers to capture temporal dependencies in the data.</Text>
+                            </Box>
+                            <Box >
+                                {loading ? (
+                                    <WaitingBox />
+                                    // <Spinner size="xl" />
+                                ) : (
+                                    <LossGraph modelLoss={modelLoss} />
+                                )}
+                            </Box>
+                        </Flex>
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={onClose}>Close</Button>
