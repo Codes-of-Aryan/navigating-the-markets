@@ -329,7 +329,6 @@ def ann_model():
 
     drop_rate=data['drop_rate']
     batch_size=data['batch_size']
-    # lstm_gru_units=data['lstm_gru_units'] ## Not needed
     epochs = data['epochs']
 
     print("running")
@@ -373,9 +372,7 @@ def autoendcoder_model():
     window_size=data['window_size']
     train_rate=data['train_rate']
 
-    # drop_rate=data['drop_rate']
     batch_size=data['batch_size']
-    # lstm_gru_units=data['lstm_gru_units'] ## Not needed
     epochs = data['epochs']
 
     print("running")
@@ -419,9 +416,7 @@ def rnn_model():
     window_size=data['window_size']
     train_rate=data['train_rate']
 
-    # drop_rate=data['drop_rate']
     batch_size=data['batch_size']
-    # lstm_gru_units=data['lstm_gru_units'] ## Not needed
     epochs = data['epochs']
 
     print("running")
