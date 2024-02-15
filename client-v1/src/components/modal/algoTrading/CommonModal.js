@@ -32,7 +32,7 @@ import WaitingBox2 from "./common/WaitingBox2";
 import InitialGraph from "./common/StartingGraph"
 
 export default function CommonModel(props) {
-    const { fullForm } = props;
+    // const { fullForm } = props;
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [size, setSize] = React.useState("md");
     const textColor = useColorModeValue("navy.700", "white");
@@ -190,7 +190,7 @@ export default function CommonModel(props) {
                             fontSize="36px"
                             style={{ marginBottom: 30 }}
                         >
-                            {fullForm}
+                            {props.fullForm}
                         </Heading>
 
                         <Box
