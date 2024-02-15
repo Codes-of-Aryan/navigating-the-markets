@@ -3,6 +3,7 @@
   "name": "FYP_V:0.1",
   "version": "1.0.1",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@canvasjs/charts": "^3.7.38",
     "@canvasjs/react-charts": "^1.0.0",
