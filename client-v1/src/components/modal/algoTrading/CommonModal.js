@@ -23,8 +23,11 @@ import {
     Center,
     Spinner,
 } from "@chakra-ui/react";
+
 import React, { useState, useRef } from "react";
+
 import { SettingsIcon, ArrowUpIcon, RepeatIcon } from "@chakra-ui/icons";
+
 import StockChart from "./common/StockChart";
 import LossGraph from "./common/LossGraph";
 import WaitingBox from "./common/WaitingBox";
@@ -32,11 +35,13 @@ import WaitingBox2 from "./common/WaitingBox2";
 import InitialGraph from "./common/StartingGraph"
 
 export default function CommonModel(props) {
-    // const { fullForm } = props;
+
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [size, setSize] = React.useState("md");
+
     const textColor = useColorModeValue("navy.700", "white");
 
+    // States
+    const [size, setSize] = useState("md");
     const [open, setIsOpen] = useState(false);
     const [batchSize, setBatchSize] = useState("8");
     const [epochs, setEpochs] = useState("50");
@@ -44,9 +49,7 @@ export default function CommonModel(props) {
     const [trainRate, setTrainRate] = useState("0.8");
     const [dropRate, setDropRate] = useState("0.15");
     const [units, setUnits] = useState("80");
-
     const [csv, setCsv] = useState(null);
-
     const [trainDate, setTrainDate] = useState([]);
     const [validDate, setValidDate] = useState([]);
     const [trainOriginalPrice, setTrainOriginalPrice] = useState([])
@@ -57,52 +60,38 @@ export default function CommonModel(props) {
     const [meanMape, setMeanMape] = useState([])
     const [meanNormRmse, setMeanNormRmse] = useState([])
     const [meanRmse, setMeanRmse] = useState([])
-
-
     const [loading, setLoading] = useState(true);
     const [isTraining, setIsTraining] = useState(false);
 
+    // Refs
     const hiddenFileInput = useRef(null);
 
-    const handleClick = (event) => {
-        hiddenFileInput.current.click();
-    };
+    // Event Handlers
+    const handleClick = (event) => { hiddenFileInput.current.click(); };
 
-    const handleFileUpload = (event) => {
-        setCsv(event.target.files[0]);
-    };
+    const handleFileUpload = (event) => { setCsv(event.target.files[0]); };
 
     const handleSizeClick = (newSize) => {
         setSize(newSize);
         onOpen();
     };
 
-    const openForm = () => {
-        setIsOpen(!open);
-        console.log(open);
-    };
+    const openForm = () => { setIsOpen(!open); };
 
-    const handleBatchSizeChange = (event) => {
-        setBatchSize(event.target.value);
-    };
-    const handleTrainRateChange = (event) => {
-        setTrainRate(event.target.value);
-    };
-    const handleWindowSizeChange = (event) => {
-        setWindowSize(event.target.value);
-    };
+    const handleBatchSizeChange = (event) => { setBatchSize(event.target.value); };
 
-    const handleDropRateChange = (event) => {
-        setDropRate(event.target.value);
-    };
-    const handleEpochsChange = (event) => {
-        setEpochs(event.target.value);
-    };
-    const handleUnitsChange = (event) => {
-        setUnits(event.target.value);
-    };
+    const handleTrainRateChange = (event) => { setTrainRate(event.target.value); };
+
+    const handleWindowSizeChange = (event) => { setWindowSize(event.target.value); };
+
+    const handleDropRateChange = (event) => { setDropRate(event.target.value); };
+
+    const handleEpochsChange = (event) => { setEpochs(event.target.value); };
+
+    const handleUnitsChange = (event) => { setUnits(event.target.value); };
 
     const handleTrainClick = () => {
+        // Validation Checks
         if (
             !dropRate ||
             !trainRate ||

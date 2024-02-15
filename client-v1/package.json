@@ -54,7 +54,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-all": "npm run start & (cd ../stock-forecasting-server && serve -l 8000)",
+    "start-all": "npm run start & (cd ../stock-forecasting-server && serve -l 8000) & (cd ../server && python3 -m flask --app server.py run)",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
