@@ -77,7 +77,12 @@ def lstm_model_one():
     data_dict['mean_rmse'] = mean_rmse
     data_dict['mean_mape'] = mean_mape
 
-    return jsonify(data_dict)
+    response = jsonify(data_dict)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
 
 @app.route("/lstm_model_two", methods=['POST'])
 def lstm_model_two():

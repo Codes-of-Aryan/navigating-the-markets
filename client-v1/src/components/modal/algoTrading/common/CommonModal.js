@@ -28,11 +28,11 @@ import React, { useState, useRef } from "react";
 
 import { SettingsIcon, ArrowUpIcon, RepeatIcon } from "@chakra-ui/icons";
 
-import StockChart from "./common/StockChart";
-import LossGraph from "./common/LossGraph";
-import WaitingBox from "./common/WaitingBox";
-import WaitingBox2 from "./common/WaitingBox2";
-import InitialGraph from "./common/StartingGraph"
+import StockChart from "./StockChart";
+import LossGraph from "./LossGraph";
+import WaitingBox from "./WaitingBox";
+import WaitingBox2 from "./WaitingBox2";
+import InitialGraph from "./StartingGraph"
 
 export default function CommonModel(props) {
 
@@ -135,7 +135,7 @@ export default function CommonModel(props) {
         );
 
         console.log("Sending Request");
-        fetch(props.api, { method: "POST", body: fd })
+        fetch(props.api, { method: "POST", body: fd, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS', 'Access-Control-Allow-Credentials': true } })
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
@@ -266,6 +266,7 @@ export default function CommonModel(props) {
                                         Drop Rate
                                     </InputLeftAddon>
                                     <Input
+                                        isDisabled={props.isDisabledDropRate}
                                         type="number"
                                         bg="#fff"
                                         placeholder="drop rate"
@@ -312,6 +313,7 @@ export default function CommonModel(props) {
                                         LSTM/GRU Units
                                     </InputLeftAddon>
                                     <Input
+                                        isDisabled={props.isDisabledUnits}
                                         type="number"
                                         bg="#fff"
                                         placeholder="units"

@@ -1,4 +1,4 @@
-import CommonModel from "./CommonModal";
+import CommonModel from "./common/CommonModal";
 
 
 export default function LstmTwoModal(props) {
@@ -17,6 +17,6 @@ export default function LstmTwoModal(props) {
                      have return_sequences=True, so it only returns the final hidden state output. This architecture is often used
                      when stacking GRU layers to capture temporal dependencies in the data.`
     return (
-        <CommonModel description={description} api={api} fullForm={props.fullForm} />
+        <CommonModel description={description} api={api} fullForm={props.fullForm} isDisabledUnits={false} isDisabledDropRate={false} />
     )
 }
