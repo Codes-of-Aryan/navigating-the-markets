@@ -19,7 +19,8 @@ import threading
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000"])
+# CORS(app, origins=["http://localhost:3000"])
+CORS(app)
 
 ALLOWED_EXTENSIONS = set(['csv'])
 
@@ -361,6 +362,15 @@ def ann_model():
 
     return jsonify(data_dict)
 
+@app.route('/autoendcoder_model', methods=['OPTIONS'])
+def handle_options():
+    response_headers = {
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Methods': 'POST',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        "Access-Control-Allow-Credentials": true,
+    }
+    return '', 200, response_headers
 @app.route("/autoendcoder_model", methods=['POST'])
 def autoendcoder_model():
 

@@ -32,10 +32,9 @@ import StockChart from "./StockChart";
 import LossGraph from "./LossGraph";
 import WaitingBox from "./WaitingBox";
 import WaitingBox2 from "./WaitingBox2";
-import InitialGraph from "./StartingGraph"
+import InitialGraph from "./StartingGraph";
 
 export default function CommonModel(props) {
-
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const textColor = useColorModeValue("navy.700", "white");
@@ -52,14 +51,14 @@ export default function CommonModel(props) {
     const [csv, setCsv] = useState(null);
     const [trainDate, setTrainDate] = useState([]);
     const [validDate, setValidDate] = useState([]);
-    const [trainOriginalPrice, setTrainOriginalPrice] = useState([])
-    const [validOriginalPrice, setValidOriginalPrice] = useState([])
-    const [validPredictionPrice, setValidPredictionPrice] = useState([])
-    const [trainPredictionPrice, setTrainPredictionPrice] = useState([])
-    const [modelLoss, setModelLoss] = useState([])
-    const [meanMape, setMeanMape] = useState([])
-    const [meanNormRmse, setMeanNormRmse] = useState([])
-    const [meanRmse, setMeanRmse] = useState([])
+    const [trainOriginalPrice, setTrainOriginalPrice] = useState([]);
+    const [validOriginalPrice, setValidOriginalPrice] = useState([]);
+    const [validPredictionPrice, setValidPredictionPrice] = useState([]);
+    const [trainPredictionPrice, setTrainPredictionPrice] = useState([]);
+    const [modelLoss, setModelLoss] = useState([]);
+    const [meanMape, setMeanMape] = useState([]);
+    const [meanNormRmse, setMeanNormRmse] = useState([]);
+    const [meanRmse, setMeanRmse] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isTraining, setIsTraining] = useState(false);
 
@@ -67,28 +66,46 @@ export default function CommonModel(props) {
     const hiddenFileInput = useRef(null);
 
     // Event Handlers
-    const handleClick = (event) => { hiddenFileInput.current.click(); };
+    const handleClick = (event) => {
+        hiddenFileInput.current.click();
+    };
 
-    const handleFileUpload = (event) => { setCsv(event.target.files[0]); };
+    const handleFileUpload = (event) => {
+        setCsv(event.target.files[0]);
+    };
 
     const handleSizeClick = (newSize) => {
         setSize(newSize);
         onOpen();
     };
 
-    const openForm = () => { setIsOpen(!open); };
+    const openForm = () => {
+        setIsOpen(!open);
+    };
 
-    const handleBatchSizeChange = (event) => { setBatchSize(event.target.value); };
+    const handleBatchSizeChange = (event) => {
+        setBatchSize(event.target.value);
+    };
 
-    const handleTrainRateChange = (event) => { setTrainRate(event.target.value); };
+    const handleTrainRateChange = (event) => {
+        setTrainRate(event.target.value);
+    };
 
-    const handleWindowSizeChange = (event) => { setWindowSize(event.target.value); };
+    const handleWindowSizeChange = (event) => {
+        setWindowSize(event.target.value);
+    };
 
-    const handleDropRateChange = (event) => { setDropRate(event.target.value); };
+    const handleDropRateChange = (event) => {
+        setDropRate(event.target.value);
+    };
 
-    const handleEpochsChange = (event) => { setEpochs(event.target.value); };
+    const handleEpochsChange = (event) => {
+        setEpochs(event.target.value);
+    };
 
-    const handleUnitsChange = (event) => { setUnits(event.target.value); };
+    const handleUnitsChange = (event) => {
+        setUnits(event.target.value);
+    };
 
     const handleTrainClick = () => {
         // Validation Checks
@@ -118,7 +135,7 @@ export default function CommonModel(props) {
             alert("Please enter valid numbers/decimals for all fields.");
             return;
         }
-        setIsTraining(true)
+        setIsTraining(true);
 
         const fd = new FormData();
         fd.append("file", csv);
@@ -135,20 +152,30 @@ export default function CommonModel(props) {
         );
 
         console.log("Sending Request");
-        fetch(props.api, { method: "POST", body: fd, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS', 'Access-Control-Allow-Credentials': true } })
+        fetch(props.api, {
+            method: "POST",
+            body: fd,
+            mode: 'cors',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "GET, POST, PUT",
+                "Access-Control-Allow-Credentials": true,
+            },
+        })
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                setTrainDate(data['date_train']);
-                setTrainOriginalPrice(data['train_original_price']);
-                setValidDate(data['date_valid']);
-                setValidOriginalPrice(data['valid_original_price']);
-                setTrainPredictionPrice(data['train_prediction_price']);
-                setValidPredictionPrice(data['valid_prediction_price']);
-                setMeanMape(data['mean_mape']);
-                setMeanNormRmse(data['mean_norm_rmse']);
-                setMeanRmse(data['mean_rmse']);
-                setModelLoss(data['model_loss']);
+                setTrainDate(data["date_train"]);
+                setTrainOriginalPrice(data["train_original_price"]);
+                setValidDate(data["date_valid"]);
+                setValidOriginalPrice(data["valid_original_price"]);
+                setTrainPredictionPrice(data["train_prediction_price"]);
+                setValidPredictionPrice(data["valid_prediction_price"]);
+                setMeanMape(data["mean_mape"]);
+                setMeanNormRmse(data["mean_norm_rmse"]);
+                setMeanRmse(data["mean_rmse"]);
+                setModelLoss(data["model_loss"]);
                 setLoading(false);
                 setIsTraining(false);
             })
@@ -203,7 +230,7 @@ export default function CommonModel(props) {
                                     ref={hiddenFileInput}
                                 // accept=".csv"
                                 />
-                                {isTraining ? (<Spinner style={{ marginRight: 50 }} />) : ""}
+                                {isTraining ? <Spinner style={{ marginRight: 50 }} /> : ""}
                                 <Button
                                     leftIcon={<ArrowUpIcon />}
                                     colorScheme="blue"
@@ -327,24 +354,31 @@ export default function CommonModel(props) {
                                 </InputGroup>
                             </Stack>
                         </Box>
-                        <Box w="100%" style={{ marginTop: 70, marginBottom: 100, }}>
+                        <Box w="100%" style={{ marginTop: 70, marginBottom: 100 }}>
                             {loading ? (
                                 <InitialGraph />
                             ) : (
-                                <StockChart trainOriginalPrice={trainOriginalPrice} trainStockDate={trainDate} validOriginalPrice={validOriginalPrice} validStockDate={validDate} trainPredictionPrice={trainPredictionPrice} validPredictionPrice={validPredictionPrice} />
+                                <StockChart
+                                    trainOriginalPrice={trainOriginalPrice}
+                                    trainStockDate={trainDate}
+                                    validOriginalPrice={validOriginalPrice}
+                                    validStockDate={validDate}
+                                    trainPredictionPrice={trainPredictionPrice}
+                                    validPredictionPrice={validPredictionPrice}
+                                />
                             )}
                         </Box>
                         {loading ? (
                             <WaitingBox2 />
-                        ) :
+                        ) : (
                             <Center w="80%" style={{ marginBottom: 100, marginLeft: 150 }}>
                                 <StatGroup>
-                                    <Stat style={{ marginRight: 100, }}>
+                                    <Stat style={{ marginRight: 100 }}>
                                         <StatLabel>Mean Norm RMSE over 10 iterations</StatLabel>
                                         <StatNumber>{meanNormRmse}</StatNumber>
                                     </Stat>
 
-                                    <Stat style={{ marginRight: 100, }}>
+                                    <Stat style={{ marginRight: 100 }}>
                                         <StatLabel>Mean RMSE over 10 iterations</StatLabel>
                                         <StatNumber>{meanRmse}</StatNumber>
                                     </Stat>
@@ -355,17 +389,13 @@ export default function CommonModel(props) {
                                     </Stat>
                                 </StatGroup>
                             </Center>
-                        }
-                        <Flex >
-                            <Box w='50%' color="black" style={{ marginRight: 100 }}>
+                        )}
+                        <Flex>
+                            <Box w="50%" color="black" style={{ marginRight: 100 }}>
                                 <Text color="black">{props.description}</Text>
                             </Box>
-                            <Box >
-                                {loading ? (
-                                    <WaitingBox />
-                                ) : (
-                                    <LossGraph modelLoss={modelLoss} />
-                                )}
+                            <Box>
+                                {loading ? <WaitingBox /> : <LossGraph modelLoss={modelLoss} />}
                             </Box>
                         </Flex>
                     </ModalBody>
