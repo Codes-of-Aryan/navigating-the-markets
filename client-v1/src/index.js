@@ -6,6 +6,7 @@ import AdminLayout from "layouts/admin";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "theme/theme";
 import { ThemeEditorProvider } from "@hypertheme-editor/chakra-ui";
+import 'devextreme/dist/css/dx.light.css';
 
 ReactDOM.render(
     <ChakraProvider theme={theme}>

@@ -1,29 +1,39 @@
-import pandas as pd
-import matplotlib.dates as mdp
-import matplotlib.pyplot as plt
-import datetime as dt
+"""
+Description:
+    This code defines a function named lstm_three that also utilizes LSTM networks for stock price forecasting.
+    The function takes the same set of input parameters as the LSTM One code. It pre-processes the data by 
+    filtering the 'Close' column, normalizing the values, and splitting them into input-output pairs. The data
+    is then divided into training and testing sets, and reshaped to fit the LSTM model's input requirements. 
+    The function creates an LSTM model with multiple layers and dropout regularization. The model is trained 
+    using the training data, and predictions are made on the test data. Metrics such as RMSE and MAPE are calculated,
+    and the average values are accumulated. The function also visualizes the loss graph during training. 
+    Finally, it returns the training and validation data with the predicted values, the loss graph of the first 
+    model, and the mean values of the metrics. 
+    
+    The main difference between this and other lstm codes is its  architecture, which includes three LSTM layers 
+    followed by dropout for regularization and dense layer for model output. The first LSTM layer has the return_sequences=True
+    argument, which means it returns the hidden state output for each time step in the input sequence. This allows 
+    the subsequent LSTM layers to receive the full sequence of hidden states. The second LSTM layer also has 
+    return_sequences=True, meaning it receives the sequence of hidden states from the previous LSTM layer and returns
+    its own sequence of hidden states. The third LSTM layer, however, has return_sequences=False, indicating that it only 
+    returns the final hidden state output. This architecture, with multiple LSTM layers that both receive and return sequences,
+    is often used when capturing long-term dependencies and intricate patterns in sequential data. The additional layer
+    allows for more complex modeling of temporal relationships within the input sequence.
+    
+"""
+
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_percentage_error
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import TimeSeriesSplit
-import torch
-import torch.nn as nn
+
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import LSTM
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import *
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.layers import Dense, LSTM, Dropout
 
-def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_units):
+def lstm_three(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_units, epochs):
     data_close=stk_data.filter(['Close'])
-    sub_data=stk_data.iloc[:,0:4]
 
-    #feature Scaling
     s_data=data_close.values
-    date_index=stk_data.index
     sca=MinMaxScaler(feature_range=(0,1))
     normal_data=sca.fit_transform(s_data)
 
@@ -34,10 +44,7 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_
             y.append(data[i-1,-1])
         return np.array(x), np.array(y)
 
-
-
     x1, y1=data_split(normal_data, step_size=window_size)
-
 
     split_index=int(np.ceil(len(x1)*(train_rate)))
     x_train,x_test=x1[:split_index],x1[split_index:]
@@ -54,24 +61,20 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_
     av_mape=0
 
     #LSTM Model Three
-    def LSTM_model_three(av_rmse,av_rmse1,av_mape):
+    def lstm_model_three(av_rmse,av_rmse1,av_mape):
+        model_loss_graph_points = []
         for i in range(10):
-            # print('Repeat=',i)
             lstm3=Sequential()
-            lstm3.add(LSTM(Lstm_gru_units,input_shape=(x_train.shape[1],x_train.shape[2]),activation='tanh',return_sequences=True))
+            lstm3.add(LSTM(lstm_gru_units,input_shape=(x_train.shape[1],x_train.shape[2]),activation='tanh',return_sequences=True))
             lstm3.add(Dropout(drop_rate))
-            lstm3.add(LSTM(units = Lstm_gru_units, activation='tanh', return_sequences = True))
+            lstm3.add(LSTM(units = lstm_gru_units, activation='tanh', return_sequences = True))
             lstm3.add(Dropout(drop_rate))
-            lstm3.add(LSTM(units = Lstm_gru_units, activation='tanh', return_sequences = False))
+            lstm3.add(LSTM(units = lstm_gru_units, activation='tanh', return_sequences = False))
             lstm3.add(Dropout(drop_rate))
             lstm3.add(Dense(1))
-            lstm3.compile(loss='mse',optimizer='adam')   
-
-
-        
-        
+            lstm3.compile(loss='mse',optimizer='adam')
             
-            history=lstm3.fit(x_train,y_train,epochs=50,batch_size=Batch_size, verbose=0)
+            history=lstm3.fit(x_train,y_train,epochs=epochs,batch_size=batch_size, verbose=0)
             y_test_pred=lstm3.predict(x_test)
             y_train_pred=lstm3.predict(x_train)
 
@@ -85,6 +88,7 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_
             av_rmse1=av_rmse1+rmse1
             av_mape=av_mape+mape
             lstm3.reset_states()
+            model_loss_graph_points.append(history.history['loss'])
 
         print('Mean Norm RMSE=',av_rmse/10,'Mean RMSE=',av_rmse1/10,'Mean MAPE=',av_mape/10)
 
@@ -94,7 +98,7 @@ def lstm_three(stk_data,window_size,train_rate, drop_rate, Batch_size, Lstm_gru_
         train['Prediction'] =y_train_pred_nn
         valid['Prediction'] =y_test_pred_nn
 
-        return train[['Close','Prediction']], valid[['Close','Prediction']]
+        return train[['Close','Prediction']], valid[['Close','Prediction']], model_loss_graph_points[0], av_rmse/10, av_rmse1/10, av_mape/10
 
-    df1, df2 = LSTM_model_three(av_rmse,av_rmse1,av_mape)
-    return df1, df2
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = lstm_model_three(av_rmse,av_rmse1,av_mape)
+    return df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape
