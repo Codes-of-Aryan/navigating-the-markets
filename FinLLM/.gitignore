@@ -1,4 +1,4 @@
 __pycache__/
-2023-12-08_2024-03-07/
-2023-12-08_2024-03-07/*.csv
 testing.py
+#ignore all repositories starting with a number
+[0-9]*/ 
