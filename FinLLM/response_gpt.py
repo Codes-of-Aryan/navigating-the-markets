@@ -12,6 +12,23 @@ import datetime
 from collections import defaultdict
 import data_preparation
 import prompt_generation
-import openai
+from openai import OpenAI
 
-openai_client = openai.Client(api_key=os.environ["OPENAI_API_KEY"])
+
+
+#data_preparation.prepare_data_for_company('AAPL', with_basics=True)
+#user_prompt = prompt_generation.get_prompt('AAPL')
+#system_prompt = f.open('system_prompt.txt', 'r').read()
+
+
+# client = OpenAI()
+
+# completion = client.chat.completions.create(
+#     model="gpt-3.5-turbo",
+#     messages=[
+#         {"role": "system", "content": system_prompt},
+#         {"role": "user", "content": user_prompt}
+#     ]
+# )
+response = open('sample_response.txt', 'r').read()
+print(response)
