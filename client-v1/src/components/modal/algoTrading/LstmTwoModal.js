@@ -3,7 +3,7 @@ import CommonModel from "./common/CommonModal";
 
 export default function LstmThreeModal(props) {
 
-    const api = "http://localhost:5000/lstm_model_two"
+    const api = "http://127.0.0.1:5000/lstm_model_two"
     const description = `This code defines a function named gru_one that performs stock price prediction using the GRU (Gated Recurrent Unit)
                      neural network. The function takes stock data, window size, training rate, dropout rate, batch size, GRU units, and
                      number of epochs as input.The function begins by preprocessing the stock data. It filters the 'Close' column, normalizes

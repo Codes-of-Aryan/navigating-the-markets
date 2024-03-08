@@ -25,6 +25,7 @@ import {
 } from "@chakra-ui/react";
 
 import React, { useState, useRef } from "react";
+import axios from "axios";
 
 import { SettingsIcon, ArrowUpIcon, RepeatIcon } from "@chakra-ui/icons";
 
@@ -107,7 +108,7 @@ export default function CommonModel(props) {
         setUnits(event.target.value);
     };
 
-    const handleTrainClick = () => {
+    const handleTrainClick = async () => {
         // Validation Checks
         if (
             !dropRate ||
@@ -152,36 +153,58 @@ export default function CommonModel(props) {
         );
 
         console.log("Sending Request");
-        fetch(props.api, {
-            method: "POST",
-            body: fd,
-            mode: 'cors',
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Methods": "GET, POST, PUT",
-                "Access-Control-Allow-Credentials": true,
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setTrainDate(data["date_train"]);
-                setTrainOriginalPrice(data["train_original_price"]);
-                setValidDate(data["date_valid"]);
-                setValidOriginalPrice(data["valid_original_price"]);
-                setTrainPredictionPrice(data["train_prediction_price"]);
-                setValidPredictionPrice(data["valid_prediction_price"]);
-                setMeanMape(data["mean_mape"]);
-                setMeanNormRmse(data["mean_norm_rmse"]);
-                setMeanRmse(data["mean_rmse"]);
-                setModelLoss(data["model_loss"]);
-                setLoading(false);
-                setIsTraining(false);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+
+        try {
+            const response = await axios.post(props.api, fd);
+
+            const data = response.data;
+            console.log(data);
+            setTrainDate(data["date_train"]);
+            setTrainOriginalPrice(data["train_original_price"]);
+            setValidDate(data["date_valid"]);
+            setValidOriginalPrice(data["valid_original_price"]);
+            setTrainPredictionPrice(data["train_prediction_price"]);
+            setValidPredictionPrice(data["valid_prediction_price"]);
+            setMeanMape(data["mean_mape"]);
+            setMeanNormRmse(data["mean_norm_rmse"]);
+            setMeanRmse(data["mean_rmse"]);
+            setModelLoss(data["model_loss"]);
+            setLoading(false);
+            setIsTraining(false);
+        } catch (error) {
+            console.log(error);
+        }
+
+        // fetch(props.api, {
+        //     method: "POST",
+        //     body: fd,
+        //     mode: 'cors',
+        //     headers: {
+        //         "Access-Control-Allow-Origin": "*",
+        //         "Access-Control-Allow-Headers": "Content-Type",
+        //         "Access-Control-Allow-Methods": "GET, POST, PUT",
+        //         "Access-Control-Allow-Credentials": true,
+        //     },
+        // })
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         console.log(data);
+        //         setTrainDate(data["date_train"]);
+        //         setTrainOriginalPrice(data["train_original_price"]);
+        //         setValidDate(data["date_valid"]);
+        //         setValidOriginalPrice(data["valid_original_price"]);
+        //         setTrainPredictionPrice(data["train_prediction_price"]);
+        //         setValidPredictionPrice(data["valid_prediction_price"]);
+        //         setMeanMape(data["mean_mape"]);
+        //         setMeanNormRmse(data["mean_norm_rmse"]);
+        //         setMeanRmse(data["mean_rmse"]);
+        //         setModelLoss(data["model_loss"]);
+        //         setLoading(false);
+        //         setIsTraining(false);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
     };
 
     return (
