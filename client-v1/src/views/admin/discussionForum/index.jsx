@@ -1,19 +1,19 @@
 import {
   Box,
   Flex,
-  Grid,
   Stack,
   Text,
   Button,
-  InputLeftAddon,
-  InputGroup,
-  Input,
   List,
+  Image,
+  Textarea,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Collapsible from "components/collapsible/Collapisble";
+import LoginImg from "assets/img/discussionForum/login.png";
+import Card from "components/card/Card";
 
 export default function WidgetPage() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -62,7 +62,7 @@ export default function WidgetPage() {
       localStorage.setItem("UserId", JSON.stringify(""));
       localStorage.setItem("Username", JSON.stringify(""));
       setLoggedIn(false);
-      history.push("/admin/signUp-login");
+      history.push("/admin/login");
     });
   };
 
@@ -98,7 +98,6 @@ export default function WidgetPage() {
         setData(true);
         setTitle("");
         setDescription("");
-        // history.push("/admin/forum");
       })
       .catch(function (error) {
         console.log(error, "error");
@@ -112,111 +111,109 @@ export default function WidgetPage() {
     <Box style={{ marginTop: 100 }}>
       <Flex
         flexDirection="column"
-        // gridArea={{ xl: "1 / 1 / 2 / 3", "2xl": "1 / 1 / 2 / 2" }}
+        gridArea={{ xl: "1 / 1 / 2 / 3", "2xl": "1 / 1 / 2 / 2" }}
       >
         <Flex direction="column" align="center">
           <Flex
             mt="65px"
             mb="40px"
-            justifyContent="center"
-            style={{ width: 500 }}
+            // justifyContent="center"
+            style={{ width: "100%" }}
           >
             <Stack
               direction="row"
               spacing={4}
-              style={{ justifyContent: "space-between" }}
+              style={{
+                justifyContent: "space-around",
+                width: "100%",
+              }}
             >
               {isLoggedIn ? (
-                <Text style={{ marginRight: 10 }}>
-                  {" "}
-                  Add A Topic For Discussion
-                </Text>
+                <>
+                  <Text style={{ marginRight: 10 }} as="b" fontSize="3xl">
+                    {" "}
+                  </Text>
+                  <Button
+                    colorScheme="twitter"
+                    variant="outline"
+                    onClick={handleLogout}
+                  >
+                    Log Out
+                  </Button>
+                </>
               ) : (
                 ""
               )}
-              <Button
-                colorScheme="twitter"
-                variant="outline"
-                onClick={handleLogout}
-              >
-                Log Out
-              </Button>
             </Stack>
           </Flex>
           <Stack align="center">
             {isLoggedIn ? (
-              // <Text> Already Logged In </Text>
               <>
-                <Box
-                  w="100%"
-                  h="200px"
-                  // bgGradient="linear(to-l, #ededed, #c9e9f6)"
-                  style={{
-                    borderBottomLeftRadius: 10,
-                    marginBottom: 50,
-                    display: "flex",
-                    alignContent: "center",
-                  }}
-                >
-                  <Stack direction="column">
-                    <InputGroup
-                      size="sm"
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        margin: 20,
-                      }}
-                    >
-                      <InputLeftAddon marginRight="10" color="white" bg="black">
-                        Title
-                      </InputLeftAddon>
-                      <Input
-                        type="text"
-                        bg="#fff"
-                        placeholder="Please Add a Title"
-                        defaultValue={title}
-                        onChange={handleTitleChange}
-                        variant="outlined"
-                        size="sm"
-                        width="60"
-                        marginRight="10"
-                      />
-                    </InputGroup>
-
-                    <InputGroup
-                      size="sm"
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        margin: 20,
-                      }}
-                    >
-                      <InputLeftAddon marginRight="10" color="white" bg="black">
-                        Description
-                      </InputLeftAddon>
-                      <Input
-                        type="text"
-                        placeholder="Please explain what you want to discuss"
-                        defaultValue={description}
-                        onChange={handleDescriptionChange}
-                        variant="filled"
-                        size="sm"
-                        width="60"
-                        marginRight="10"
-                      />
-                    </InputGroup>
-                  </Stack>
-                  <Button
-                    // leftIcon={<RepeatIcon />}
-                    colorScheme="yellow"
-                    variant="outline"
-                    onClick={handleTopicSubmit}
+                <Card p="20px">
+                  <Box
+                    w="100%"
+                    h="70%"
+                    style={{
+                      borderBottomLeftRadius: 10,
+                      marginBottom: 50,
+                      display: "flex",
+                      alignContent: "center",
+                      flexDirection: "column",
+                    }}
                   >
-                    Submit
-                  </Button>
-                </Box>
-                <Box>
-                  <Text> Get Help! </Text>
+                    <Text as="b" fontSize="3xl" style={{ textAlign: "center" }}>
+                      {" "}
+                      Add A Topic For Discussion{" "}
+                    </Text>
+                    <Stack direction="column" style={{ width: "100%" }}>
+                      <Text as="b" style={{ marginBottom: "3%" }}>
+                        Title
+                        <Textarea
+                          value={title}
+                          onChange={handleTitleChange}
+                          placeholder="Please enter the title of your post"
+                          size="sm"
+                        />
+                      </Text>
+                      <Text as="b">
+                        Description
+                        <Textarea
+                          value={description}
+                          onChange={handleDescriptionChange}
+                          placeholder="Please add description for your post"
+                          size="sm"
+                        />
+                      </Text>
+                    </Stack>
+                    <Button
+                      colorScheme="yellow"
+                      variant="outline"
+                      onClick={handleTopicSubmit}
+                      style={{
+                        marginTop: "30px",
+                        width: "60%",
+                        alignItems: "center",
+                        marginLeft: "20%",
+                      }}
+                    >
+                      Submit
+                    </Button>
+                  </Box>
+                </Card>
+                <Box style={{ marginTop: "7%" }}>
+                  <Text as="b" fontSize="2xl">
+                    {" "}
+                    Check Topics Under Discussion!{" "}
+                  </Text>
+                  <hr
+                    style={{
+                      background: "black",
+                      color: "black",
+                      borderColor: "black",
+                      height: "3px",
+                      marginBottom: "5%",
+                    }}
+                  />
                   {isData ? (
                     <List spacing={3}>
                       {topics.map((topic) => (
@@ -237,7 +234,16 @@ export default function WidgetPage() {
               </>
             ) : (
               <>
-                <Text> Please Login First</Text>
+                <Text fontSize="4xl" as="b">
+                  {" "}
+                  Please Login First
+                </Text>
+                <Image
+                  boxSize="300px"
+                  objectFit="cover"
+                  src={LoginImg}
+                  alt="Login Image"
+                />
               </>
             )}
           </Stack>

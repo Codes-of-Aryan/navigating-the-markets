@@ -34,6 +34,7 @@ import LossGraph from "./LossGraph";
 import WaitingBox from "./WaitingBox";
 import WaitingBox2 from "./WaitingBox2";
 import InitialGraph from "./StartingGraph";
+import Card from "components/card/Card";
 
 export default function CommonModel(props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -414,8 +415,10 @@ export default function CommonModel(props) {
                             </Center>
                         )}
                         <Flex>
-                            <Box w="50%" color="black" style={{ marginRight: 100 }}>
-                                <Text color="black">{props.description}</Text>
+                            <Box w="50%" style={{ marginRight: 100 }}>
+                                <Card p="20px">
+                                    <Text >{props.description}</Text>
+                                </Card>
                             </Box>
                             <Box>
                                 {loading ? <WaitingBox /> : <LossGraph modelLoss={modelLoss} />}

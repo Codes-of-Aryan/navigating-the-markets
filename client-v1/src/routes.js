@@ -40,19 +40,12 @@ const routes = [
         // component: FinGPT,
     },
     {
-        name: "Sign Up / Login",
+        name: "Sign Up - Login",
         layout: "/admin",
-        path: "/signUp-login",
+        path: "/login",
         icon: <Icon as={MdLogin} width="20px" height="20px" color="inherit" />,
         component: SignUpLogin,
     },
-    // {
-    //     name: "Discussion Forum",
-    //     layout: "/admin/signUp-login",
-    //     path: "/forum",
-    //     icon: <Icon as={MdLogin} width="20px" height="20px" color="inherit" />,
-    //     component: DiscussionForum,
-    // },
     {
         name: "Discussion Forum",
         layout: "/admin",

@@ -50,7 +50,6 @@ function Login() {
           setPassword("");
           setUsername("");
           setEmail("");
-          // history.push("/admin/signUp-login/forum");
           history.push("/admin/forum");
         })
         .catch(function (error) {
