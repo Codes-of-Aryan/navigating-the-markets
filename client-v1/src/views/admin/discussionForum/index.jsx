@@ -7,6 +7,7 @@ import {
   List,
   Image,
   Textarea,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -16,6 +17,7 @@ import LoginImg from "assets/img/discussionForum/login.png";
 import Card from "components/card/Card";
 
 export default function WidgetPage() {
+  const textColor = useColorModeValue("navy.700", "white");
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -207,9 +209,9 @@ export default function WidgetPage() {
                   </Text>
                   <hr
                     style={{
-                      background: "black",
-                      color: "black",
-                      borderColor: "black",
+                      background: { textColor },
+                      color: { textColor },
+                      borderColor: { textColor },
                       height: "3px",
                       marginBottom: "5%",
                     }}
