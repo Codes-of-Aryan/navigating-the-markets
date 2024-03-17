@@ -1,10 +1,11 @@
-import { Box, Flex, Grid, Button, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Button, Stack, Text, Image } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 import Signup from "components/SignUpLogin/Signup";
 import Login from "components/SignUpLogin/Login";
+import LoggedInImg from "assets/img/discussionForum/logged.png";
 
 export default function WidgetPage() {
   const [signupTrue, setSignupTrue] = useState(false);
@@ -45,7 +46,6 @@ export default function WidgetPage() {
       localStorage.setItem("UserId", JSON.stringify(""));
       localStorage.setItem("Username", JSON.stringify(""));
       setLoggedIn(false);
-      // history.push("/admin/signUp-login");
     });
   };
 
@@ -68,38 +68,55 @@ export default function WidgetPage() {
           <Flex direction="column">
             <Flex
               mt="45px"
-              mb="20px"
+              mb="5px"
               justifyContent="center"
               direction={{ base: "column", md: "row" }}
               align={{ base: "start", md: "center" }}
             >
               <Stack direction="row" spacing={4} align="center">
-                <Button
-                  colorScheme="teal"
-                  variant="outline"
-                  onClick={handleSignUpClick}
-                >
-                  Sign Up
-                </Button>
-                <Button
-                  colorScheme="twitter"
-                  variant="outline"
-                  onClick={handleLoginClick}
-                >
-                  Login
-                </Button>
-                <Button
-                  colorScheme="twitter"
-                  variant="outline"
-                  onClick={handleLogout}
-                >
-                  Log Out
-                </Button>
+                {!isLoggedIn ? (
+                  <>
+                    {" "}
+                    <Button
+                      colorScheme="teal"
+                      variant="outline"
+                      onClick={handleSignUpClick}
+                    >
+                      Sign Up
+                    </Button>
+                    <Button
+                      colorScheme="twitter"
+                      variant="outline"
+                      onClick={handleLoginClick}
+                    >
+                      Login
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    colorScheme="twitter"
+                    variant="outline"
+                    onClick={handleLogout}
+                  >
+                    Log Out
+                  </Button>
+                )}
               </Stack>
             </Flex>
             <Stack align="center">
               {isLoggedIn ? (
-                <Text>Already Logged In</Text>
+                <>
+                  <Text fontSize="4xl" as="b" mt="30px">
+                    {" "}
+                    Already Logged In
+                  </Text>
+                  <Image
+                    boxSize="300px"
+                    objectFit="cover"
+                    src={LoggedInImg}
+                    alt="Login Image"
+                  />
+                </>
               ) : signupTrue || loginTrue ? (
                 signupTrue ? (
                   <Signup />

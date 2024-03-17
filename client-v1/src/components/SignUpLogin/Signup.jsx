@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import Card from "components/card/Card.js";
 import {
   Box,
   Button,
@@ -39,7 +40,6 @@ function Signup() {
         setPassword("");
         setUsername("");
         setEmail("");
-        // history.push("/admin/signUp-login/forum");
         history.push("/admin/forum");
       })
       .catch(function (error) {
@@ -65,60 +65,61 @@ function Signup() {
             </Text> */}
           </Stack>
         </Stack>
-        <Box
-          py={{ base: "0", sm: "8" }}
-          px={{ base: "4", sm: "10" }}
-          bg={{ base: "transparent", sm: "bg.surface" }}
-          boxShadow={{ base: "none", sm: "md" }}
-          borderRadius={{ base: "none", sm: "xl" }}
-          style={{ background: "#FFF" }}
-        >
-          <Stack spacing="6">
-            <Stack spacing="5">
-              <FormControl>
-                <FormLabel htmlFor="username">UserName</FormLabel>
-                <Input
-                  id="username"
-                  type="text"
-                  defaultValue={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  defaultValue={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  defaultValue={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </FormControl>
-            </Stack>
+        <Card>
+          <Box
+            py={{ base: "0", sm: "8" }}
+            px={{ base: "4", sm: "10" }}
+            bg={{ base: "transparent", sm: "bg.surface" }}
+            boxShadow={{ base: "none", sm: "md" }}
+            borderRadius={{ base: "none", sm: "xl" }}
+          >
             <Stack spacing="6">
-              <Button
-                colorScheme="twitter"
-                variant="outline"
-                onClick={() => registerUser()}
-              >
-                Sign Up
-              </Button>
-              <HStack>
-                <Divider />
-                <Divider />
-              </HStack>
+              <Stack spacing="5">
+                <FormControl>
+                  <FormLabel htmlFor="username">UserName</FormLabel>
+                  <Input
+                    id="username"
+                    type="text"
+                    defaultValue={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <Input
+                    id="email"
+                    type="email"
+                    defaultValue={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    defaultValue={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </FormControl>
+              </Stack>
+              <Stack spacing="6">
+                <Button
+                  colorScheme="twitter"
+                  variant="outline"
+                  onClick={() => registerUser()}
+                >
+                  Sign Up
+                </Button>
+                <HStack>
+                  <Divider />
+                  <Divider />
+                </HStack>
+              </Stack>
             </Stack>
-          </Stack>
-        </Box>
+          </Box>
+        </Card>
       </Stack>
     </Container>
 

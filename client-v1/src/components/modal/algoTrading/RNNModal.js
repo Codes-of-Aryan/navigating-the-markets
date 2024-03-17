@@ -4,18 +4,13 @@ import CommonModel from "./common/CommonModal";
 export default function RNNModal(props) {
 
     const api = "http://127.0.0.1:5000/rnn_model"
-    const description = `This code defines a function named gru_one that performs stock price prediction using the GRU (Gated Recurrent Unit)
-                     neural network. The function takes stock data, window size, training rate, dropout rate, batch size, GRU units, and
-                     number of epochs as input.The function begins by preprocessing the stock data. It filters the 'Close' column, normalizes
-                     the values using MinMaxScaler, and splits the data into training and testing sets. The input sequences and corresponding
-                     target values are created based on the specified window size. The data is reshaped to fit the GRU model's
-                     input requirements.
-                     
-                     The model consists of a two GRU layers, followed by a dropout layer for regularization, and a dense layer
-                     for the model output. The first GRU layer is set to return sequences (return_sequences=True), meaning that
-                     it returns the hidden state output for each time step in the input sequence. The second GRU layer does not
-                     have return_sequences=True, so it only returns the final hidden state output. This architecture is often used
-                     when stacking GRU layers to capture temporal dependencies in the data.`
+    const description = `This is an implementation of a recurrent neural network (RNN) model for stock price prediction.
+                         It takes stock data, window size, training rate, batch size, and number of epochs as input.
+                         The model consists of a SimpleRNN layer with four units, followed by a dense layer with one output
+                         unit. The model is compiled with the mean squared error (MSE) loss and the Adam optimizer. The
+                         function trains the RNN model using the training data and evaluates it on the testing data. It
+                         calculates metrics such as root mean squared error (RMSE) and mean absolute percentage error (MAPE)
+                         for the predictions. These metrics are averaged over multiple runs.`
     return (
         <CommonModel description={description} api={api} fullForm={props.fullForm} isDisabledUnits={true} isDisabledDropRate={true} />
     )

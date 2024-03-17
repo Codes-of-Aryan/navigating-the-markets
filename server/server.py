@@ -89,9 +89,9 @@ def lstm_model_one():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     response = jsonify(data_dict)
     return response
@@ -137,9 +137,9 @@ def lstm_model_two():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -183,9 +183,9 @@ def lstm_model_three():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -229,9 +229,9 @@ def gru_model_one():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -275,9 +275,9 @@ def gru_model_two():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -321,9 +321,9 @@ def gru_model_three():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -367,9 +367,9 @@ def ann_model():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -420,9 +420,9 @@ def autoendcoder_model():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -464,9 +464,9 @@ def rnn_model():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 

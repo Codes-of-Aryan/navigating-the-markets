@@ -1,9 +1,11 @@
 import { Text, Box } from '@chakra-ui/react'
-
+import Card from 'components/card/Card'
 export default function WaitingBox() {
     return (
-        <Box bg='gray.50' w='500' p={40} color='black'>
-            <Text> Waiting Until The Training Begins....</Text>
-        </Box>
+        <Card style={{ border: "1px solid gray" }}>
+            <Box w='500' p={40} >
+                <Text> Waiting Until Training Begins....</Text>
+            </Box>
+        </Card>
     );
 }
