@@ -1,4 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
+from flask_bcrypt import Bcrypt
+from flask_cors import CORS, cross_origin
+from models import db, User, Topic, Comment
 from werkzeug.utils import secure_filename
 import json
 
@@ -19,13 +22,24 @@ import trading_agents.evolution_strategy_agent as esa
 
 import pandas as pd
 import time
-import threading
-
-from flask_cors import CORS
+# import threading
 
 app = Flask(__name__)
 # CORS(app, origins=["http://localhost:3000"])
-CORS(app)
+# CORS(app)
+
+app.config['SECRET_KEY'] = 'tetsst'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flaskdb.db'
+ 
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_ECHO = True
+  
+bcrypt = Bcrypt(app) 
+CORS(app, supports_credentials=True)
+db.init_app(app)
+  
+with app.app_context():
+    db.create_all()
 
 ALLOWED_EXTENSIONS = set(['csv'])
 
@@ -168,6 +182,7 @@ def lstm_model_one():
     print("Recieved Request")
     # assuming that getting data in format from frontend form-data
     stk_data = request.files['file']
+    print(stk_data)
     if stk_data and allowed_file(stk_data.filename):
         stk_data.save(secure_filename(stk_data.filename))
         stk_data = pd.read_csv(stk_data.filename, index_col='Date')
@@ -206,15 +221,11 @@ def lstm_model_one():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     response = jsonify(data_dict)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 
 @app.route("/lstm_model_two", methods=['POST'])
@@ -258,9 +269,9 @@ def lstm_model_two():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -304,9 +315,9 @@ def lstm_model_three():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -350,9 +361,9 @@ def gru_model_one():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -396,9 +407,9 @@ def gru_model_two():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -442,9 +453,9 @@ def gru_model_three():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -488,9 +499,9 @@ def ann_model():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -541,9 +552,9 @@ def autoendcoder_model():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -585,9 +596,9 @@ def rnn_model():
     data_dict['valid_original_price'] = valid_original_price
     data_dict['valid_prediction_price'] = valid_prediction_price
     data_dict['model_loss'] = model_loss
-    data_dict['mean_norm_rmse'] = mean_norm_rmse
-    data_dict['mean_rmse'] = mean_rmse
-    data_dict['mean_mape'] = mean_mape
+    data_dict['mean_norm_rmse'] = round(mean_norm_rmse, 4)
+    data_dict['mean_rmse'] = round(mean_rmse, 4)
+    data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
 
@@ -595,3 +606,146 @@ def rnn_model():
 def test():
     time.sleep(80)
     return "<p>Work</p>"
+
+
+@app.route("/signup", methods=["POST"])
+def signup():
+    email = request.json["email"]
+    password = request.json["password"]
+    username = request.json["username"]
+ 
+    user_exists = User.query.filter_by(email=email).first() is not None
+ 
+    if user_exists:
+        return jsonify({"error": "Email already exists"}), 409
+    
+    # Check if username already exists
+    username_exists = User.query.filter_by(username=username).first() is not None
+ 
+    if username_exists:
+        return jsonify({"error": "Username already exists"}), 409
+     
+    hashed_password = bcrypt.generate_password_hash(password)
+    new_user = User(email=email, password=hashed_password, username=username)
+    db.session.add(new_user)
+    db.session.commit()
+ 
+    session["user_id"] = new_user.id
+    session["user_name"] = new_user.username
+ 
+    return jsonify({
+        "id": new_user.id,
+        "email": new_user.email,
+        "username": new_user.username
+    })
+
+@app.route("/login", methods=["POST"])
+def login_user():
+    email = request.json["email"]
+    password = request.json["password"]
+    username = request.json["username"]
+  
+    user = User.query.filter_by(email=email).first()
+  
+    if user is None:
+        return jsonify({"error": "Unauthorized Access"}), 401
+  
+    if not bcrypt.check_password_hash(user.password, password):
+        return jsonify({"error": "Unauthorized"}), 401
+    
+    if user.username != username:
+        return jsonify({"error": "Invalid username"}), 401
+      
+    session["user_id"] = user.id
+    session["user_name"] = user.username
+  
+    return jsonify({
+        "id": user.id,
+        "email": user.email,
+        "username": user.username
+    })
+
+@app.route('/check_session')
+def check_session():
+    if 'user_id' in session:
+            return jsonify({ "Status": "Logged In" })
+
+    return jsonify({ "Status": "Not Logged In" })
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return jsonify({ "Status": "Logged Out" })
+
+
+@app.route('/all-topics', methods=['GET', 'POST'])
+def topic():
+    if request.method == 'POST':
+        # Adding a new topic of discussion
+        userId=request.json['userId']
+        if userId[0] == '"' or userId[0] == "'":
+            userId = userId[1:-1]
+        
+        username=request.json['userName']
+        if username[0] == '"' or username[0] == "'":
+            username = username[1:-1]
+        
+        topic = Topic(
+            # userId=session['user_id'],   # get the id from session
+            userId=userId,   # get the id from session
+            title=request.json['title'],
+            description=request.json['description'],
+            # username=session['user_name'],     # get the username from session
+            username=username,     # get the username from session
+        )
+
+        db.session.add(topic)
+        db.session.commit()
+
+    topics = Topic.query.all()
+    topic_data = []
+    for topic in topics:
+        topic_data.append({
+            "id": topic.id,
+            "title": topic.title,
+            "description": topic.description,
+            "username": topic.username
+        })
+
+    return jsonify(topic_data)
+
+@app.route('/topic/<int:id>', methods=['GET', 'POST'])
+def comments(id):
+    if request.method == 'POST':
+        # Adding a new comment on that specific topic of discussion
+        userId=request.json['userId']
+        if userId[0] == '"' or userId[0] == "'":
+            userId = userId[1:-1]
+        
+        username=request.json['userName']
+        if username[0] == '"' or username[0] == "'":
+            username = username[1:-1]
+        comment = Comment(
+            # userId=session['user_id'],   # get the id from session
+            userId=userId,   # get the id from session
+            text=request.json['text'],
+            # username=session['user_name'],   # get the username from session
+            username=username,     # get the username from session
+            topicId=id
+        )
+
+        db.session.add(comment)
+        db.session.commit()
+
+    comments = Comment.query.filter_by(topicId=id).all()
+    
+    comment_data = []
+    for comment in comments:
+        comment_data.append({
+            "id": comment.userId,
+            "text": comment.text,
+            "username": comment.username,
+            "topicId": comment.topicId
+        })
+
+    return jsonify(comment_data)

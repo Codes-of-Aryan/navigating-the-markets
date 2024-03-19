@@ -1,15 +1,12 @@
 import React from "react";
 
 import { Icon } from "@chakra-ui/react";
-import {
-    MdBarChart,
-    MdPerson,
-    MdOutlineShoppingCart,
-    MdHomeWork,
-} from "react-icons/md";
+import TradingAgentsPage from "views/admin/tradingAgentsPage";
+import { MdBarChart, MdPerson, MdOutlineShoppingCart, MdChat, MdLogin, MdHomeWork } from "react-icons/md";
 import Widget from "views/admin/widgetPage";
 import AlgorithmicTrading from "views/admin/algorithmicTradingPage";
-import TradingAgentsPage from "views/admin/tradingAgentsPage";
+import DiscussionForum from "views/admin/discussionForum";
+import SignUpLogin from "views/admin/signUpLogin";
 
 const routes = [
     {
@@ -51,6 +48,20 @@ const routes = [
             <Icon as={MdHomeWork} width="20px" height="20px" color="inherit" />
         ),
         // component: FinGPT,
+    },
+    {
+        name: "Sign Up - Login",
+        layout: "/admin",
+        path: "/login",
+        icon: <Icon as={MdLogin} width="20px" height="20px" color="inherit" />,
+        component: SignUpLogin,
+    },
+    {
+        name: "Discussion Forum",
+        layout: "/admin",
+        path: "/forum",
+        icon: <Icon as={MdChat} width="20px" height="20px" color="inherit" />,
+        component: DiscussionForum,
     },
 ];
 

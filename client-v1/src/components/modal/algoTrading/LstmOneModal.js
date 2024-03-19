@@ -3,19 +3,16 @@ import CommonModel from "./common/CommonModal";
 
 export default function LstmOneModal(props) {
 
-    const api = "http://localhost:5000/lstm_model_one"
-    const description = `This code defines a function named gru_one that performs stock price prediction using the GRU (Gated Recurrent Unit)
-                     neural network. The function takes stock data, window size, training rate, dropout rate, batch size, GRU units, and
-                     number of epochs as input.The function begins by preprocessing the stock data. It filters the 'Close' column, normalizes
-                     the values using MinMaxScaler, and splits the data into training and testing sets. The input sequences and corresponding
-                     target values are created based on the specified window size. The data is reshaped to fit the GRU model's
-                     input requirements.
-                     
-                     The model consists of a two GRU layers, followed by a dropout layer for regularization, and a dense layer
-                     for the model output. The first GRU layer is set to return sequences (return_sequences=True), meaning that
-                     it returns the hidden state output for each time step in the input sequence. The second GRU layer does not
-                     have return_sequences=True, so it only returns the final hidden state output. This architecture is often used
-                     when stacking GRU layers to capture temporal dependencies in the data.`
+    const api = "http://127.0.0.1:5000/lstm_model_one"
+    const description = `This is an implementation of a stock price prediction models that is designed to forecast stock
+    prices using LSTM neural networks. It takes stock data, window size, training rate, dropout rate, batch size, LSTM units,
+    and training epochs as input.
+    The LSTM model is created with a single LSTM layer, followed by a dropout layer and a dense layer. The LSTM layer, with
+    return_sequences=False, only returns the final hidden state output. This architecture is commonly used when only the final
+    prediction for the sequence is needed, without considering the temporal dependencies within the sequence.
+    The model is trained using the training data, and predictions are made on the test data. During training, the
+    function calculates and accumulates metrics such as root mean squared error (RMSE) and mean absolute percentage error (MAPE).
+    These metrics provide insights into the model's performance.`
     return (
         <CommonModel description={description} api={api} fullForm={props.fullForm} isDisabledUnits={false} isDisabledDropRate={false} />
     )
