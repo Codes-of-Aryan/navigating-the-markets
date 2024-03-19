@@ -196,7 +196,7 @@ export default function CommonModel(props) {
                     m={4}
                     variant="brand"
                 >
-                    visualize
+                    learn more
                 </Button>
             </Flex>
 

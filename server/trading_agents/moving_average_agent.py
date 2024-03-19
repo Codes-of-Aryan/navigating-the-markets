@@ -149,14 +149,13 @@ def buy_stock(
     total_gains = initial_money - starting_money
     return logs, states_buy, states_sell, total_gains, invest
 
-def main(debug, show_graph, df_path="../dataset/GOOG-year.csv"): 
-    df = get_df(df_path)
+def move(debug, show_graph, df, initial_money, max_buy, max_sell):
     # if debug: print(df.head(5))
     
     signals = get_signals(df)
     # if debug: print(signals)
-
-    logs, states_buy, states_sell, total_gains, invest = buy_stock(df=df, debug=debug, real_movement=df.Close, signal=signals['positions'], initial_money = 10000, max_buy = 1, max_sell = 1)
+    print("\n\ninside function running moving average agent\n\n")
+    logs, states_buy, states_sell, total_gains, invest = buy_stock(df=df, debug=debug, real_movement=df.Close, signal=signals['positions'], initial_money=initial_money, max_buy=max_buy, max_sell=max_sell)
 
     
     if show_graph: 
@@ -168,8 +167,10 @@ def main(debug, show_graph, df_path="../dataset/GOOG-year.csv"):
         plt.title('total gains %f, total investment %f%%'%(total_gains, invest))
         plt.legend()
         plt.show()
+
+    return logs, states_buy, states_sell, total_gains, invest
     
 
-if __name__ == '__main__':
-    df_path = "../dataset/GOOG-year.csv"
-    main(debug=True, show_graph=True, df_path=df_path)
+# if __name__ == '__main__':
+#     df_path = "../dataset/GOOG-year.csv"
+#     main(debug=True, show_graph=True, df_path=df_path)

@@ -1,10 +1,4 @@
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
-
-def get_df(df_path): 
-    return pd.read_csv(df_path)
 
 def buy_stock(
     df, 
@@ -154,11 +148,10 @@ def buy_stock(
     total_gains = initial_money - starting_money
     return logs, states_buy, states_sell, total_gains, invest
 
-def main(debug, show_graph, df_path="../dataset/GOOG-year.csv"): 
-    df = get_df(df_path)
+def roll(debug, show_graph, df, initial_money, max_buy, max_sell): 
     # if debug: print(df.head(5))
-
-    logs, states_buy, states_sell, total_gains, invest = buy_stock(df=df, debug=debug, real_movement=df.Close, initial_state=1, delay=4, initial_money=10000)
+    print("\n\ninside function running single rolling agent\n\n")
+    logs, states_buy, states_sell, total_gains, invest = buy_stock(df=df, debug=debug, real_movement=df.Close, initial_state=1, delay=4, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell)
 
     if show_graph:
         close = df['Close']
@@ -169,8 +162,9 @@ def main(debug, show_graph, df_path="../dataset/GOOG-year.csv"):
         plt.title('total gains %f, total investment %f%%'%(total_gains, invest))
         plt.legend()
         plt.show()
+    return logs, states_buy, states_sell, total_gains, invest
     
     
-if __name__ == '__main__':
-    df_path = "../dataset/GOOG-year.csv"
-    main(debug=True, show_graph=True, df_path=df_path)
+# if __name__ == '__main__':
+#     df_path = "../dataset/GOOG-year.csv"
+#     main(debug=True, show_graph=True, df_path=df_path)

@@ -12,6 +12,11 @@ import deep_learning_models.basic_ann_model as ann
 import deep_learning_models.autoendcoder_model as autoenc
 import deep_learning_models.rnn_model as rnn
 
+import trading_agents.turtle_agent as ta
+import trading_agents.signal_rolling_agent as sra
+import trading_agents.moving_average_agent as maa
+import trading_agents.evolution_strategy_agent as esa
+
 import pandas as pd
 import time
 import threading
@@ -30,6 +35,133 @@ def allowed_file(filename):
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
+
+@app.route("/turtle_agent", methods=['POST'])
+def turtle_agent(): 
+    print("Received Request | turtle_agent")
+    
+    stk_data = request.files['file']
+    print(f"FileName: {stk_data.filename}")
+    
+    if stk_data and allowed_file(stk_data.filename):
+        stk_data.save(secure_filename(stk_data.filename))
+        stk_data = pd.read_csv(stk_data.filename)
+    else:
+        return "<p>upload correct file</p>"
+    
+    data = json.loads(request.form['data'])
+    print(f"Data: {data}")
+    
+    # user can input the following values from the form:
+    initial_money = data['initial_money']
+    max_buy = data['max_buy']
+    max_sell = data['max_sell']
+
+    print(f"running | turtle_agent")
+    states_buy, states_sell, total_gains, invest, logs = ta.turtle(debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
+    print(states_buy)
+    print(states_sell)
+    print(total_gains)
+    print(invest)
+    print(logs)
+
+    response = {"fycjk": "this is turtle agent"}
+    return jsonify(response)
+
+@app.route("/moving_average_agent", methods=['POST'])
+def moving_average_agent(): 
+    print("Received Request | moving_average_agent")
+    
+    stk_data = request.files['file']
+    print(f"FileName: {stk_data.filename}")
+    
+    if stk_data and allowed_file(stk_data.filename):
+        stk_data.save(secure_filename(stk_data.filename))
+        stk_data = pd.read_csv(stk_data.filename)
+    else:
+        return "<p>upload correct file</p>"
+    
+    data = json.loads(request.form['data'])
+    print(f"Data: {data}")
+    
+    # user can input the following values from the form:
+    initial_money = data['initial_money']
+    max_buy = data['max_buy']
+    max_sell = data['max_sell']
+
+    print(f"running | moving_average_agent")
+    states_buy, states_sell, total_gains, invest, logs = maa.move(debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
+    print(states_buy)
+    print(states_sell)
+    print(total_gains)
+    print(invest)
+    print(logs)
+
+    response = {"fycjk": "this is moving average agent"}
+    return jsonify(response)
+
+@app.route("/single_rolling_agent", methods=['POST'])
+def single_rolling_agent(): 
+    print("Received Request | single_rolling_agent")
+    
+    stk_data = request.files['file']
+    print(f"FileName: {stk_data.filename}")
+    
+    if stk_data and allowed_file(stk_data.filename):
+        stk_data.save(secure_filename(stk_data.filename))
+        stk_data = pd.read_csv(stk_data.filename)
+    else:
+        return "<p>upload correct file</p>"
+    
+    data = json.loads(request.form['data'])
+    print(f"Data: {data}")
+    
+    # user can input the following values from the form:
+    initial_money = data['initial_money']
+    max_buy = data['max_buy']
+    max_sell = data['max_sell']
+
+    print(f"running | single_rolling_agent")
+    states_buy, states_sell, total_gains, invest, logs = sra.roll(debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
+    print(states_buy)
+    print(states_sell)
+    print(total_gains)
+    print(invest)
+    print(logs)
+
+    response = {"fycjk": "this is single rolling agent"}
+    return jsonify(response)
+
+@app.route("/evolution_stratergy_agent", methods=['POST'])
+def evolution_stratergy_agent(): 
+    print("Received Request | evolution_stratergy_agent")
+    
+    stk_data = request.files['file']
+    print(f"FileName: {stk_data.filename}")
+    
+    if stk_data and allowed_file(stk_data.filename):
+        stk_data.save(secure_filename(stk_data.filename))
+        stk_data = pd.read_csv(stk_data.filename)
+    else:
+        return "<p>upload correct file</p>"
+    
+    data = json.loads(request.form['data'])
+    print(f"Data: {data}")
+    
+    # user can input the following values from the form:
+    initial_money = data['initial_money']
+    max_buy = data['max_buy']
+    max_sell = data['max_sell']
+
+    print(f"running | evolution_stratergy_agent")
+    logs, states_buy, states_sell = esa.evolve(df=stk_data)
+    print(states_buy)
+    print(states_sell)
+    print(logs)
+
+    response = {"fycjk": "this is evolution stratergy agent"}
+    return jsonify(response)
+
 
 @app.route("/lstm_model_one", methods=['POST'])
 def lstm_model_one():
