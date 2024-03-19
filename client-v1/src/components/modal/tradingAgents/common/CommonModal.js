@@ -25,7 +25,6 @@ import {
 } from "@chakra-ui/react";
 
 import React, { useState, useRef } from "react";
-import axios from "axios";
 
 import { SettingsIcon, ArrowUpIcon, RepeatIcon } from "@chakra-ui/icons";
 
@@ -34,7 +33,6 @@ import LossGraph from "./LossGraph";
 import WaitingBox from "./WaitingBox";
 import WaitingBox2 from "./WaitingBox2";
 import InitialGraph from "./StartingGraph";
-import Card from "components/card/Card";
 
 export default function CommonModel(props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -109,7 +107,7 @@ export default function CommonModel(props) {
         setUnits(event.target.value);
     };
 
-    const handleTrainClick = async () => {
+    const handleTrainClick = () => {
         // Validation Checks
         if (
             !dropRate ||
@@ -154,26 +152,36 @@ export default function CommonModel(props) {
         );
 
         console.log("Sending Request");
-        try {
-            const response = await axios.post(props.api, fd);
-
-            const data = response.data;
-            console.log(data);
-            setTrainDate(data["date_train"]);
-            setTrainOriginalPrice(data["train_original_price"]);
-            setValidDate(data["date_valid"]);
-            setValidOriginalPrice(data["valid_original_price"]);
-            setTrainPredictionPrice(data["train_prediction_price"]);
-            setValidPredictionPrice(data["valid_prediction_price"]);
-            setMeanMape(data["mean_mape"]);
-            setMeanNormRmse(data["mean_norm_rmse"]);
-            setMeanRmse(data["mean_rmse"]);
-            setModelLoss(data["model_loss"]);
-            setLoading(false);
-            setIsTraining(false);
-        } catch (error) {
-            console.log(error);
-        }
+        fetch(props.api, {
+            method: "POST",
+            body: fd,
+            mode: "cors",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "GET, POST, PUT",
+                "Access-Control-Allow-Credentials": true,
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setTrainDate(data["date_train"]);
+                setTrainOriginalPrice(data["train_original_price"]);
+                setValidDate(data["date_valid"]);
+                setValidOriginalPrice(data["valid_original_price"]);
+                setTrainPredictionPrice(data["train_prediction_price"]);
+                setValidPredictionPrice(data["valid_prediction_price"]);
+                setMeanMape(data["mean_mape"]);
+                setMeanNormRmse(data["mean_norm_rmse"]);
+                setMeanRmse(data["mean_rmse"]);
+                setModelLoss(data["model_loss"]);
+                setLoading(false);
+                setIsTraining(false);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -188,7 +196,7 @@ export default function CommonModel(props) {
                     m={4}
                     variant="brand"
                 >
-                    visualize
+                    learn more
                 </Button>
             </Flex>
 
@@ -215,7 +223,11 @@ export default function CommonModel(props) {
                             alignItems="center"
                             justifyContent="space-between"
                         >
-                            <Button colorScheme="telegram" variant="solid" onClick={openForm}>
+                            <Button
+                                colorScheme="teal"
+                                variant="outline"
+                                onClick={openForm}
+                            >
                                 {" "}
                                 <SettingsIcon boxSize={8} color="black" />{" "}
                                 &nbsp; Settings{" "}
@@ -235,16 +247,16 @@ export default function CommonModel(props) {
                                 )}
                                 <Button
                                     leftIcon={<ArrowUpIcon />}
-                                    colorScheme="twitter"
-                                    variant="solid"
+                                    colorScheme="blue"
+                                    variant="outline"
                                     onClick={handleClick}
                                 >
                                     Upload CSV
                                 </Button>
                                 <Button
                                     leftIcon={<RepeatIcon />}
-                                    colorScheme="red"
-                                    variant="solid"
+                                    colorScheme="yellow"
+                                    variant="outline"
                                     onClick={handleTrainClick}
                                 >
                                     Train
@@ -411,28 +423,41 @@ export default function CommonModel(props) {
                         {loading ? (
                             <WaitingBox2 />
                         ) : (
-                            // <Center w="80%" style={{ marginBottom: 100, marginLeft: 150 }}>
-                            <Box p={10} style={{ marginBottom: 40, display: 'flex', alignItems: 'center' }}>
-                                <Card p="50px" w='60%' style={{ border: "1px solid gray", marginRight: "30px" }}>
-                                    <Text as='i' mb='10px'> Mean Norm RMSE over 10 iterations</Text>
-                                    <Text as='b'>{meanNormRmse} </Text>
-                                </Card>
-                                <Card p="50px" w='60%' style={{ border: "1px solid gray", marginRight: "30px" }}>
-                                    <Text as='i' mb='10px'> Mean RMSE over 10 iterations </Text>
-                                    <Text as='b'> {meanRmse}</Text>
-                                </Card>
-                                <Card p="50px" w='60%' style={{ border: "1px solid gray", marginRight: "30px" }}>
-                                    <Text as='i' mb='10px'> Mean Mape over 10 iterations</Text>
-                                    <Text as='b'> {meanMape}</Text>
-                                </Card>
-                            </Box>
-                            // </Center>
+                            <Center
+                                w="80%"
+                                style={{ marginBottom: 100, marginLeft: 150 }}
+                            >
+                                <StatGroup>
+                                    <Stat style={{ marginRight: 100 }}>
+                                        <StatLabel>
+                                            Mean Norm RMSE over 10 iterations
+                                        </StatLabel>
+                                        <StatNumber>{meanNormRmse}</StatNumber>
+                                    </Stat>
+
+                                    <Stat style={{ marginRight: 100 }}>
+                                        <StatLabel>
+                                            Mean RMSE over 10 iterations
+                                        </StatLabel>
+                                        <StatNumber>{meanRmse}</StatNumber>
+                                    </Stat>
+
+                                    <Stat>
+                                        <StatLabel>
+                                            Mean Mape over 10 iterations
+                                        </StatLabel>
+                                        <StatNumber>{meanMape}</StatNumber>
+                                    </Stat>
+                                </StatGroup>
+                            </Center>
                         )}
                         <Flex>
-                            <Box w="50%" style={{ marginRight: 100 }}>
-                                <Card p="20px" style={{ border: "1px solid gray" }}>
-                                    <Text >{props.description}</Text>
-                                </Card>
+                            <Box
+                                w="50%"
+                                color="black"
+                                style={{ marginRight: 100 }}
+                            >
+                                <Text color="black">{props.description}</Text>
                             </Box>
                             <Box>
                                 {loading ? (

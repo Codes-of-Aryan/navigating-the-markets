@@ -30,7 +30,7 @@ export default function Banner() {
                 fontWeight="700"
                 lineHeight={{ base: "32px", md: "42px" }}
             >
-                Enter the financial markets in 2024!
+                Enter financial markets in 2024!
             </Text>
             <Text
                 fontSize="md"

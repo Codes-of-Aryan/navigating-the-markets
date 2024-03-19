@@ -1,7 +1,8 @@
 import React from "react";
 
 import { Icon } from "@chakra-ui/react";
-import { MdBarChart, MdPerson, MdOutlineShoppingCart, MdChat, MdLogin } from "react-icons/md";
+import TradingAgentsPage from "views/admin/tradingAgentsPage";
+import { MdBarChart, MdPerson, MdOutlineShoppingCart, MdChat, MdLogin, MdHomeWork } from "react-icons/md";
 import Widget from "views/admin/widgetPage";
 import AlgorithmicTrading from "views/admin/algorithmicTradingPage";
 import DiscussionForum from "views/admin/discussionForum";
@@ -33,10 +34,19 @@ const routes = [
         component: AlgorithmicTrading,
     },
     {
+        name: "Trading Agents",
+        layout: "/admin",
+        icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+        path: "/tradingagents",
+        component: TradingAgentsPage,
+    },
+    {
         name: "FinGPT",
         layout: "/admin",
         path: "/fingpt",
-        icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+        icon: (
+            <Icon as={MdHomeWork} width="20px" height="20px" color="inherit" />
+        ),
         // component: FinGPT,
     },
     {

@@ -1,17 +1,9 @@
-import {
-    Box,
-    Flex,
-    Image,
-    Text,
-    useColorModeValue,
-    Link,
-    Button,
-} from "@chakra-ui/react";
+import { Box, Flex, Image, Text, useColorModeValue } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import React from "react";
-import AnnModal from "components/modal/algoTrading/AnnModal";
+import MovingAverageAgentModal from "components/modal/tradingAgents/MovingAverageAgent";
 
-export default function Ann(props) {
+export default function MovingAverageAgent(props) {
     const { image, fullModelName, modelName } = props;
     const textColor = useColorModeValue("navy.700", "white");
     return (
@@ -78,7 +70,7 @@ export default function Ann(props) {
                         }}
                         mt="25px"
                     >
-                        <AnnModal fullForm={fullModelName} />
+                        <MovingAverageAgentModal fullForm={fullModelName} />
                     </Flex>
                 </Flex>
             </Flex>

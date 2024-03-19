@@ -1,11 +1,6 @@
-# imports 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from collections import defaultdict
-
-def get_df(df_path): 
-    return pd.read_csv(df_path)
 
 def get_signals(df): 
     count = int(np.ceil(len(df) * 0.1))
@@ -151,14 +146,13 @@ def buy_stock(
     return states_buy, states_sell, total_gains, invest, logs
     
 
-def main(debug, show_graph, df_path="../dataset/GOOG-year.csv"): 
-    df = get_df(df_path)
+def turtle(debug, show_graph, df, initial_money, max_buy, max_sell): 
     # if debug: print(df.head(5))
     
     signals = get_signals(df)
     # if debug: print(signals)
 
-    states_buy, states_sell, total_gains, invest, logs = buy_stock(debug=debug, real_movement=df.Close, signal=signals['signal'], df=df, initial_money = 10000, max_buy=1, max_sell=1)
+    states_buy, states_sell, total_gains, invest, logs = buy_stock(debug=debug, real_movement=df.Close, signal=signals['signal'], df=df, initial_money = initial_money, max_buy=max_buy, max_sell=max_sell)
     close = df['Close']
 
     if show_graph:
@@ -169,8 +163,9 @@ def main(debug, show_graph, df_path="../dataset/GOOG-year.csv"):
         plt.title('total gains %f, total investment %f%%'%(total_gains, invest))
         plt.legend()
         plt.show()
+    return states_buy, states_sell, total_gains, invest, logs
 
 
-if __name__ == '__main__':
-    df_path = "../dataset/GOOG-year.csv"
-    main(debug=True, show_graph=True, df_path=df_path)
+# if __name__ == '__main__':
+#     df_path = "../dataset/GOOG-year.csv"
+#     turtle(debug=True, show_graph=True, df_path=df_path)
