@@ -791,22 +791,27 @@ def comments(id):
 @app.route('/finllm', methods=['GET', 'POST'])
 def finllm():
     print("Received Request | finllm")
+    news = "No News Selected"
 
     data = json.loads(request.form['data'])
     print(f"Data: {data}")
 
     # user can input the following values from the form:
-    input_ticker = data['ticker']
-    isNews = data['isNews']
+    # input_ticker = data['ticker']
+    # isNews = data['isNews']
 
-    response = {}
+    # response = {}
 
-    response['forecast'] = rgpt.get_response(input_ticker)
-    if isNews == '1':
-        news = gn.get_news(input_ticker)
-        response['news'] = news
-    else:
-        response['news'] = ""
-
-    print('response: ', response)  # debug
+    # response['forecast'] = rgpt.get_response(input_ticker)
+    # if isNews:
+    #     news = gn.get_news(input_ticker)
+    #     response['news'] = news
+    # else:
+    #     response['news'] = ""
+    response = {"positiveDevelopments" : "These are the positive developments", "potentialConcerns" : "These are the negative developments", "predictionAnlysis": "This is the prediction analysis", "summary": "This is the summary", "news": news}
+    # print('response: ', response)  # debug
     return jsonify(response)
+
+
+# Request: Data: {'ticker': 'HON', 'isNews': False}
+# Response: { news: "No News Selected", positiveDevelopments: "These are the positive developments", potentialConcerns: "These are the negative developments", predictionAnlysis: "This is the prediction analysis", summary: "This is the summary" }

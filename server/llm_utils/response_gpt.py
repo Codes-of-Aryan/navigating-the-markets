@@ -10,9 +10,9 @@ import pandas as pd
 import yfinance as yf
 import datetime
 from collections import defaultdict
-import data_preparation
-import prompt_generation
-from openai import OpenAI
+# import data_preparation as dp
+# import prompt_generation
+# from openai import OpenAI
 
 
 def get_response(company):
