@@ -34,7 +34,13 @@ export default function AmazonModal(props) {
     return (
         <>
             {sizes.map((size) => (
-                <Button onClick={() => handleSizeClick(size)} key={size} m={4}>
+                <Button
+                    onClick={() => handleSizeClick(size)}
+                    key={size}
+                    m={4}
+                    variant="brand"
+                // background={textColor}
+                >
                     learn more
                 </Button>
             ))}

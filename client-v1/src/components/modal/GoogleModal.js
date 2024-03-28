@@ -34,7 +34,9 @@ export default function GoogleModal(props) {
     return (
         <>
             {sizes.map((size) => (
-                <Button onClick={() => handleSizeClick(size)} key={size} m={4}>
+                <Button onClick={() => handleSizeClick(size)} key={size} m={4}
+                    style={{ marginTop: "20px" }}
+                    variant="brand">
                     learn more
                 </Button>
             ))}

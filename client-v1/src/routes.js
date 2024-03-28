@@ -2,9 +2,10 @@ import React from "react";
 
 import { Icon } from "@chakra-ui/react";
 import TradingAgentsPage from "views/admin/tradingAgentsPage";
-import { MdBarChart, MdPerson, MdOutlineShoppingCart, MdChat, MdLogin, MdHomeWork } from "react-icons/md";
+import { MdChat, MdLogin, MdCalendarViewDay, MdCurrencyExchange, MdAutoGraph, MdOutlineIntegrationInstructions } from "react-icons/md";
 import Widget from "views/admin/widgetPage";
 import AlgorithmicTrading from "views/admin/algorithmicTradingPage";
+import FinLLM from "views/admin/finLLM";
 import DiscussionForum from "views/admin/discussionForum";
 import SignUpLogin from "views/admin/signUpLogin";
 
@@ -15,7 +16,7 @@ const routes = [
         path: "/default",
         icon: (
             <Icon
-                as={MdOutlineShoppingCart}
+                as={MdCalendarViewDay}
                 width="20px"
                 height="20px"
                 color="inherit"
@@ -28,7 +29,7 @@ const routes = [
         name: "Algorithmic Trading",
         layout: "/admin",
         icon: (
-            <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />
+            <Icon as={MdAutoGraph} width="20px" height="20px" color="inherit" />
         ),
         path: "/algotrading",
         component: AlgorithmicTrading,
@@ -36,18 +37,18 @@ const routes = [
     {
         name: "Trading Agents",
         layout: "/admin",
-        icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+        icon: <Icon as={MdCurrencyExchange} width="20px" height="20px" color="inherit" />,
         path: "/tradingagents",
         component: TradingAgentsPage,
     },
     {
-        name: "FinGPT",
+        name: "FinLLM",
         layout: "/admin",
-        path: "/fingpt",
+        path: "/finllm",
         icon: (
-            <Icon as={MdHomeWork} width="20px" height="20px" color="inherit" />
+            <Icon as={MdOutlineIntegrationInstructions} width="20px" height="20px" color="inherit" />
         ),
-        // component: FinGPT,
+        component: FinLLM,
     },
     {
         name: "Sign Up - Login",

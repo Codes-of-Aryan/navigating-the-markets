@@ -4,8 +4,6 @@ import {
     Image,
     Text,
     useColorModeValue,
-    Link,
-    Button,
 } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import React from "react";
@@ -61,6 +59,7 @@ export default function Ann(props) {
                                 }}
                                 fontWeight="400"
                                 me="14px"
+                                style={{ marginBottom: "20px" }}
                             >
                                 {fullModelName}
                             </Text>
