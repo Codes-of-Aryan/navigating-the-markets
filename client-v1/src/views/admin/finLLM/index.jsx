@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 import FinLLMBox from "./finLLMBox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function WidgetPage() {
@@ -85,7 +85,7 @@ export default function WidgetPage() {
       setLLMNews(data["news"]);
       //   setLoading(false);
       //   setIsTraining(false);
-      if (setNews) {
+      if (isNews) {
         setShowNews(true);
       } else {
         setShowNews(false);

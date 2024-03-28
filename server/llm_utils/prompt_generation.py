@@ -10,12 +10,13 @@ import pandas as pd
 import yfinance as yf
 import datetime
 from collections import defaultdict
-import data_preparation
+from .data_preparation import *
+import data_preparation as dp
 
 finnhub_client = finnhub.Client(
     api_key=os.environ["FINNHUB_API_KEY"])
 
-START_DATE, END_DATE = data_preparation.get_start_end_dates()
+START_DATE, END_DATE = dp.get_start_end_dates()
 
 DATA_DIR = f"./{START_DATE}_{END_DATE}"
 
