@@ -16,11 +16,6 @@ import {
     InputLeftAddon,
     Input,
     Text,
-    Stat,
-    StatGroup,
-    StatLabel,
-    StatNumber,
-    Center,
     Spinner,
 } from "@chakra-ui/react";
 
@@ -29,14 +24,12 @@ import axios from "axios";
 
 import { SettingsIcon, ArrowUpIcon, RepeatIcon } from "@chakra-ui/icons";
 
-import StockChart from "./StockChart";
-import LossGraph from "./LossGraph";
-import WaitingBox from "./WaitingBox";
-import WaitingBox2 from "./WaitingBox2";
-import InitialGraph from "./StartingGraph";
+import EvolutionStratergyStockChart from "./EvolutionStratergyStockChart";
+import EvolutionStratergyLogWaitingBox from "./EvolutionStratergyLogWaitingBox";
+import EvolutionStratergyModelInformation from "./EvolutionStratergyModelInformation";
 import Card from "components/card/Card";
 
-export default function CommonModel(props) {
+export default function EvolutionStratergyAgentModal(props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const textColor = useColorModeValue("navy.700", "white");
@@ -44,23 +37,18 @@ export default function CommonModel(props) {
     // States
     const [size, setSize] = useState("md");
     const [open, setIsOpen] = useState(false);
-    const [batchSize, setBatchSize] = useState("8");
-    const [epochs, setEpochs] = useState("50");
-    const [windowSize, setWindowSize] = useState("3");
-    const [trainRate, setTrainRate] = useState("0.8");
-    const [dropRate, setDropRate] = useState("0.15");
-    const [units, setUnits] = useState("80");
+    const [initialMoney, setInitialMoney] = useState("1000");
+    const [maxBuy, setMaxBuy] = useState("1");
+    const [maxSell, setMaxSell] = useState("1");
+    const [iterations, setIterations] = useState("500");
+    const [checkpoint, setCheckpoint] = useState("10");
+    // const [maxSell, setMaxSell] = useState("1");
+    const [investmentReturns, setInvestmentReturns] = useState(0);
+    const [logs, setLogs] = useState([]);
+    const [statesBuy, setStatesBuy] = useState([]);
+    const [statesSell, setStatesSell] = useState([]);
+    const [close, setClose] = useState([]);
     const [csv, setCsv] = useState(null);
-    const [trainDate, setTrainDate] = useState([]);
-    const [validDate, setValidDate] = useState([]);
-    const [trainOriginalPrice, setTrainOriginalPrice] = useState([]);
-    const [validOriginalPrice, setValidOriginalPrice] = useState([]);
-    const [validPredictionPrice, setValidPredictionPrice] = useState([]);
-    const [trainPredictionPrice, setTrainPredictionPrice] = useState([]);
-    const [modelLoss, setModelLoss] = useState([]);
-    const [meanMape, setMeanMape] = useState([]);
-    const [meanNormRmse, setMeanNormRmse] = useState([]);
-    const [meanRmse, setMeanRmse] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isTraining, setIsTraining] = useState(false);
 
@@ -85,54 +73,41 @@ export default function CommonModel(props) {
         setIsOpen(!open);
     };
 
-    const handleBatchSizeChange = (event) => {
-        setBatchSize(event.target.value);
+    const handleInitialMoneyChange = (event) => {
+        setInitialMoney(event.target.value);
     };
 
-    const handleTrainRateChange = (event) => {
-        setTrainRate(event.target.value);
+    const handleIterationsChange = (event) => {
+        setIterations(event.target.value);
+    };
+    const handleCheckpointChange = (event) => {
+        setInitialMoney(event.target.value);
     };
 
-    const handleWindowSizeChange = (event) => {
-        setWindowSize(event.target.value);
+    const handleMaxBuyChange = (event) => {
+        setMaxBuy(event.target.value);
     };
 
-    const handleDropRateChange = (event) => {
-        setDropRate(event.target.value);
-    };
-
-    const handleEpochsChange = (event) => {
-        setEpochs(event.target.value);
-    };
-
-    const handleUnitsChange = (event) => {
-        setUnits(event.target.value);
+    const handleMaxSellChange = (event) => {
+        setMaxSell(event.target.value);
     };
 
     const handleTrainClick = async () => {
         // Validation Checks
-        if (
-            !dropRate ||
-            !trainRate ||
-            !epochs ||
-            !units ||
-            !windowSize ||
-            !batchSize
-        ) {
+        if (!initialMoney || !maxBuy || !maxSell) {
             alert("Please enter valid numbers/decimals for all fields.");
             return;
         } else if (!csv) {
-            alert("Please upload csv.");
+            alert("Please upload an OHLCV csv!");
             return;
         }
         // converting the inputs from string to float
         try {
-            var convertedWindowSize = parseFloat(windowSize);
-            var convertedTrainRate = parseFloat(trainRate);
-            var convertedDropRate = parseFloat(dropRate);
-            var convertedBatchSize = parseFloat(batchSize);
-            var convertedLstmGruUnits = parseFloat(units);
-            var convertedEpochs = parseFloat(epochs);
+            var convertedInitialMoney = parseFloat(initialMoney);
+            var convertedMaxBuy = parseFloat(maxBuy);
+            var convertedMaxSell = parseFloat(maxSell);
+            var convertedIterations = parseFloat(iterations);
+            var convertedCheckpoint = parseFloat(checkpoint);
         } catch (error) {
             alert("Please enter valid numbers/decimals for all fields.");
             return;
@@ -144,12 +119,11 @@ export default function CommonModel(props) {
         fd.append(
             "data",
             JSON.stringify({
-                window_size: convertedWindowSize,
-                train_rate: convertedTrainRate,
-                drop_rate: convertedDropRate,
-                batch_size: convertedBatchSize,
-                lstm_gru_units: convertedLstmGruUnits,
-                epochs: convertedEpochs,
+                initial_money: convertedInitialMoney,
+                max_buy: convertedMaxBuy,
+                max_sell: convertedMaxSell,
+                iterations: convertedIterations,
+                checkpoint: convertedCheckpoint,
             })
         );
 
@@ -158,19 +132,17 @@ export default function CommonModel(props) {
             const response = await axios.post(props.api, fd);
 
             const data = response.data;
+            console.log();
+            console.log("DATA RETURNED BACK from evolution agent: ");
             console.log(data);
-            setTrainDate(data["date_train"]);
-            setTrainOriginalPrice(data["train_original_price"]);
-            setValidDate(data["date_valid"]);
-            setValidOriginalPrice(data["valid_original_price"]);
-            setTrainPredictionPrice(data["train_prediction_price"]);
-            setValidPredictionPrice(data["valid_prediction_price"]);
-            setMeanMape(data["mean_mape"]);
-            setMeanNormRmse(data["mean_norm_rmse"]);
-            setMeanRmse(data["mean_rmse"]);
-            setModelLoss(data["model_loss"]);
+            console.log();
+            setInvestmentReturns(data["invest"]);
+            setLogs(data["logs"]);
+            setStatesBuy(data["states_buy"]);
+            setStatesSell(data["states_sell"]);
             setLoading(false);
             setIsTraining(false);
+            setClose(data["close"]);
         } catch (error) {
             console.log(error);
         }
@@ -188,7 +160,7 @@ export default function CommonModel(props) {
                     m={4}
                     variant="brand"
                 >
-                    visualize
+                    learn more
                 </Button>
             </Flex>
 
@@ -215,10 +187,14 @@ export default function CommonModel(props) {
                             alignItems="center"
                             justifyContent="space-between"
                         >
-                            <Button colorScheme="telegram" variant="solid" onClick={openForm}>
+                            <Button
+                                colorScheme="telegram"
+                                variant="solid"
+                                onClick={openForm}
+                            >
                                 {" "}
                                 <SettingsIcon boxSize={8} color="black" />{" "}
-                                &nbsp; Settings{" "}
+                                &nbsp; Tune Hyperparameters{" "}
                             </Button>
                             <Stack direction="row">
                                 <Input
@@ -226,7 +202,6 @@ export default function CommonModel(props) {
                                     display="none"
                                     onChange={handleFileUpload}
                                     ref={hiddenFileInput}
-                                    // accept=".csv"
                                 />
                                 {isTraining ? (
                                     <Spinner style={{ marginRight: 50 }} />
@@ -239,7 +214,7 @@ export default function CommonModel(props) {
                                     variant="solid"
                                     onClick={handleClick}
                                 >
-                                    Upload CSV
+                                    Upload OHLCV CV
                                 </Button>
                                 <Button
                                     leftIcon={<RepeatIcon />}
@@ -247,7 +222,7 @@ export default function CommonModel(props) {
                                     variant="solid"
                                     onClick={handleTrainClick}
                                 >
-                                    Train
+                                    Train using uploaded data
                                 </Button>
                             </Stack>
                         </Box>
@@ -275,14 +250,14 @@ export default function CommonModel(props) {
                                         color="white"
                                         bg="black"
                                     >
-                                        Window Size
+                                        Initial Money
                                     </InputLeftAddon>
                                     <Input
                                         type="number"
                                         bg="#fff"
-                                        placeholder="window size"
-                                        defaultValue={windowSize}
-                                        onChange={handleWindowSizeChange}
+                                        placeholder="initial money"
+                                        defaultValue={initialMoney}
+                                        onChange={handleInitialMoneyChange}
                                         variant="filled"
                                         size="sm"
                                         width="60"
@@ -293,14 +268,14 @@ export default function CommonModel(props) {
                                         color="white"
                                         bg="black"
                                     >
-                                        Train Rate
+                                        Maximum Quantity to Buy in One Trade
                                     </InputLeftAddon>
                                     <Input
                                         type="number"
                                         bg="#fff"
-                                        placeholder="train rate"
-                                        defaultValue={trainRate}
-                                        onChange={handleTrainRateChange}
+                                        placeholder="maximum buy money"
+                                        defaultValue={maxBuy}
+                                        onChange={handleMaxBuyChange}
                                         variant="filled"
                                         size="sm"
                                         width="60"
@@ -311,15 +286,14 @@ export default function CommonModel(props) {
                                         color="white"
                                         bg="black"
                                     >
-                                        Drop Rate
+                                        Maximum Quantity to Sell in One Trade
                                     </InputLeftAddon>
                                     <Input
-                                        isDisabled={props.isDisabledDropRate}
                                         type="number"
                                         bg="#fff"
-                                        placeholder="drop rate"
-                                        defaultValue={dropRate}
-                                        onChange={handleDropRateChange}
+                                        placeholder="max sell"
+                                        defaultValue={maxSell}
+                                        onChange={handleMaxSellChange}
                                         variant="filled"
                                         size="sm"
                                         width="60"
@@ -327,62 +301,38 @@ export default function CommonModel(props) {
                                     />
                                 </InputGroup>
 
-                                <InputGroup
-                                    size="sm"
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        margin: 20,
-                                    }}
-                                >
+                                <InputGroup>
                                     <InputLeftAddon
                                         marginRight="10"
                                         color="white"
                                         bg="black"
                                     >
-                                        Batch Size
+                                        Iterations
                                     </InputLeftAddon>
                                     <Input
-                                        type="number"
-                                        placeholder="batch size"
-                                        defaultValue={batchSize}
-                                        onChange={handleBatchSizeChange}
-                                        variant="filled"
-                                        size="sm"
-                                        width="60"
-                                        marginRight="10"
-                                    />
-                                    <InputLeftAddon
-                                        marginRight="10"
-                                        color="white"
-                                        bg="black"
-                                    >
-                                        Epochs
-                                    </InputLeftAddon>
-                                    <Input
-                                        isRequired="True"
-                                        placeholder="epochs"
-                                        defaultValue={epochs}
-                                        onChange={handleEpochsChange}
-                                        variant="filled"
-                                        size="sm"
-                                        width="60"
-                                        marginRight="10"
-                                    />
-                                    <InputLeftAddon
-                                        marginRight="10"
-                                        color="white"
-                                        bg="black"
-                                    >
-                                        LSTM/GRU Units
-                                    </InputLeftAddon>
-                                    <Input
-                                        isDisabled={props.isDisabledUnits}
                                         type="number"
                                         bg="#fff"
-                                        placeholder="units"
-                                        defaultValue={units}
-                                        onChange={handleUnitsChange}
+                                        placeholder="iterations"
+                                        defaultValue={iterations}
+                                        onChange={handleIterationsChange}
+                                        variant="filled"
+                                        size="sm"
+                                        width="60"
+                                        marginRight="10"
+                                    />
+                                    <InputLeftAddon
+                                        marginRight="10"
+                                        color="white"
+                                        bg="black"
+                                    >
+                                        Checkpoint
+                                    </InputLeftAddon>
+                                    <Input
+                                        type="number"
+                                        bg="#fff"
+                                        placeholder="checkpoint"
+                                        defaultValue={checkpoint}
+                                        onChange={handleCheckpointChange}
                                         variant="filled"
                                         size="sm"
                                         width="60"
@@ -391,57 +341,40 @@ export default function CommonModel(props) {
                                 </InputGroup>
                             </Stack>
                         </Box>
-                        <Box
-                            w="100%"
-                            style={{ marginTop: 70, marginBottom: 100 }}
-                        >
-                            {loading ? (
-                                <InitialGraph />
-                            ) : (
-                                <StockChart
-                                    trainOriginalPrice={trainOriginalPrice}
-                                    trainStockDate={trainDate}
-                                    validOriginalPrice={validOriginalPrice}
-                                    validStockDate={validDate}
-                                    trainPredictionPrice={trainPredictionPrice}
-                                    validPredictionPrice={validPredictionPrice}
-                                />
-                            )}
-                        </Box>
-                        {loading ? (
-                            <WaitingBox2 />
-                        ) : (
-                            // <Center w="80%" style={{ marginBottom: 100, marginLeft: 150 }}>
-                            <Box p={10} style={{ marginBottom: 40, display: 'flex', alignItems: 'center' }}>
-                                <Card p="50px" w='60%' style={{ border: "1px solid gray", marginRight: "30px" }}>
-                                    <Text as='i' mb='10px'> Mean Norm RMSE over 10 iterations</Text>
-                                    <Text as='b'>{meanNormRmse} </Text>
-                                </Card>
-                                <Card p="50px" w='60%' style={{ border: "1px solid gray", marginRight: "30px" }}>
-                                    <Text as='i' mb='10px'> Mean RMSE over 10 iterations </Text>
-                                    <Text as='b'> {meanRmse}</Text>
-                                </Card>
-                                <Card p="50px" w='60%' style={{ border: "1px solid gray", marginRight: "30px" }}>
-                                    <Text as='i' mb='10px'> Mean Mape over 10 iterations</Text>
-                                    <Text as='b'> {meanMape}</Text>
-                                </Card>
-                            </Box>
-                            // </Center>
-                        )}
-                        <Flex>
-                            <Box w="50%" style={{ marginRight: 100 }}>
-                                <Card p="20px" style={{ border: "1px solid gray" }}>
-                                    <Text >{props.description}</Text>
-                                </Card>
-                            </Box>
-                            <Box>
-                                {loading ? (
-                                    <WaitingBox />
-                                ) : (
-                                    <LossGraph modelLoss={modelLoss} />
-                                )}
-                            </Box>
-                        </Flex>
+
+                        <EvolutionStratergyStockChart
+                            performance={performance}
+                            logs={logs}
+                            statesBuy={statesBuy}
+                            statesSell={statesSell}
+                            close={close}
+                        />
+
+                        <EvolutionStratergyModelInformation
+                            initialMoney={initialMoney}
+                            maxBuy={maxBuy}
+                            maxSell={maxSell}
+                            logs={logs}
+                        />
+                        <>
+                            <Flex>
+                                <Box w="35%" style={{ marginRight: 100 }}>
+                                    <Card
+                                        p="20px"
+                                        style={{
+                                            border: "1px solid gray",
+                                        }}
+                                    >
+                                        <Text>{props.description}</Text>
+                                    </Card>
+                                </Box>
+                                <Box>
+                                    <EvolutionStratergyLogWaitingBox
+                                        logs={logs}
+                                    />
+                                </Box>
+                            </Flex>
+                        </>
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={onClose}>Close</Button>

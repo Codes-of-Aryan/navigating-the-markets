@@ -10,7 +10,7 @@ import {
 import TurtleAgentLogo from "assets/img/tradingAgents/turtle_agent.png";
 import TurtleAgent from "components/card/tradingAgents/TurtleAgent";
 import SingleRollingAgentLogo from "assets/img/tradingAgents/single_rolling_agent.jpeg";
-import SingleRollingAgent from "components/card/tradingAgents/TurtleAgent";
+import SingleRollingAgent from "components/card/tradingAgents/SingleRollingAgent";
 import MovingAverageAgentLogo from "assets/img/tradingAgents/moving_average_agent.png";
 import MovingAverageAgent from "components/card/tradingAgents/MovingAverageAgent";
 import EvolutionStratergyAgentLogo from "assets/img/tradingAgents/evolution_stratergy_agent.jpeg";
@@ -54,7 +54,6 @@ export default function TradingAgentsPage() {
                             </Text>
                         </Flex>
                         <SimpleGrid columns={{ base: 1, md: 3 }} gap="20px">
-                            <p>balls lol</p>
                             <TurtleAgent
                                 modelName="Turtle Agent"
                                 fullModelName="Single Movement Turtle"

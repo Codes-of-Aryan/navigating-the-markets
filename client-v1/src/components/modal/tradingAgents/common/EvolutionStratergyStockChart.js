@@ -4,7 +4,7 @@ import CanvasJSReact from "@canvasjs/react-stockcharts";
 const CanvasJS = CanvasJSReact.CanvasJS;
 const CanvasJSStockChart = CanvasJSReact.CanvasJSStockChart;
 
-const StockChart = (props) => {
+const EvolutionStratergyStockChart = (props) => {
     // console.log(props);
     const limit = 252; //increase number of dataPoints by increasing this
     var y = 1000;
@@ -138,4 +138,4 @@ const StockChart = (props) => {
     );
 };
 
-export default StockChart;
+export default EvolutionStratergyStockChart;

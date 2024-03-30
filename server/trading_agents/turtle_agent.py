@@ -163,7 +163,7 @@ def turtle(debug, show_graph, df, initial_money, max_buy, max_sell):
         plt.title('total gains %f, total investment %f%%'%(total_gains, invest))
         plt.legend()
         plt.show()
-    return states_buy, states_sell, total_gains, invest, logs
+    return states_buy, states_sell, total_gains, invest, logs, close.tolist()
 
 
 # if __name__ == '__main__':
