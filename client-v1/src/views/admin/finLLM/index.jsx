@@ -123,7 +123,7 @@ export default function WidgetPage() {
           Get Current News
         </Checkbox>
         <Button colorScheme="twitter" onClick={handleOnClick} variant="outline">
-          Button
+          Run LLM!
         </Button>
       </Box>
       <Box style={{ width: "90%", margin: "auto" }}>
