@@ -20,6 +20,10 @@ import trading_agents.signal_rolling_agent as sra
 import trading_agents.moving_average_agent as maa
 import trading_agents.evolution_strategy_agent as esa
 
+# get current working directory
+import llm_utils.response_gpt as rgpt
+import llm_utils.get_news as gn
+
 import pandas as pd
 import time
 # import threading
@@ -30,42 +34,45 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'tetsst'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flaskdb.db'
- 
+
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_ECHO = True
-  
-bcrypt = Bcrypt(app) 
+
+bcrypt = Bcrypt(app)
 CORS(app, supports_credentials=True)
 db.init_app(app)
-  
+
 with app.app_context():
     db.create_all()
 
 ALLOWED_EXTENSIONS = set(['csv'])
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
 
+
 @app.route("/turtle_agent", methods=['POST'])
-def turtle_agent(): 
+def turtle_agent():
     print("Received Request | turtle_agent")
-    
+
     stk_data = request.files['file']
     print(f"FileName: {stk_data.filename}")
-    
+
     if stk_data and allowed_file(stk_data.filename):
         stk_data.save(secure_filename(stk_data.filename))
         stk_data = pd.read_csv(stk_data.filename)
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
     print(f"Data: {data}")
-    
+
     # user can input the following values from the form:
     initial_money = data['initial_money']
     max_buy = data['max_buy']
@@ -95,22 +102,23 @@ def turtle_agent():
     response = jsonify(data_dict)
     return response
 
+
 @app.route("/moving_average_agent", methods=['POST'])
-def moving_average_agent(): 
+def moving_average_agent():
     print("Received Request | moving_average_agent")
-    
+
     stk_data = request.files['file']
     print(f"FileName: {stk_data.filename}")
-    
+
     if stk_data and allowed_file(stk_data.filename):
         stk_data.save(secure_filename(stk_data.filename))
         stk_data = pd.read_csv(stk_data.filename)
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
     print(f"Data: {data}")
-    
+
     # user can input the following values from the form:
     initial_money = data['initial_money']
     max_buy = data['max_buy']
@@ -140,22 +148,23 @@ def moving_average_agent():
     response = jsonify(data_dict)
     return response
 
+
 @app.route("/single_rolling_agent", methods=['POST'])
-def single_rolling_agent(): 
+def single_rolling_agent():
     print("Received Request | single_rolling_agent")
-    
+
     stk_data = request.files['file']
     print(f"FileName: {stk_data.filename}")
-    
+
     if stk_data and allowed_file(stk_data.filename):
         stk_data.save(secure_filename(stk_data.filename))
         stk_data = pd.read_csv(stk_data.filename)
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
     print(f"Data: {data}")
-    
+
     # user can input the following values from the form:
     initial_money = data['initial_money']
     max_buy = data['max_buy']
@@ -184,22 +193,23 @@ def single_rolling_agent():
     response = jsonify(data_dict)
     return response
 
+
 @app.route("/evolution_stratergy_agent", methods=['POST'])
-def evolution_stratergy_agent(): 
+def evolution_stratergy_agent():
     print("Received Request | evolution_stratergy_agent")
-    
+
     stk_data = request.files['file']
     print(f"FileName: {stk_data.filename}")
-    
+
     if stk_data and allowed_file(stk_data.filename):
         stk_data.save(secure_filename(stk_data.filename))
         stk_data = pd.read_csv(stk_data.filename)
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
     print(f"Data: {data}")
-    
+
     # user can input the following values from the form:
     initial_money = data['initial_money']
     max_buy = data['max_buy']
@@ -240,22 +250,23 @@ def lstm_model_one():
         stk_data = pd.read_csv(stk_data.filename, index_col='Date')
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
     print(data)
 
-    window_size=data['window_size']
-    train_rate=data['train_rate']
+    window_size = data['window_size']
+    train_rate = data['train_rate']
 
-    drop_rate=data['drop_rate']
-    batch_size=data['batch_size']
-    lstm_gru_units=data['lstm_gru_units']
+    drop_rate = data['drop_rate']
+    batch_size = data['batch_size']
+    lstm_gru_units = data['lstm_gru_units']
     epochs = data['epochs']
 
     print("running")
 
     # threading.Thread(target=lstm_one, args=(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_units)).start()
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = l1.lstm_one(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_units,epochs)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = l1.lstm_one(
+        stk_data, window_size, train_rate, drop_rate, batch_size, lstm_gru_units, epochs)
 
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
@@ -280,6 +291,7 @@ def lstm_model_one():
     response = jsonify(data_dict)
     return response
 
+
 @app.route("/lstm_model_two", methods=['POST'])
 def lstm_model_two():
 
@@ -290,21 +302,22 @@ def lstm_model_two():
         stk_data = pd.read_csv(stk_data.filename, index_col='Date')
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
 
-    window_size=data['window_size']
-    train_rate=data['train_rate']
+    window_size = data['window_size']
+    train_rate = data['train_rate']
 
-    drop_rate=data['drop_rate']
-    batch_size=data['batch_size']
-    lstm_gru_units=data['lstm_gru_units']
+    drop_rate = data['drop_rate']
+    batch_size = data['batch_size']
+    lstm_gru_units = data['lstm_gru_units']
     epochs = data['epochs']
 
     print("running")
 
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = l2.lstm_two(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_units, epochs)
-    
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = l2.lstm_two(
+        stk_data, window_size, train_rate, drop_rate, batch_size, lstm_gru_units, epochs)
+
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -326,6 +339,7 @@ def lstm_model_two():
     data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
+
 
 @app.route("/lstm_model_three", methods=['POST'])
 def lstm_model_three():
@@ -337,20 +351,21 @@ def lstm_model_three():
         stk_data = pd.read_csv(stk_data.filename, index_col='Date')
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
 
-    window_size=data['window_size']
-    train_rate=data['train_rate']
+    window_size = data['window_size']
+    train_rate = data['train_rate']
 
-    drop_rate=data['drop_rate']
-    batch_size=data['batch_size']
-    lstm_gru_units=data['lstm_gru_units']
+    drop_rate = data['drop_rate']
+    batch_size = data['batch_size']
+    lstm_gru_units = data['lstm_gru_units']
     epochs = data['epochs']
 
     print("running")
 
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = l3.lstm_three(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_units,epochs)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = l3.lstm_three(
+        stk_data, window_size, train_rate, drop_rate, batch_size, lstm_gru_units, epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -372,6 +387,7 @@ def lstm_model_three():
     data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
+
 
 @app.route("/gru_model_one", methods=['POST'])
 def gru_model_one():
@@ -383,20 +399,21 @@ def gru_model_one():
         stk_data = pd.read_csv(stk_data.filename, index_col='Date')
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
 
-    window_size=data['window_size']
-    train_rate=data['train_rate']
+    window_size = data['window_size']
+    train_rate = data['train_rate']
 
-    drop_rate=data['drop_rate']
-    batch_size=data['batch_size']
-    lstm_gru_units=data['lstm_gru_units']
+    drop_rate = data['drop_rate']
+    batch_size = data['batch_size']
+    lstm_gru_units = data['lstm_gru_units']
     epochs = data['epochs']
 
     print("running")
 
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = g1.gru_one(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_units, epochs)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = g1.gru_one(
+        stk_data, window_size, train_rate, drop_rate, batch_size, lstm_gru_units, epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -418,6 +435,7 @@ def gru_model_one():
     data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
+
 
 @app.route("/gru_model_two", methods=['POST'])
 def gru_model_two():
@@ -429,20 +447,21 @@ def gru_model_two():
         stk_data = pd.read_csv(stk_data.filename, index_col='Date')
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
 
-    window_size=data['window_size']
-    train_rate=data['train_rate']
+    window_size = data['window_size']
+    train_rate = data['train_rate']
 
-    drop_rate=data['drop_rate']
-    batch_size=data['batch_size']
-    lstm_gru_units=data['lstm_gru_units']
+    drop_rate = data['drop_rate']
+    batch_size = data['batch_size']
+    lstm_gru_units = data['lstm_gru_units']
     epochs = data['epochs']
 
     print("running")
 
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = g2.gru_two(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_units, epochs)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = g2.gru_two(
+        stk_data, window_size, train_rate, drop_rate, batch_size, lstm_gru_units, epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -465,6 +484,7 @@ def gru_model_two():
 
     return jsonify(data_dict)
 
+
 @app.route("/gru_model_three", methods=['POST'])
 def gru_model_three():
 
@@ -475,20 +495,21 @@ def gru_model_three():
         stk_data = pd.read_csv(stk_data.filename, index_col='Date')
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
 
-    window_size=data['window_size']
-    train_rate=data['train_rate']
+    window_size = data['window_size']
+    train_rate = data['train_rate']
 
-    drop_rate=data['drop_rate']
-    batch_size=data['batch_size']
-    lstm_gru_units=data['lstm_gru_units']
+    drop_rate = data['drop_rate']
+    batch_size = data['batch_size']
+    lstm_gru_units = data['lstm_gru_units']
     epochs = data['epochs']
 
     print("running")
 
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = g3.gru_three(stk_data,window_size,train_rate, drop_rate, batch_size, lstm_gru_units, epochs)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = g3.gru_three(
+        stk_data, window_size, train_rate, drop_rate, batch_size, lstm_gru_units, epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -522,19 +543,20 @@ def ann_model():
         stk_data = pd.read_csv(stk_data.filename, index_col='Date')
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
 
-    window_size=data['window_size']
-    train_rate=data['train_rate']
+    window_size = data['window_size']
+    train_rate = data['train_rate']
 
-    drop_rate=data['drop_rate']
-    batch_size=data['batch_size']
+    drop_rate = data['drop_rate']
+    batch_size = data['batch_size']
     epochs = data['epochs']
 
     print("running")
 
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = ann.artificial_neural_network_model(stk_data,window_size,train_rate, drop_rate, batch_size, epochs)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = ann.artificial_neural_network_model(
+        stk_data, window_size, train_rate, drop_rate, batch_size, epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -556,6 +578,7 @@ def ann_model():
     data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
+
 
 @app.route('/autoendcoder_model', methods=['OPTIONS'])
 def handle_options():
@@ -566,6 +589,8 @@ def handle_options():
         "Access-Control-Allow-Credentials": true,
     }
     return '', 200, response_headers
+
+
 @app.route("/autoendcoder_model", methods=['POST'])
 def autoendcoder_model():
 
@@ -576,18 +601,19 @@ def autoendcoder_model():
         stk_data = pd.read_csv(stk_data.filename, index_col='Date')
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
 
-    window_size=data['window_size']
-    train_rate=data['train_rate']
+    window_size = data['window_size']
+    train_rate = data['train_rate']
 
-    batch_size=data['batch_size']
+    batch_size = data['batch_size']
     epochs = data['epochs']
 
     print("running")
 
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = autoenc.autoencoder_model(stk_data,window_size,train_rate, batch_size, epochs)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = autoenc.autoencoder_model(
+        stk_data, window_size, train_rate, batch_size, epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -609,6 +635,7 @@ def autoendcoder_model():
     data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
+
 
 @app.route("/rnn_model", methods=['POST'])
 def rnn_model():
@@ -620,18 +647,19 @@ def rnn_model():
         stk_data = pd.read_csv(stk_data.filename, index_col='Date')
     else:
         return "<p>upload correct file</p>"
-    
+
     data = json.loads(request.form['data'])
 
-    window_size=data['window_size']
-    train_rate=data['train_rate']
+    window_size = data['window_size']
+    train_rate = data['train_rate']
 
-    batch_size=data['batch_size']
+    batch_size = data['batch_size']
     epochs = data['epochs']
 
     print("running")
 
-    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = rnn.recurrent_neural_network_model(stk_data,window_size,train_rate, batch_size, epochs)
+    df1, df2, model_loss, mean_norm_rmse, mean_rmse, mean_mape = rnn.recurrent_neural_network_model(
+        stk_data, window_size, train_rate, batch_size, epochs)
     date_train = df1.index.to_list()
     train_original_price = df1['Close'].tolist()
     train_prediction_price = df1['Prediction'].tolist()
@@ -653,6 +681,7 @@ def rnn_model():
     data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
+
 
 @app.route("/test")
 def test():
@@ -665,83 +694,87 @@ def signup():
     email = request.json["email"]
     password = request.json["password"]
     username = request.json["username"]
- 
+
     user_exists = User.query.filter_by(email=email).first() is not None
- 
+
     if user_exists:
         return jsonify({"error": "Email already exists"}), 409
-    
+
     # Check if username already exists
-    username_exists = User.query.filter_by(username=username).first() is not None
- 
+    username_exists = User.query.filter_by(
+        username=username).first() is not None
+
     if username_exists:
         return jsonify({"error": "Username already exists"}), 409
-     
+
     hashed_password = bcrypt.generate_password_hash(password)
     new_user = User(email=email, password=hashed_password, username=username)
     db.session.add(new_user)
     db.session.commit()
- 
+
     session["user_id"] = new_user.id
     session["user_name"] = new_user.username
- 
+
     return jsonify({
         "id": new_user.id,
         "email": new_user.email,
         "username": new_user.username
     })
 
+
 @app.route("/login", methods=["POST"])
 def login_user():
     email = request.json["email"]
     password = request.json["password"]
     username = request.json["username"]
-  
+
     user = User.query.filter_by(email=email).first()
-  
+
     if user is None:
         return jsonify({"error": "Unauthorized Access"}), 401
-  
+
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({"error": "Unauthorized"}), 401
-    
+
     if user.username != username:
         return jsonify({"error": "Invalid username"}), 401
-      
+
     session["user_id"] = user.id
     session["user_name"] = user.username
-  
+
     return jsonify({
         "id": user.id,
         "email": user.email,
         "username": user.username
     })
 
+
 @app.route('/check_session')
 def check_session():
     if 'user_id' in session:
-            return jsonify({ "Status": "Logged In" })
+        return jsonify({"Status": "Logged In"})
 
-    return jsonify({ "Status": "Not Logged In" })
+    return jsonify({"Status": "Not Logged In"})
+
 
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
-    return jsonify({ "Status": "Logged Out" })
+    return jsonify({"Status": "Logged Out"})
 
 
 @app.route('/all-topics', methods=['GET', 'POST'])
 def topic():
     if request.method == 'POST':
         # Adding a new topic of discussion
-        userId=request.json['userId']
+        userId = request.json['userId']
         if userId[0] == '"' or userId[0] == "'":
             userId = userId[1:-1]
-        
-        username=request.json['userName']
+
+        username = request.json['userName']
         if username[0] == '"' or username[0] == "'":
             username = username[1:-1]
-        
+
         topic = Topic(
             # userId=session['user_id'],   # get the id from session
             userId=userId,   # get the id from session
@@ -766,15 +799,16 @@ def topic():
 
     return jsonify(topic_data)
 
+
 @app.route('/topic/<int:id>', methods=['GET', 'POST'])
 def comments(id):
     if request.method == 'POST':
         # Adding a new comment on that specific topic of discussion
-        userId=request.json['userId']
+        userId = request.json['userId']
         if userId[0] == '"' or userId[0] == "'":
             userId = userId[1:-1]
-        
-        username=request.json['userName']
+
+        username = request.json['userName']
         if username[0] == '"' or username[0] == "'":
             username = username[1:-1]
         comment = Comment(
@@ -790,7 +824,7 @@ def comments(id):
         db.session.commit()
 
     comments = Comment.query.filter_by(topicId=id).all()
-    
+
     comment_data = []
     for comment in comments:
         comment_data.append({
@@ -801,3 +835,32 @@ def comments(id):
         })
 
     return jsonify(comment_data)
+
+
+@app.route('/finllm', methods=['GET', 'POST'])
+def finllm():
+    print("Received Request | finllm")
+    news = "No News Selected"
+
+    data = json.loads(request.form['data'])
+    print(f"Data: {data}")
+
+    # user can input the following values from the form:
+    # input_ticker = data['ticker']
+    # isNews = data['isNews']
+
+    # response = {}
+
+    # response['forecast'] = rgpt.get_response(input_ticker)
+    # if isNews:
+    #     news = gn.get_news(input_ticker)
+    #     response['news'] = news
+    # else:
+    #     response['news'] = ""
+    response = {"positiveDevelopments" : "These are the positive developments", "potentialConcerns" : "These are the negative developments", "predictionAnlysis": "This is the prediction analysis", "summary": "This is the summary", "news": news}
+    # print('response: ', response)  # debug
+    return jsonify(response)
+
+
+# Request: Data: {'ticker': 'HON', 'isNews': False}
+# Response: { news: "No News Selected", positiveDevelopments: "These are the positive developments", potentialConcerns: "These are the negative developments", predictionAnlysis: "This is the prediction analysis", summary: "This is the summary" }
