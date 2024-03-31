@@ -1,17 +1,19 @@
-import prompt_generation
+# import prompt_generation
+from .prompt_generation import *
 import os
 import finnhub
-import data_preparation
+from .data_preparation import *
+# import data_preparation
 import random
 
 finnhub_client = finnhub.Client(
     api_key=os.environ["FINNHUB_API_KEY"])
 
-START_DATE, END_DATE = data_preparation.get_start_end_dates()
+START_DATE, END_DATE = get_start_end_dates()
 
 
 def get_introduction(symbol):
-    return prompt_generation.get_company_prompt(symbol)
+    return get_company_prompt(symbol)
 
 
 def get_news(symbol):

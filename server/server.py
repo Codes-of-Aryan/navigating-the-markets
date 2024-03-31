@@ -25,6 +25,7 @@ import llm_utils.get_news as gn
 
 import pandas as pd
 import time
+import re
 
 app = Flask(__name__)
 # CORS(app, origins=["http://localhost:3000"])
@@ -853,32 +854,22 @@ def finllm():
     print(input_ticker)
     print(isNews)
 
-    # response = {"positiveDevelopments": "",
-    #             "potentialConcerns": "",
-    #             "predictionAnlysis": "",
-    #             "summary": "",
-    #             "news": news}
-
-    test = rgpt.get_response(input_ticker)
-    print(test)
-
     response = rgpt.get_response(input_ticker).split('\n\n')
 
-    # response['forecast'] = rgpt.get_response(input_ticker)
     if isNews:
         news = gn.get_news(input_ticker)
     else:
-        neews = "No News Selected"
+        news = "No News Selected"
 
-    response = {"positiveDevelopments": response[0],
-                "potentialConcerns": response[1],
-                "predictionAnlysis": response[2],
-                "summary": gn.get_introduction(input_ticker), "news": news}
+    resposne_0 = re.sub(r'\[[^\]]+\]\s*:', '', response[0])
+    resposne_1 = re.sub(r'\[[^\]]+\]\s*:', '', response[1])
+    resposne_2 = re.sub(r'\[[^\]]+\]\s*:', '', response[2])
+    resposne_3 = gn.get_introduction(input_ticker)
+    resposne_3 = re.sub(r'\[[^\]]+\]\s*:', '', resposne_3)
 
-    # print('response: ', response)  # debug
+    response = {"positiveDevelopments": resposne_0,
+                "potentialConcerns": resposne_1,
+                "predictionAnlysis": resposne_2,
+                "summary": resposne_3, "news": '\n'.join(news)}
+
     return jsonify(response)
-    # return
-
-
-# Request: Data: {'ticker': 'HON', 'isNews': False}
-# Response: { news: "No News Selected", positiveDevelopments: "These are the positive developments", potentialConcerns: "These are the negative developments", predictionAnlysis: "This is the prediction analysis", summary: "This is the summary" }
