@@ -11,11 +11,13 @@ import yfinance as yf
 import datetime
 from collections import defaultdict
 
-current_date = datetime.datetime.now().strftime('%Y-%m-%d')
-three_months_ago = (datetime.datetime.now() -
-                    datetime.timedelta(days=90)).strftime('%Y-%m-%d')
 
-START_DATE = three_months_ago
+time_delta = 30  # days
+current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+past_date = (datetime.datetime.now() -
+             datetime.timedelta(days=time_delta)).strftime('%Y-%m-%d')
+
+START_DATE = past_date
 END_DATE = current_date  # current date
 
 DATA_DIR = f"./{START_DATE}_{END_DATE}"

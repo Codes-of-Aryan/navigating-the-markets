@@ -21,7 +21,7 @@ import trading_agents.moving_average_agent as maa
 import trading_agents.evolution_strategy_agent as esa
 
 import llm_utils.response_gpt as rgpt
-# import llm_utils.get_news as gn
+import llm_utils.get_news as gn
 
 import pandas as pd
 import time
@@ -77,7 +77,8 @@ def turtle_agent():
     max_sell = data['max_sell']
 
     print(f"running | turtle_agent")
-    states_buy, states_sell, total_gains, invest, logs, close = ta.turtle(debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
+    states_buy, states_sell, total_gains, invest, logs, close = ta.turtle(
+        debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
     print("states buy: ", states_buy, "\n")
     print("states sell: ", states_sell, "\n")
     print("total gains: ", total_gains, "\n")
@@ -123,7 +124,8 @@ def moving_average_agent():
     max_sell = data['max_sell']
 
     print(f"running | moving_average_agent")
-    states_buy, states_sell, total_gains, invest, logs, close = maa.move(debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
+    states_buy, states_sell, total_gains, invest, logs, close = maa.move(
+        debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
     print("states buy: ", states_buy, "\n")
     print("states sell: ", states_sell, "\n")
     print("total gains: ", total_gains, "\n")
@@ -169,7 +171,8 @@ def single_rolling_agent():
     max_sell = data['max_sell']
 
     print(f"running | single_rolling_agent")
-    states_buy, states_sell, total_gains, invest, logs, close = sra.roll(debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
+    states_buy, states_sell, total_gains, invest, logs, close = sra.roll(
+        debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
     print("states buy: ", states_buy, "\n")
     print("states sell: ", states_sell, "\n")
     print("total gains: ", total_gains, "\n")
@@ -216,7 +219,8 @@ def evolution_stratergy_agent():
     checkpoint = data['checkpoint']
 
     print(f"running | evolution_stratergy_agent")
-    states_buy, states_sell, logs, performance, close = esa.evolve(df=stk_data, iterations=iterations, checkpoint=checkpoint)
+    states_buy, states_sell, logs, performance, close = esa.evolve(
+        df=stk_data, iterations=iterations, checkpoint=checkpoint)
     print("states buy: ", states_buy, "\n")
     print("states sell: ", states_sell, "\n")
     print("performance: ", performance)
@@ -858,17 +862,18 @@ def finllm():
     test = rgpt.get_response(input_ticker)
     print(test)
 
-    # response['forecast'] = rgpt.get_response(input_ticker)
-    # if isNews:
-    #     news = gn.get_news(input_ticker)
-    #     response['news'] = news
-    # else:
-    #     response['news'] = ""
+    response = rgpt.get_response(input_ticker).split('\n\n')
 
-    response = {"positiveDevelopments": "These are the positive developments",
-                "potentialConcerns": "These are the negative developments",
-                "predictionAnlysis": "This is the prediction analysis",
-                "summary": "This is the summary", "news": news}
+    # response['forecast'] = rgpt.get_response(input_ticker)
+    if isNews:
+        news = gn.get_news(input_ticker)
+    else:
+        neews = "No News Selected"
+
+    response = {"positiveDevelopments": response[0],
+                "potentialConcerns": response[1],
+                "predictionAnlysis": response[2],
+                "summary": gn.get_introduction(input_ticker), "news": news}
 
     # print('response: ', response)  # debug
     return jsonify(response)
