@@ -10,11 +10,11 @@ import pandas as pd
 import yfinance as yf
 import datetime
 from collections import defaultdict
-from .data_preparation import *
-import data_preparation as dp
-from .prompt_generation import *
-import prompt_generation as pg
-from openai import OpenAI
+# from .data_preparation import *
+# import data_preparation as dp
+# from .prompt_generation import *
+# import prompt_generation as pg
+# from openai import OpenAI
 
 # Get the directory path of the current script
 current_dir = os.path.dirname(os.path.abspath(__file__))
