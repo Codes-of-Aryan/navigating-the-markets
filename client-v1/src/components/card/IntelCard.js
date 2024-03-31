@@ -12,9 +12,10 @@ export default function IntelCard(props) {
                 <Box mb={{ base: "20px", "2xl": "20px" }} position="relative">
                     <Image
                         src={image}
-                        w={{ base: "100%", "3xl": "100%" }}
-                        h={{ base: "100%", "30xl": "100%" }}
+                        w={{ base: "90%", "3xl": "100%" }}
+                        h={{ base: "90%", "30xl": "100%" }}
                         borderRadius="20px"
+                        style={{ margin: "auto" }}
                     />
                 </Box>
                 <Flex flexDirection="column" justify="space-between" h="100%">

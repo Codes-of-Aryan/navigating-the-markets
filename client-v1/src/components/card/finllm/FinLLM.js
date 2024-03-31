@@ -1,9 +1,15 @@
-import { Box, Flex, Image, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+    Box,
+    Flex,
+    Image,
+    Text,
+    useColorModeValue,
+} from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import React from "react";
-import GruTwoModal from "components/modal/algoTrading/GruTwoModal";
+import AnnModal from "components/modal/algoTrading/AnnModal";
 
-export default function GruTwo(props) {
+export default function Ann(props) {
     const { image, fullModelName, modelName } = props;
     const textColor = useColorModeValue("navy.700", "white");
     return (
@@ -70,7 +76,7 @@ export default function GruTwo(props) {
                         }}
                         mt="25px"
                     >
-                        <GruTwoModal fullForm={fullModelName} />
+                        <AnnModal fullForm={fullModelName} />
                     </Flex>
                 </Flex>
             </Flex>

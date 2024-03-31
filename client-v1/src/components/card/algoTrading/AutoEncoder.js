@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text, useColorModeValue, Link, Button } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, useColorModeValue, } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import React from "react";
 import AutoencoderModal from "components/modal/algoTrading/AutoencoderModal";
@@ -53,6 +53,7 @@ export default function AutoEncoder(props) {
                                 }}
                                 fontWeight="400"
                                 me="14px"
+                                style={{ marginBottom: "20px" }}
                             >
                                 {fullModelName}
                             </Text>

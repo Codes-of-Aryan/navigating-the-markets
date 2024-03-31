@@ -10,9 +10,14 @@ import pandas as pd
 import yfinance as yf
 import datetime
 from collections import defaultdict
-# import data_preparation as dp
-# import prompt_generation
-# from openai import OpenAI
+from .data_preparation import *
+import data_preparation as dp
+from .prompt_generation import *
+import prompt_generation as pg
+from openai import OpenAI
+
+# Get the directory path of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def get_response(company):
@@ -29,5 +34,11 @@ def get_response(company):
     #         {"role": "user", "content": user_prompt}
     #     ]
     # )
-    response = open('sample_response.txt', 'r').read()
+    # Construct the file path relative to the current directory
+    file_path = os.path.join(current_dir, 'sample_response.txt')
+    response = open(file_path, 'r').read()
+    # response = open('sample_response.txt', 'r').read()
     return response
+
+
+# print(get_response('AAPL'))

@@ -7,7 +7,8 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 
-import RNNImg from "assets/img/algoTrading/lstm.png";
+// import RNNImg from "assets/img/algoTrading/lstm.png";
+import RNNImg from "assets/img/algoTrading/Rnn.png";
 import LstmSingleLayer from "assets/img/algoTrading/lstm_single_layer.png";
 import GruSingleLayer from "assets/img/algoTrading/gru_single_layer.png";
 import LstmTwoLayer from "assets/img/algoTrading/lstm_two_layer.png";
@@ -64,7 +65,7 @@ export default function WidgetPage() {
             <SimpleGrid columns={{ base: 1, md: 3 }} gap="20px">
               <LstmCard
                 modelName="LSTM"
-                fullModelName="Long Short-Term Memory - Special Feature"
+                fullModelName="Long Short-Term Memory - A Special Feature to Explore the Financial Industry More!"
                 image={Special}
               />
 

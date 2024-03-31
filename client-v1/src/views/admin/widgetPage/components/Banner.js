@@ -50,7 +50,7 @@ export default function Banner() {
                 Discover different algorithms and understand how the industry
                 veterans use complex tools to secure your financial future.
             </Text>
-            <Flex align="center">
+            {/* <Flex align="center">
                 <Button
                     bg="white"
                     color="black"
@@ -65,7 +65,7 @@ export default function Banner() {
                 >
                     Discover now
                 </Button>
-            </Flex>
+            </Flex> */}
         </Flex>
     );
 }

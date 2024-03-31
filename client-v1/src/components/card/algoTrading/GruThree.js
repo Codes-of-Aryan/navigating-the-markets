@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text, useColorModeValue, Link, Button } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, useColorModeValue } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import React from "react";
 import GruThreeModal from "components/modal/algoTrading/GRUThreeModal";

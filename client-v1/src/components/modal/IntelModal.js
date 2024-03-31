@@ -34,7 +34,7 @@ export default function IntelModal(props) {
     return (
         <>
             {sizes.map((size) => (
-                <Button onClick={() => handleSizeClick(size)} key={size} m={4}>
+                <Button onClick={() => handleSizeClick(size)} key={size} m={4} variant="brand">
                     learn more
                 </Button>
             ))}

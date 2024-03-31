@@ -15,6 +15,7 @@ export default function GoogleCard(props) {
                         w={{ base: "100%", "3xl": "100%" }}
                         h={{ base: "100%", "30xl": "100%" }}
                         borderRadius="20px"
+                        style={{ marginBottom: "30px", }}
                     />
                 </Box>
                 <Flex flexDirection="column" justify="space-between" h="100%">
@@ -70,7 +71,7 @@ export default function GoogleCard(props) {
                         }}
                         mt="25px"
                     >
-                        <GoogleModal incorporatedName={incorporatedName}/>
+                        <GoogleModal incorporatedName={incorporatedName} />
                     </Flex>
                 </Flex>
             </Flex>

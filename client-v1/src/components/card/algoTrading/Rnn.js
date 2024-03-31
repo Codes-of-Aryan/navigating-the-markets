@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text, useColorModeValue, Link, Button } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, useColorModeValue } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import React from "react";
 import RnnModal from "components/modal/algoTrading/RNNModal";
@@ -7,7 +7,8 @@ export default function Rnn(props) {
     const { image, fullModelName, modelName } = props;
     const textColor = useColorModeValue("navy.700", "white");
     return (
-        <Card p="20px" style={{ boxShadow: '1px 2px 9px #000000', }} >
+        // <Card p="20px" style={{ boxShadow: '1px 2px 9px #000000', }} >
+        <Card p="20px" >
             <Flex direction={{ base: "column" }} justify="center">
                 <Box mb={{ base: "20px", "2xl": "20px" }} position="relative">
                     <Image
@@ -53,6 +54,7 @@ export default function Rnn(props) {
                                 }}
                                 fontWeight="400"
                                 me="14px"
+                                style={{ marginBottom: "20px" }}
                             >
                                 {fullModelName}
                             </Text>

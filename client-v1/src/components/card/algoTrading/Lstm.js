@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text, useColorModeValue, Link, Button } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, useColorModeValue, Button } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import React from "react";
 // import LstmModal from "components/modal/algoTrading/LSTMMod";
@@ -7,6 +7,7 @@ import React from "react";
 export default function LstmCard(props) {
     const { image, fullModelName, modelName } = props;
     const textColor = useColorModeValue("navy.700", "white");
+
     return (
         <Card p="20px">
             <Flex direction={{ base: "column" }} justify="center">
@@ -49,7 +50,7 @@ export default function LstmCard(props) {
                                 {modelName}
                             </Text>
                             <Text
-                                color="black"
+                                color="secondaryGray.600"
                                 fontSize={{
                                     base: "sm",
                                 }}
@@ -73,7 +74,9 @@ export default function LstmCard(props) {
                         mt="25px"
                     >
                         <a href="http://localhost:8000">
-                            <Button>
+                            <Button
+                                m={4}
+                                variant="brand">
                                 visualize
                             </Button>
                         </a>

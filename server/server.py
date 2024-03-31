@@ -20,13 +20,11 @@ import trading_agents.signal_rolling_agent as sra
 import trading_agents.moving_average_agent as maa
 import trading_agents.evolution_strategy_agent as esa
 
-# get current working directory
 import llm_utils.response_gpt as rgpt
-import llm_utils.get_news as gn
+# import llm_utils.get_news as gn
 
 import pandas as pd
 import time
-# import threading
 
 app = Flask(__name__)
 # CORS(app, origins=["http://localhost:3000"])
@@ -839,17 +837,26 @@ def comments(id):
 
 @app.route('/finllm', methods=['GET', 'POST'])
 def finllm():
-    print("Received Request | finllm")
+    print("I am working")
     news = "No News Selected"
 
     data = json.loads(request.form['data'])
     print(f"Data: {data}")
 
     # user can input the following values from the form:
-    # input_ticker = data['ticker']
-    # isNews = data['isNews']
+    input_ticker = data['ticker']
+    isNews = data['isNews']
+    print(input_ticker)
+    print(isNews)
 
-    # response = {}
+    # response = {"positiveDevelopments": "",
+    #             "potentialConcerns": "",
+    #             "predictionAnlysis": "",
+    #             "summary": "",
+    #             "news": news}
+
+    test = rgpt.get_response(input_ticker)
+    print(test)
 
     # response['forecast'] = rgpt.get_response(input_ticker)
     # if isNews:
@@ -857,9 +864,15 @@ def finllm():
     #     response['news'] = news
     # else:
     #     response['news'] = ""
-    response = {"positiveDevelopments" : "These are the positive developments", "potentialConcerns" : "These are the negative developments", "predictionAnlysis": "This is the prediction analysis", "summary": "This is the summary", "news": news}
+
+    response = {"positiveDevelopments": "These are the positive developments",
+                "potentialConcerns": "These are the negative developments",
+                "predictionAnlysis": "This is the prediction analysis",
+                "summary": "This is the summary", "news": news}
+
     # print('response: ', response)  # debug
     return jsonify(response)
+    # return
 
 
 # Request: Data: {'ticker': 'HON', 'isNews': False}

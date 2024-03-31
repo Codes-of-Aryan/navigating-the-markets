@@ -16,6 +16,7 @@ export default function AppleCard(props) {
                         // h={{ base: "100%", "30xl": "100%" }}
                         h="200px"
                         borderRadius="20px"
+                        style={{ margin: "auto" }}
                     />
                 </Box>
                 <Flex flexDirection="column" justify="space-between" h="100%">
