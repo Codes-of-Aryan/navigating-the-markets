@@ -152,9 +152,8 @@ def roll(debug, show_graph, df, initial_money, max_buy, max_sell):
     # if debug: print(df.head(5))
     print("\n\ninside function running single rolling agent\n\n")
     logs, states_buy, states_sell, total_gains, invest = buy_stock(df=df, debug=debug, real_movement=df.Close, initial_state=1, delay=4, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell)
-
-    if show_graph:
-        close = df['Close']
+    close = df['Close']
+    if show_graph:    
         fig = plt.figure(figsize = (15,5))
         plt.plot(close, color='r', lw=2.)
         plt.plot(close, '^', markersize=10, color='m', label = 'buying signal', markevery = states_buy)
@@ -162,7 +161,7 @@ def roll(debug, show_graph, df, initial_money, max_buy, max_sell):
         plt.title('total gains %f, total investment %f%%'%(total_gains, invest))
         plt.legend()
         plt.show()
-    return logs, states_buy, states_sell, total_gains, invest
+    return states_buy, states_sell, total_gains, invest, logs, close.tolist()
     
     
 # if __name__ == '__main__':

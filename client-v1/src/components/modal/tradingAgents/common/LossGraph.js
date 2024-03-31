@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CanvasJSReact from "@canvasjs/react-charts";
+import Card from 'components/card/Card'
 
 const CanvasJS = CanvasJSReact.CanvasJS;
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;

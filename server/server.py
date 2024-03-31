@@ -79,16 +79,28 @@ def turtle_agent():
     max_sell = data['max_sell']
 
     print(f"running | turtle_agent")
-    states_buy, states_sell, total_gains, invest, logs = ta.turtle(
-        debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
-    print(states_buy)
-    print(states_sell)
-    print(total_gains)
-    print(invest)
+    states_buy, states_sell, total_gains, invest, logs, close = ta.turtle(debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
+    print("states buy: ", states_buy, "\n")
+    print("states sell: ", states_sell, "\n")
+    print("total gains: ", total_gains, "\n")
+    print("invest: ", invest, "\n")
+    print("close: ", close, "\n")
+    print("logs: \n")
     print(logs)
 
-    response = {"fycjk": "this is turtle agent"}
-    return jsonify(response)
+    data_dict = {}
+    data_dict['initial_money'] = initial_money
+    data_dict['invest'] = invest
+    data_dict['logs'] = logs
+    data_dict['max_buy'] = max_buy
+    data_dict['max_sell'] = max_sell
+    data_dict['states_buy'] = states_buy
+    data_dict['states_sell'] = states_sell
+    data_dict['total_gains'] = total_gains
+    data_dict['close'] = close
+
+    response = jsonify(data_dict)
+    return response
 
 
 @app.route("/moving_average_agent", methods=['POST'])
@@ -113,16 +125,28 @@ def moving_average_agent():
     max_sell = data['max_sell']
 
     print(f"running | moving_average_agent")
-    states_buy, states_sell, total_gains, invest, logs = maa.move(
-        debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
-    print(states_buy)
-    print(states_sell)
-    print(total_gains)
-    print(invest)
+    states_buy, states_sell, total_gains, invest, logs, close = maa.move(debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
+    print("states buy: ", states_buy, "\n")
+    print("states sell: ", states_sell, "\n")
+    print("total gains: ", total_gains, "\n")
+    print("close: ", close, "\n")
+    print("invest: ", invest, "\n")
+    print("logs: \n")
     print(logs)
 
-    response = {"fycjk": "this is moving average agent"}
-    return jsonify(response)
+    data_dict = {}
+    data_dict['initial_money'] = initial_money
+    data_dict['invest'] = invest
+    data_dict['logs'] = logs
+    data_dict['max_buy'] = max_buy
+    data_dict['max_sell'] = max_sell
+    data_dict['states_buy'] = states_buy
+    data_dict['states_sell'] = states_sell
+    data_dict['total_gains'] = total_gains
+    data_dict['close'] = close
+
+    response = jsonify(data_dict)
+    return response
 
 
 @app.route("/single_rolling_agent", methods=['POST'])
@@ -147,16 +171,27 @@ def single_rolling_agent():
     max_sell = data['max_sell']
 
     print(f"running | single_rolling_agent")
-    states_buy, states_sell, total_gains, invest, logs = sra.roll(
-        debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
-    print(states_buy)
-    print(states_sell)
-    print(total_gains)
-    print(invest)
+    states_buy, states_sell, total_gains, invest, logs, close = sra.roll(debug=False, show_graph=False, initial_money=initial_money, max_buy=max_buy, max_sell=max_sell, df=stk_data)
+    print("states buy: ", states_buy, "\n")
+    print("states sell: ", states_sell, "\n")
+    print("total gains: ", total_gains, "\n")
+    print("invest: ", invest, "\n")
+    print("close: ", close, "\n")
+    print("logs: \n")
     print(logs)
 
-    response = {"fycjk": "this is single rolling agent"}
-    return jsonify(response)
+    data_dict = {}
+    data_dict['initial_money'] = initial_money
+    data_dict['invest'] = invest
+    data_dict['logs'] = logs
+    data_dict['max_buy'] = max_buy
+    data_dict['max_sell'] = max_sell
+    data_dict['states_buy'] = states_buy
+    data_dict['states_sell'] = states_sell
+    data_dict['total_gains'] = total_gains
+    data_dict['close'] = close
+    response = jsonify(data_dict)
+    return response
 
 
 @app.route("/evolution_stratergy_agent", methods=['POST'])
@@ -179,15 +214,29 @@ def evolution_stratergy_agent():
     initial_money = data['initial_money']
     max_buy = data['max_buy']
     max_sell = data['max_sell']
+    iterations = data['iterations']
+    checkpoint = data['checkpoint']
 
     print(f"running | evolution_stratergy_agent")
-    logs, states_buy, states_sell = esa.evolve(df=stk_data)
-    print(states_buy)
-    print(states_sell)
+    states_buy, states_sell, logs, performance, close = esa.evolve(df=stk_data, iterations=iterations, checkpoint=checkpoint)
+    print("states buy: ", states_buy, "\n")
+    print("states sell: ", states_sell, "\n")
+    print("performance: ", performance)
+    print("logs: \n")
     print(logs)
 
-    response = {"fycjk": "this is evolution stratergy agent"}
-    return jsonify(response)
+    data_dict = {}
+    data_dict['initial_money'] = initial_money
+    data_dict['logs'] = logs
+    data_dict['max_buy'] = max_buy
+    data_dict['max_sell'] = max_sell
+    data_dict['states_buy'] = states_buy
+    data_dict['states_sell'] = states_sell
+    data_dict['performance'] = performance
+    data_dict['close'] = close
+
+    response = jsonify(data_dict)
+    return response
 
 
 @app.route("/lstm_model_one", methods=['POST'])

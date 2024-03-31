@@ -19,6 +19,7 @@ class Deep_Evolution_Strategy:
         self.population_size = population_size
         self.sigma = sigma
         self.learning_rate = learning_rate
+        self.performance = []
 
     def _get_weight_from_population(self, weights, population):
         weights_population = []
@@ -59,7 +60,10 @@ class Deep_Evolution_Strategy:
                     'iter %d. reward: %f'
                     % (i + 1, self.reward_function(self.weights))
                 )
+                # self.performance.append((i+1, self.reward_function(self.weights)))
+                self.performance.append({"epoch": i+1, "reward": self.reward_function(self.weights)})
         print('time taken to train:', time.time() - lasttime, 'seconds')
+        return self.performance
 
 
 class Model:
@@ -146,7 +150,7 @@ class Agent:
         return ((initial_money - starting_money) / starting_money) * 100
 
     def fit(self, iterations, checkpoint):
-        self.es.train(iterations, print_every = checkpoint)
+        self.performance = self.es.train(iterations, print_every = checkpoint)
 
     def buy(self):
         self.logs = []
@@ -172,7 +176,7 @@ class Agent:
                 inventory.append(total_buy)
                 quantity += buy_units
                 states_buy.append(t)
-                message = f"day {t} buy {buy_units} at price {total_buy}, total balance {initial_money}"
+                message = {"day": t+1, "action": "buy", "units": buy_units, "units": total_buy, "balance": initial_money}
                 self.logs.append(message)
                 if self.debug: print(message)
                 # print(
@@ -196,7 +200,8 @@ class Agent:
                 except:
                     invest = 0
 
-                message = f"day {t}, sell {sell_units} units at price {total_sell}, investment {invest} %%, total balance {initial_money}"
+                message = {"day": t+1, "action": "sell", "units": sell_units, "total units": total_sell, "balance": initial_money, "invest": invest}
+                
                 self.logs.append(message)
                 if self.debug: print(message)
                 # print(
@@ -206,7 +211,8 @@ class Agent:
             state = next_state
 
         invest = ((initial_money - starting_money) / starting_money) * 100
-        message = f"\ntotal gained {initial_money - starting_money}, total investment {invest} %%"
+        # message = f"\ntotal gained {initial_money - starting_money}, total investment {invest} %%"
+        message = {"day": t+1, "total_gained": initial_money - starting_money, "total_investment": invest}
         self.logs.append(message)
         if self.debug: print(message)
         # print(
@@ -216,7 +222,7 @@ class Agent:
         if self.show_graph: 
             self.show_plot(states_buy, states_sell)
 
-        return self.logs, states_buy, states_sell
+        return self.logs, states_buy, states_sell, self.performance
 
     def show_plot(self, states_buy, states_sell):
         plt.figure(figsize = (20, 10))
@@ -239,16 +245,17 @@ def get_state(data, t, n):
     return np.array([res])
 
 
-def evolve(df):
+def evolve(df, iterations=500, checkpoint=10):
     close = df.Close.values.tolist()
     window_size, skip = 30, 1
     length = len(close) - 1
 
     model = Model(window_size, 500, 3)
     agent = Agent(model, 10000, 5, 5, window_size, close, skip, length, show_graph=False, debug=False)
-    agent.fit(500, 10)
+    agent.fit(iterations, checkpoint)
+    
 
     print("\n\ninside function evolution stratergy agent\n\n")
     
-    logs, states_buy, states_sell = agent.buy()
-    return logs, states_buy, states_sell
+    logs, states_buy, states_sell, performance = agent.buy()
+    return states_buy, states_sell, logs, performance, close

@@ -1,7 +1,5 @@
-/* eslint-disable */
 import {
     Flex,
-    Progress,
     Table,
     Tbody,
     Td,
@@ -11,10 +9,6 @@ import {
     Tr,
     useColorModeValue,
 } from "@chakra-ui/react";
-// Custom components
-import Card from "components/card/Card";
-import { AndroidLogo, AppleLogo, WindowsLogo } from "components/icons/Icons";
-import Menu from "components/menu/MainMenu";
 import React, { useMemo } from "react";
 import {
     useGlobalFilter,
@@ -23,7 +17,10 @@ import {
     useTable,
 } from "react-table";
 
-export default function DevelopmentTable(props) {
+// Custom components
+import Card from "components/card/Card";
+import Menu from "components/menu/MainMenu";
+export default function ColumnsTable(props) {
     const { columnsData, tableData } = props;
 
     const columns = useMemo(() => columnsData, [columnsData]);
@@ -47,10 +44,9 @@ export default function DevelopmentTable(props) {
         prepareRow,
         initialState,
     } = tableInstance;
-    initialState.pageSize = 500;
+    initialState.pageSize = 5;
 
     const textColor = useColorModeValue("secondaryGray.900", "white");
-    const iconColor = useColorModeValue("secondaryGray.500", "white");
     const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
     return (
         <Card
@@ -66,7 +62,7 @@ export default function DevelopmentTable(props) {
                     fontWeight="700"
                     lineHeight="100%"
                 >
-                    Logs
+                    4-Column Table
                 </Text>
                 <Menu />
             </Flex>
@@ -108,15 +104,51 @@ export default function DevelopmentTable(props) {
                             <Tr {...row.getRowProps()} key={index}>
                                 {row.cells.map((cell, index) => {
                                     let data = (
-                                        <Text
-                                            color={textColor}
-                                            fontSize="sm"
-                                            fontWeight="700"
-                                        >
-                                            {cell.value}
-                                        </Text>
+                                        <Flex align="center">
+                                            <Text
+                                                color={textColor}
+                                                fontSize="sm"
+                                                fontWeight="700"
+                                            >
+                                                {cell.value}
+                                            </Text>
+                                        </Flex>
                                     );
-
+                                    // if (cell.column.Header === "NAME") {
+                                    //     data = (
+                                    //         <Flex align="center">
+                                    //             <Text
+                                    //                 color={textColor}
+                                    //                 fontSize="sm"
+                                    //                 fontWeight="700"
+                                    //             >
+                                    //                 {cell.value}
+                                    //             </Text>
+                                    //         </Flex>
+                                    //     );
+                                    // } else if (cell.column.Header === "DATE") {
+                                    //     data = (
+                                    //         <Text
+                                    //             color={textColor}
+                                    //             fontSize="sm"
+                                    //             fontWeight="700"
+                                    //         >
+                                    //             {cell.value}
+                                    //         </Text>
+                                    //     );
+                                    // } else {
+                                    //     data = (
+                                    //         <Flex align="center">
+                                    //             <Text
+                                    //                 color={textColor}
+                                    //                 fontSize="sm"
+                                    //                 fontWeight="700"
+                                    //             >
+                                    //                 {cell.value}
+                                    //             </Text>
+                                    //         </Flex>
+                                    //     );
+                                    // }
                                     return (
                                         <Td
                                             {...cell.getCellProps()}
