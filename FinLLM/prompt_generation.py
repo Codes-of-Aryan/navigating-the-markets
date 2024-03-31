@@ -133,16 +133,9 @@ def get_all_prompts(symbol, min_past_weeks=1, max_past_weeks=3, with_basics=True
 
 
 def get_prompt(symbol):
-    B_INST, E_INST = "[INST]", "[/INST]"
-    B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
+    # llama2 legacy format
+    # B_INST, E_INST = "[INST]", "[/INST]"
+    # B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
 
-    SYSTEM_PROMPT = "You are a seasoned stock market analyst. Your task is to list the positive developments and potential concerns for companies based on relevant news and basic financials from the past weeks, then provide an analysis and prediction for the companies' stock price movement for the upcoming week. " \
-        "Your answer format should be as follows:\n\n[Positive Developments]:\n1. ...\n\n[Potential Concerns]:\n1. ...\n\n[Prediction & Analysis]:\n...\n"
-
-    print(SYSTEM_PROMPT)
-
-    # prompts = get_all_prompts("AAPL", 1, 3)
-    # prompts = get_all_prompts("MSFT", 1, 3, False)
     prompts = get_all_prompts(symbol, 1, 4)
-
     return prompts
