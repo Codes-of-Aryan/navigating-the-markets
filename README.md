@@ -137,6 +137,6 @@ Pull requests are welcome. For feedback and suggestions, please reach out to Gro
 
 ## License
 
-COMP3330 Group 37 2022 © The University of Hong Kong
+COMP4801 Group fyp23070 2024 © The University of Hong Kong
 
 ### _Stay Happy and Keep Smiling :)_
