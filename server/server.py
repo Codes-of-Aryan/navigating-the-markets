@@ -583,17 +583,6 @@ def ann_model():
     return jsonify(data_dict)
 
 
-@app.route('/autoendcoder_model', methods=['OPTIONS'])
-def handle_options():
-    response_headers = {
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
-        'Access-Control-Allow-Methods': 'POST',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        "Access-Control-Allow-Credentials": true,
-    }
-    return '', 200, response_headers
-
-
 @app.route("/autoendcoder_model", methods=['POST'])
 def autoendcoder_model():
 
@@ -684,12 +673,6 @@ def rnn_model():
     data_dict['mean_mape'] = round(mean_mape, 4)
 
     return jsonify(data_dict)
-
-
-@app.route("/test")
-def test():
-    time.sleep(80)
-    return "<p>Work</p>"
 
 
 @app.route("/signup", methods=["POST"])
@@ -867,6 +850,10 @@ def finllm():
     resposne_3 = gn.get_introduction(input_ticker)
     resposne_3 = re.sub(r'\[[^\]]+\]\s*:', '', resposne_3)
 
+    # response = {"positiveDevelopments": response[0],
+    #             "potentialConcerns": response[1],
+    #             "predictionAnlysis": response[2],
+    #             "summary": resposne_3, "news": '\n'.join(news)}
     response = {"positiveDevelopments": resposne_0,
                 "potentialConcerns": resposne_1,
                 "predictionAnlysis": resposne_2,

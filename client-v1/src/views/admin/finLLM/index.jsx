@@ -34,7 +34,7 @@ export default function WidgetPage() {
     "CVX",
     "GS",
     "HD",
-    "HON",
+    // "HON",
     "IBM",
     "INTC",
     "JNJ",

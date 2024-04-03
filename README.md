@@ -115,14 +115,19 @@ chmod +x run.sh (You need to do this once)
 ./run.sh
 ```
 
+## Documentation
+
+- [API Endpoints Documentation](Documentation/backendServerDocumentation.md)
+- [Deep Learning Models Documentation](Documentation/DeepLearningDocs)
+
 ## Features
 
 - Registration Page and Login Page (allows users to register using their username, email address, and password and login with email address + password + username.)
 - Can interact with other users on the discussion forum and talk about the financial market and strategies.
 - Can look and run deep learning agents with different parameters on the choosen stock data (OHLCV). Here is a sample data:
   [Google](test/GOOG-year.csv). This will allow them see how each deep learning algorithm works on stocks by showing them Epoch Loss Curve and Price Prediction Graphs.
-- Trading Agents
-- FinRL
+- Trading Agents: Multiple different trading agents are available to the user to choose from which can be used by the user to make predictions on the choosen stock data and find buy and sell points.
+- FinLLM: A Large Language Model trained on financial data to provide positive developments, potential concerns, summary, prediction & anlysis and news related to the choosen stock.
 
 ## Feedback
 
