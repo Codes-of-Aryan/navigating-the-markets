@@ -120,6 +120,7 @@ chmod +x run.sh (You need to do this once)
 - [API Endpoints Documentation](Documentation/backendServerDocumentation.md)
 - [Deep Learning Models Documentation](Documentation/DeepLearningDocs)
 - [Trading Agnets Documentation](Documentation/TradingAgentsDocs)
+- [FinLLM Documentation](Documentation/FINLLM)
 
 ## Features
 
@@ -128,7 +129,7 @@ chmod +x run.sh (You need to do this once)
 - Can look and run deep learning agents with different parameters on the choosen stock data (OHLCV). Here is a sample data:
   [Google](test/GOOG-year.csv). This will allow them see how each deep learning algorithm works on stocks by showing them Epoch Loss Curve and Price Prediction Graphs.
 - Trading Agents: Multiple different trading agents are available to the user to choose from which can be used by the user to make predictions on the choosen stock data and find buy and sell points.
-- FinLLM: A Large Language Model trained on financial data to provide positive developments, potential concerns, summary, prediction & anlysis and news related to the choosen stock.
+- FinLLM: A Large Language Model trained on financial data to provide positive developments, potential concerns, summary, prediction & anlysis and news related to the choosen stock. (**NOTE:** In order to use this feature, you need to have a valid API key for the OpenAI API. You can get one for free [here](https://platform.openai.com/account/api-keys). You also need to have a valid Finnhub API Key as well.The API key is used to authenticate and access the Finnhub API. You can sign up and obtain an API key from the Finnhub website.) A traditional LLAMA model is also available to the user to provide detailed analysis of the chosen stock, however, the performance of GPT4 was much better. Therefore, current version of the application makes use of GPT4.
 
 ## Feedback
 
