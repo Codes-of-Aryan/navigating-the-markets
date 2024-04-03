@@ -119,6 +119,7 @@ chmod +x run.sh (You need to do this once)
 
 - [API Endpoints Documentation](Documentation/backendServerDocumentation.md)
 - [Deep Learning Models Documentation](Documentation/DeepLearningDocs)
+- [Trading Agnets Documentation](Documentation/TradingAgentsDocs)
 
 ## Features
 
