@@ -96,7 +96,25 @@ npm install -g serve
 serve -l 8000
 ```
 
-- Step 3: Navigate to server and run the following commands:
+- Step 3: Export API keys your respective OS
+
+      On Windows:
+
+      - Open the Start menu and search for "Environment Variables".
+      - Select "Edit the system environment variables".
+      - Click on the "Environment Variables" button.
+      - In the "System Variables" section, click on "New" to add a new environment variable.
+      - Enter the name of the variable (i.e.., OPENAI_API_KEY, and FINNHUB_API_KEY) and its corresponding value (e.g., your API key).
+      - Click "OK" to save the changes.
+
+      On macOS or Linux:
+
+      - Open a terminal window.
+      - Type export OPENAI_API_KEY="your_api_key" and press Enter
+      - Type export FINNHUB_API_KEY="your_api_key" and press Enter
+      - Replace "your_api_key" with your actual API key.
+
+- Step 4: Navigate to server and run the following commands:
 
 ```bash
 cd server
