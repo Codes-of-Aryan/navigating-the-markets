@@ -118,7 +118,7 @@ serve -l 8000
 
 ```bash
 cd server
-pip install -r requirements. txt
+pip install -r requirements.txt
 python3 -m flask --app server.py run
 ```
 
