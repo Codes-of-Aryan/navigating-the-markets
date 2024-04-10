@@ -165,6 +165,7 @@ const Collapsible = ({ children, title, author, id }) => {
                                             border: "gray solid",
                                             borderRadius: 5,
                                             padding: 10,
+                                            width: "100%"
                                         }}
                                         color={textColor}
                                     >
