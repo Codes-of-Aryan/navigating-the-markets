@@ -17,13 +17,13 @@ _Link To The Presentation:_ <a href="https://connecthkuhk-my.sharepoint.com/:b:/
 ---
 
 Author: Masood Ahmed <br>
-Email: 'masood20@connect.hku.hk'<br>
+Email: masood20@connect.hku.hk <br>
 
 Author: Aryan Agarwal <br>
-Email: 'u3581237@connect.hku.hk'<br>
+Email: u3581237@connect.hku.hk <br>
 
 Author: Arnav Rajiv <br>
-Email: 'u3570905@connect.hku.hk'<br>
+Email: u3570905@connect.hku.hk <br>
 
 ---
 
