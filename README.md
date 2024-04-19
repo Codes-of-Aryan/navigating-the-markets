@@ -1,5 +1,6 @@
 # Navigating The Markets - FYP Project for HKU Computer Science (Group fyp23070)
 
+_Link To Wordpress Website Showing Project Information:_ <a href="https://wp2023.cs.hku.hk/fyp23070/" target="_blank"> Word Press Website </a> <br>
 _Link To Video Demo:_ <a href="" target="_blank"> Will Upload Soon </a> <br>
 _Link To The Poster:_ <a href="https://connecthkuhk-my.sharepoint.com/:b:/g/personal/masood20_connect_hku_hk/Ec-b5xScsMdIuYESOHHh86IBUpjJk9m-20hghb0AWzo-RQ?e=m250nP" target="_blank"> Project Poster </a> <br>
 _Link To The Presentation:_ <a href="https://connecthkuhk-my.sharepoint.com/:b:/g/personal/masood20_connect_hku_hk/EQJyb5oXri5Cr45AMjJv3v4BY_zbWLq9rjnwPwVv3bHdig?e=UWmLyg" target="_blank"> Project Presentation </a> <br>
