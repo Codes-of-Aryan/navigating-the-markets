@@ -28,6 +28,8 @@ def get_news(symbol):
             headlines.append(n['headline'])
 
     # Return any 3 headlines randomly
+    if len(headlines) < 3:
+        return headlines
     return random.sample(headlines, 3)
 
 
